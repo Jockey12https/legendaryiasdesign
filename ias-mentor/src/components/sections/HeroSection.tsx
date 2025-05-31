@@ -177,16 +177,16 @@ export default function HeroSection() {
           </motion.div>
         </motion.div>
       </div>
-      <div className="bg-primary text-secondary w-full py-3 overflow-hidden">
+      <div className="bg-primary text-primary w-full py-3 overflow-hidden">
         <div className="flex animate-marquee whitespace-nowrap">
-          <div className="mx-4 text-sm font-semibold uppercase">New Admission Open</div>
-          <div className="mx-4 text-sm font-semibold uppercase">New Admission Open</div>
-          <div className="mx-4 text-sm font-semibold uppercase">New Admission Open</div>
-          <div className="mx-4 text-sm font-semibold uppercase">New Admission Open</div>
-          <div className="mx-4 text-sm font-semibold uppercase">New Admission Open</div>
-          <div className="mx-4 text-sm font-semibold uppercase">New Admission Open</div>
-          <div className="mx-4 text-sm font-semibold uppercase">New Admission Open</div>
-          <div className="mx-4 text-sm font-semibold uppercase">New Admission Open</div>
+          <div className="mx-16 text-sm font-semibold uppercase">New Admission Open</div>
+          <div className="mx-16 text-sm font-semibold uppercase">New Admission Open</div>
+          <div className="mx-16 text-sm font-semibold uppercase">New Admission Open</div>
+          <div className="mx-16 text-sm font-semibold uppercase">New Admission Open</div>
+          <div className="mx-16 text-sm font-semibold uppercase">New Admission Open</div>
+          <div className="mx-16 text-sm font-semibold uppercase">New Admission Open</div>
+          <div className="mx-16 text-sm font-semibold uppercase">New Admission Open</div>
+          <div className="mx-16 text-sm font-semibold uppercase">New Admission Open</div>
         </div>
       </div>
     </section>
