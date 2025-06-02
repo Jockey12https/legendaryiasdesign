@@ -13,7 +13,7 @@ const About: React.FC = () => {
                 alt="Our Legendary Mentors" 
                 className="w-full rounded-lg shadow-lg"
               />
-              <div className="absolute bottom-4 left-4 right-4 bg-amber-50/90 p-4 rounded text-black">
+              <div className="relative mt-2 bg-amber-50/90 p-4 rounded text-black">
                 <div className="flex items-center space-x-2">
                   <Award className="h-5 w-5 text-orange-400" />
                   <p className="font-medium">The Pillars of Legendary IAS Mentor</p>

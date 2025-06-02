@@ -47,17 +47,20 @@ const Navbar: React.FC = () => {
       }`}>
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-center">
-            <div className="flex items-center">
-                            <img 
-          src="https://ext.same-assets.com/2651817114/1248459215.png" 
-          alt="Logo" 
-          className="h-50 w-50 md:h-30 md:w-30 object-contain mr-3" 
-        />
-              <span className="text-2xl font-bold text-blue-900">Legendary IAS Mentor</span>
+            {/* Logo and Brand Name */}
+            <div className="flex items-center flex-shrink-0">
+              <img 
+                src="https://ext.same-assets.com/2651817114/1248459215.png" 
+                alt="Logo" 
+                className="h-50 w-50 object-contain"
+              />
+              <span className="text-xl md:text-2xl font-bold text-blue-900 ml-2 whitespace-nowrap">
+                Legendary IAS Mentor
+              </span>
             </div>
 
             {/* Desktop Navigation */}
-            <div className="hidden md:flex space-x-8">
+            <div className="hidden lg:flex items-center space-x-6">
               <a href="#home" className="text-blue-800 hover:text-orange-500 font-medium transition">Home</a>
               <a href="#courses" className="text-blue-800 hover:text-orange-500 font-medium transition">Courses</a>
               <a href="#about" className="text-blue-800 hover:text-orange-500 font-medium transition">About</a>
@@ -66,19 +69,20 @@ const Navbar: React.FC = () => {
               <a href="#contact" className="text-blue-800 hover:text-orange-500 font-medium transition">Contact</a>
             </div>
 
-            <div className="hidden md:flex items-center space-x-4">
+            {/* Desktop Auth Buttons */}
+            <div className="hidden lg:flex items-center space-x-4">
               {user ? (
                 <div className="flex items-center space-x-4">
                   <div className="flex items-center text-blue-800">
                     <User className="h-5 w-5 mr-2" />
-                    <span>{user.email}</span>
+                    <span className="truncate max-w-[150px]">{user.email}</span>
                   </div>
                   <button
                     onClick={handleLogout}
                     className="flex items-center text-blue-800 hover:text-orange-500 transition"
                   >
                     <LogOut className="h-5 w-5 mr-2" />
-                    Logout
+                    <span>Logout</span>
                   </button>
                 </div>
               ) : (
@@ -87,31 +91,29 @@ const Navbar: React.FC = () => {
                   className="flex items-center text-blue-800 hover:text-orange-500 transition"
                 >
                   <LogIn className="h-5 w-5 mr-2" />
-                  Login
+                  <span>Login</span>
                 </button>
               )}
               <a 
                 href="#enroll" 
-                className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-md font-medium transition-all transform hover:scale-105"
+                className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-md font-medium transition-all transform hover:scale-105 whitespace-nowrap"
               >
                 Enroll Now
               </a>
             </div>
 
-            {/* Mobile Navigation Toggle */}
-            <div className="md:hidden">
-              <button 
-                onClick={() => setIsOpen(!isOpen)}
-                className="text-blue-900 focus:outline-none"
-              >
-                {isOpen ? <X size={24} /> : <Menu size={24} />}
-              </button>
-            </div>
+            {/* Mobile Menu Button */}
+            <button 
+              onClick={() => setIsOpen(!isOpen)}
+              className="lg:hidden text-blue-900 focus:outline-none"
+            >
+              {isOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
           </div>
 
           {/* Mobile Navigation Menu */}
           {isOpen && (
-            <div className="md:hidden mt-3 bg-white rounded-lg shadow-lg p-4 absolute left-0 right-0 mx-4">
+            <div className="lg:hidden mt-4 bg-white rounded-lg shadow-lg p-4 absolute left-0 right-0 mx-4">
               <div className="flex flex-col space-y-3">
                 <a 
                   href="#home" 
@@ -159,7 +161,7 @@ const Navbar: React.FC = () => {
                   <>
                     <div className="flex items-center text-blue-800 py-2">
                       <User className="h-5 w-5 mr-2" />
-                      <span>{user.email}</span>
+                      <span className="truncate">{user.email}</span>
                     </div>
                     <button
                       onClick={() => {
