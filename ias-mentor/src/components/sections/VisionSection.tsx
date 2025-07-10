@@ -19,7 +19,7 @@ export default function VisionSection() {
             </p>
             <Button
               variant="outline"
-              className="border-white text-white hover:bg-white hover:text-black"
+              className="border-white text-black"
             >
               Read More
             </Button>

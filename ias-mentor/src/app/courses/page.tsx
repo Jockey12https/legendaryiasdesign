@@ -1,11 +1,15 @@
 'use client';
 
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { CheckCircle, Download, Eye, ShoppingCart, LogIn, User } from 'lucide-react';
+import AuthModal from '@/components/auth/AuthModal';
+import { useAuth } from '@/contexts/AuthContext';
 
 // Latest programs from first code set
 const latestCourses = [
@@ -124,7 +128,8 @@ const studyMaterials = [
     format: 'PDF + Hard Copy',
     fees: '₹5,000',
     image: 'https://ext.same-assets.com/1137026266/2875867135.jpeg',
-    category: 'prelims'
+    category: 'prelims',
+    previewUrl: 'https://example.com/prelims-preview.pdf'
   },
   {
     id: 'mains-answer-writing',
@@ -133,7 +138,8 @@ const studyMaterials = [
     format: 'PDF + Hard Copy',
     fees: '₹6,000',
     image: 'https://ext.same-assets.com/1137026266/1169935981.jpeg',
-    category: 'mains'
+    category: 'mains',
+    previewUrl: 'https://example.com/mains-preview.pdf'
   },
   {
     id: 'current-affairs-compilation',
@@ -142,7 +148,8 @@ const studyMaterials = [
     format: 'PDF',
     fees: '₹2,500',
     image: 'https://ext.same-assets.com/1137026266/853365983.jpeg',
-    category: 'current'
+    category: 'current',
+    previewUrl: 'https://example.com/current-affairs-preview.pdf'
   },
   {
     id: 'optional-subject-material',
@@ -151,7 +158,8 @@ const studyMaterials = [
     format: 'PDF + Hard Copy',
     fees: '₹7,000',
     image: 'https://ext.same-assets.com/1137026266/1195490810.jpeg',
-    category: 'optional'
+    category: 'optional',
+    previewUrl: 'https://example.com/optional-preview.pdf'
   },
 ];
 
@@ -181,10 +189,17 @@ const materialCategories = [
 ];
 
 export default function UnifiedCoursesPage() {
+  const { user, loading, logout } = useAuth();
   const [activeTab, setActiveTab] = useState('latest-programs');
   const [latestProgramCategory, setLatestProgramCategory] = useState('all');
   const [allProgramCategory, setAllProgramCategory] = useState('all');
   const [materialCategory, setMaterialCategory] = useState('all');
+  const [authModalOpen, setAuthModalOpen] = useState(false);
+  const [authModalMode, setAuthModalMode] = useState<'login' | 'register'>('login');
+  const [enrolledCourses, setEnrolledCourses] = useState(new Set());
+  const [purchasedMaterials, setPurchasedMaterials] = useState(new Set());
+  const [successMessage, setSuccessMessage] = useState('');
+  const [showPreview, setShowPreview] = useState(null);
 
   // Filter functions
   const filteredLatestCourses = latestProgramCategory === 'all'
@@ -199,8 +214,151 @@ export default function UnifiedCoursesPage() {
     ? studyMaterials
     : studyMaterials.filter(material => material.category === materialCategory);
 
+  // Load user's enrolled courses and materials when user logs in
+  useEffect(() => {
+    if (user) {
+      // Load from user-specific storage or database
+      const userKey = `user_${user.uid}`;
+      const enrolled = JSON.parse(localStorage.getItem(`${userKey}_enrolledCourses`) || '[]');
+      const purchased = JSON.parse(localStorage.getItem(`${userKey}_purchasedMaterials`) || '[]');
+      
+      setEnrolledCourses(new Set(enrolled.map(item => item.id)));
+      setPurchasedMaterials(new Set(purchased.map(item => item.id)));
+    } else {
+      // Clear state when user logs out
+      setEnrolledCourses(new Set());
+      setPurchasedMaterials(new Set());
+    }
+  }, [user]);
+
+  // Handle course enrollment
+  const handleEnrollment = (courseId, courseTitle, courseType = 'course') => {
+    if (!user) {
+      setAuthModalMode('login');
+      setAuthModalOpen(true);
+      setSuccessMessage('Please log in to enroll in courses');
+      setTimeout(() => setSuccessMessage(''), 3000);
+      return;
+    }
+
+    setEnrolledCourses(prev => new Set([...prev, courseId]));
+    setSuccessMessage(`Successfully enrolled in ${courseTitle}!`);
+    
+    // Store in user-specific localStorage
+    const userKey = `user_${user.uid}`;
+    const enrolledData = JSON.parse(localStorage.getItem(`${userKey}_enrolledCourses`) || '[]');
+    const newEnrollment = {
+      id: courseId,
+      title: courseTitle,
+      type: courseType,
+      enrolledAt: new Date().toISOString(),
+      userId: user.uid
+    };
+    
+    if (!enrolledData.some(item => item.id === courseId)) {
+      enrolledData.push(newEnrollment);
+      localStorage.setItem(`${userKey}_enrolledCourses`, JSON.stringify(enrolledData));
+    }
+    
+    // Clear success message after 3 seconds
+    setTimeout(() => setSuccessMessage(''), 3000);
+  };
+
+  // Handle material purchase
+  const handlePurchase = (materialId, materialTitle) => {
+    if (!user) {
+      setAuthModalMode('login');
+      setAuthModalOpen(true);
+      setSuccessMessage('Please log in to purchase materials');
+      setTimeout(() => setSuccessMessage(''), 3000);
+      return;
+    }
+
+    setPurchasedMaterials(prev => new Set([...prev, materialId]));
+    setSuccessMessage(`Successfully purchased ${materialTitle}!`);
+    
+    // Store in user-specific localStorage
+    const userKey = `user_${user.uid}`;
+    const purchasedData = JSON.parse(localStorage.getItem(`${userKey}_purchasedMaterials`) || '[]');
+    const newPurchase = {
+      id: materialId,
+      title: materialTitle,
+      type: 'material',
+      purchasedAt: new Date().toISOString(),
+      userId: user.uid
+    };
+    
+    if (!purchasedData.some(item => item.id === materialId)) {
+      purchasedData.push(newPurchase);
+      localStorage.setItem(`${userKey}_purchasedMaterials`, JSON.stringify(purchasedData));
+    }
+    
+    // Clear success message after 3 seconds
+    setTimeout(() => setSuccessMessage(''), 3000);
+  };
+
+  // Handle preview
+  const handlePreview = (material) => {
+    setShowPreview(material);
+  };
+
+  // Loading state
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div>
+      {/* Success Message */}
+      {successMessage && (
+        <div className="fixed top-4 right-4 z-50">
+          <Alert className={`${successMessage.includes('log in') ? 'bg-yellow-50 border-yellow-200 text-yellow-800' : 'bg-green-50 border-green-200 text-green-800'}`}>
+            <CheckCircle className="h-4 w-4" />
+            <AlertDescription>{successMessage}</AlertDescription>
+          </Alert>
+        </div>
+      )}
+
+      {/* Auth Status Bar */}
+      <div className="bg-gray-100 border-b">
+        <div className="max-w-7xl mx-auto px-4 py-2 flex justify-between items-center">
+          <div className="flex items-center space-x-2 text-sm">
+            {user ? (
+              <>
+                <User className="h-4 w-4 text-green-600" />
+                <span className="text-gray-700">Welcome, {user.displayName || user.email}</span>
+              </>
+            ) : (
+              <>
+                <LogIn className="h-4 w-4 text-gray-500" />
+                <span className="text-gray-600">Sign in to enroll in courses</span>
+              </>
+            )}
+          </div>
+          <div>
+            {user ? (
+              <Button variant="outline" size="sm" onClick={logout}>
+                Sign Out
+              </Button>
+            ) : (
+              <Button size="sm" onClick={() => {
+                setAuthModalMode('login');
+                setAuthModalOpen(true);
+              }}>
+                Sign In
+              </Button>
+            )}
+          </div>
+        </div>
+      </div>
+
       {/* Courses Header */}
       <section className="py-16 bg-black text-white">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
@@ -211,6 +369,16 @@ export default function UnifiedCoursesPage() {
             Discover our comprehensive range of courses designed to help you excel in the civil services examinations.
             Choose the program that best suits your preparation needs and goals.
           </p>
+          {!user && (
+            <div className="text-center">
+              <Alert className="bg-blue-50 border-blue-200 text-blue-800 max-w-md mx-auto">
+                <LogIn className="h-4 w-4" />
+                <AlertDescription>
+                  Sign in to enroll in courses and track your progress
+                </AlertDescription>
+              </Alert>
+            </div>
+          )}
         </div>
       </section>
 
@@ -255,9 +423,22 @@ export default function UnifiedCoursesPage() {
                             <p className="text-secondary font-bold">Duration: {course.duration}</p>
                             <p className="text-secondary font-bold">Fee: {course.fee}</p>
                           </div>
-                          <Button className="bg-secondary text-white hover:bg-secondary/90">
-                            Enroll Now
-                          </Button>
+                          {user && enrolledCourses.has(course.id) ? (
+                            <Button 
+                              disabled 
+                              className="bg-green-600 text-white hover:bg-green-600"
+                            >
+                              <CheckCircle className="h-4 w-4 mr-2" />
+                              Enrolled
+                            </Button>
+                          ) : (
+                            <Button 
+                              className="bg-secondary text-white hover:bg-secondary/90"
+                              onClick={() => handleEnrollment(course.id, course.title)}
+                            >
+                              {user ? 'Enroll Now' : 'Sign In to Enroll'}
+                            </Button>
+                          )}
                         </CardContent>
                       </div>
                       <div className="md:w-2/3 p-8">
@@ -275,7 +456,6 @@ export default function UnifiedCoursesPage() {
                           <Button
                             variant="outline"
                             className="border-primary text-primary hover:bg-primary hover:text-secondary"
-
                           >
                             Learn More
                           </Button>
@@ -331,9 +511,19 @@ export default function UnifiedCoursesPage() {
                       </div>
                     </CardContent>
                     <CardFooter>
-                      <Button className="w-full">
-                        Enroll Now
-                      </Button>
+                      {user && enrolledCourses.has(program.id) ? (
+                        <Button disabled className="w-full bg-green-600 hover:bg-green-600">
+                          <CheckCircle className="h-4 w-4 mr-2" />
+                          Enrolled
+                        </Button>
+                      ) : (
+                        <Button 
+                          className="w-full"
+                          onClick={() => handleEnrollment(program.id, program.title)}
+                        >
+                          {user ? 'Enroll Now' : 'Sign In to Enroll'}
+                        </Button>
+                      )}
                     </CardFooter>
                   </Card>
                 ))}
@@ -383,10 +573,35 @@ export default function UnifiedCoursesPage() {
                         </div>
                       </div>
                     </CardContent>
-                    <CardFooter>
-                      <Button className="w-full">
-                        Purchase Now
+                    <CardFooter className="flex gap-2">
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        onClick={() => handlePreview(material)}
+                        className="flex-1"
+                      >
+                        <Eye className="h-4 w-4 mr-2" />
+                        Preview
                       </Button>
+                      {user && purchasedMaterials.has(material.id) ? (
+                        <Button 
+                          disabled 
+                          size="sm"
+                          className="flex-1 bg-green-600 hover:bg-green-600"
+                        >
+                          <CheckCircle className="h-4 w-4 mr-2" />
+                          Purchased
+                        </Button>
+                      ) : (
+                        <Button 
+                          size="sm"
+                          onClick={() => handlePurchase(material.id, material.title)}
+                          className="flex-1"
+                        >
+                          <ShoppingCart className="h-4 w-4 mr-2" />
+                          {user ? 'Purchase' : 'Sign In to Purchase'}
+                        </Button>
+                      )}
                     </CardFooter>
                   </Card>
                 ))}
@@ -395,6 +610,57 @@ export default function UnifiedCoursesPage() {
           </Tabs>
         </div>
       </section>
+
+      {/* Preview Dialog */}
+      {showPreview && (
+        <Dialog open={!!showPreview} onOpenChange={() => setShowPreview(null)}>
+          <DialogContent className="max-w-4xl h-[80vh]">
+            <DialogHeader>
+              <DialogTitle>Preview: {showPreview.title}</DialogTitle>
+            </DialogHeader>
+            <div className="flex-1 flex flex-col">
+              <div className="flex-1 bg-gray-100 rounded-lg p-4 mb-4">
+                <p className="text-gray-600 mb-4">PDF Preview</p>
+                <div className="bg-white rounded border-2 border-dashed border-gray-300 h-full flex items-center justify-center">
+                  <div className="text-center">
+                    <Download className="h-16 w-16 mx-auto mb-4 text-gray-400" />
+                    <p className="text-gray-500 mb-2">PDF Preview would appear here</p>
+                    <p className="text-sm text-gray-400">This is a sample preview interface</p>
+                  </div>
+                </div>
+              </div>
+              <div className="flex gap-2">
+                <Button 
+                  variant="outline" 
+                  onClick={() => window.open(showPreview.previewUrl, '_blank')}
+                  className="flex-1"
+                >
+                  <Download className="h-4 w-4 mr-2" />
+                  Download Preview
+                </Button>
+                <Button 
+                  onClick={() => {
+                    handlePurchase(showPreview.id, showPreview.title);
+                    setShowPreview(null);
+                  }}
+                  className="flex-1"
+                  disabled={!user}
+                >
+                  <ShoppingCart className="h-4 w-4 mr-2" />
+                  {user ? 'Purchase Full Version' : 'Sign In to Purchase'}
+                </Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+      )}
+
+      {/* Auth Modal */}
+      <AuthModal 
+        isOpen={authModalOpen} 
+        onClose={() => setAuthModalOpen(false)}
+        defaultMode={authModalMode}
+      />
     </div>
   );
 }
