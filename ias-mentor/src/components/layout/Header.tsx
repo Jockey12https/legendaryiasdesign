@@ -116,7 +116,7 @@ export default function Header() {
               Legendary IAS Mentor
             </span>
             <span className="text-secondary font-bold text-lg uppercase tracking-wider font-['Oswald'] sm:hidden">
-              IAS Mentor
+              Legendary IAS Mentor
             </span>
           </Link>
 
