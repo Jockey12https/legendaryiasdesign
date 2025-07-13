@@ -9,6 +9,7 @@ import { Progress } from "@/components/ui/progress";
 import { BookOpen, Calendar, Download, Play, CheckCircle, Clock, FileText } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import AuthModal from '@/components/auth/AuthModal';
+import UserDataService from '@/utils/userDataService';
 
 export default function MyCoursesPage() {
   const { user, loading } = useAuth();
@@ -16,21 +17,37 @@ export default function MyCoursesPage() {
   const [purchasedMaterials, setPurchasedMaterials] = useState([]);
   const [activeTab, setActiveTab] = useState('courses');
   const [authModalOpen, setAuthModalOpen] = useState(false);
+  const [dataLoading, setDataLoading] = useState(false);
 
   useEffect(() => {
-    if (user) {
-      // Load from user-specific storage
-      const userKey = `user_${user.uid}`;
-      const enrolled = JSON.parse(localStorage.getItem(`${userKey}_enrolledCourses`) || '[]');
-      const purchased = JSON.parse(localStorage.getItem(`${userKey}_purchasedMaterials`) || '[]');
-      
-      setEnrolledCourses(enrolled);
-      setPurchasedMaterials(purchased);
-    } else {
-      // Clear state for non-authenticated users
-      setEnrolledCourses([]);
-      setPurchasedMaterials([]);
-    }
+    const loadUserData = async () => {
+      if (user) {
+        setDataLoading(true);
+        try {
+          // Migrate data from localStorage to Firebase if needed
+          await UserDataService.migrateFromLocalStorage(user.uid);
+          
+          // Load user data from Firebase
+          const [enrolled, purchased] = await Promise.all([
+            UserDataService.getEnrolledCourses(user.uid),
+            UserDataService.getPurchasedMaterials(user.uid)
+          ]);
+          
+          setEnrolledCourses(enrolled);
+          setPurchasedMaterials(purchased);
+        } catch (error) {
+          console.error('Error loading user data:', error);
+        } finally {
+          setDataLoading(false);
+        }
+      } else {
+        // Clear state for non-authenticated users
+        setEnrolledCourses([]);
+        setPurchasedMaterials([]);
+      }
+    };
+
+    loadUserData();
   }, [user]);
 
   const getStatusBadge = (enrolledDate) => {
@@ -65,7 +82,7 @@ export default function MyCoursesPage() {
     }
   };
 
-  if (loading) {
+  if (loading || dataLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
@@ -155,10 +172,10 @@ export default function MyCoursesPage() {
             </Card>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {enrolledCourses.map((course) => {
+              {enrolledCourses.map((course, index) => {
                 const progress = getRandomProgress();
                 return (
-                  <Card key={course.id} className="overflow-hidden">
+                  <Card key={`course-${course.id}-${index}`} className="overflow-hidden">
                     <div className="h-48 bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
                       <div className="text-center text-white">
                         <BookOpen className="h-12 w-12 mx-auto mb-2" />
@@ -231,8 +248,8 @@ export default function MyCoursesPage() {
             </Card>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {purchasedMaterials.map((material) => (
-                <Card key={material.id} className="overflow-hidden">
+              {purchasedMaterials.map((material, index) => (
+                <Card key={`material-${material.id}-${index}`} className="overflow-hidden">
                   <div className="h-48 bg-gradient-to-br from-green-500 to-teal-600 flex items-center justify-center">
                     <div className="text-center text-white">
                       <FileText className="h-12 w-12 mx-auto mb-2" />
@@ -288,7 +305,7 @@ export default function MyCoursesPage() {
                 .sort((a, b) => new Date(b.enrolledAt || b.purchasedAt) - new Date(a.enrolledAt || a.purchasedAt))
                 .slice(0, 5)
                 .map((item, index) => (
-                  <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                  <div key={`${item.id}-${item.type}-${index}`} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                     <div className="flex items-center">
                       {item.type === 'material' ? (
                         <FileText className="h-5 w-5 mr-3 text-green-600" />

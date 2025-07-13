@@ -10,42 +10,43 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
+import useUserData from '@/hooks/useUserData';
 //import { Badge } from '@/components/ui/badge';
 
 export default function DashboardPage() {
   const { user, loading } = useAuth();
-  const [enrolledCourses, setEnrolledCourses] = useState([]);
-  const [purchasedMaterials, setPurchasedMaterials] = useState([]);
-  const [recentActivity, setRecentActivity] = useState([]);
+  const { 
+    enrolledCourses, 
+    purchasedMaterials, 
+    recentActivity, 
+    loading: dataLoading, 
+    error 
+  } = useUserData();
   const [subject, setSubject] = useState('Course Inquiry from Student');
   const [message, setMessage] = useState('');
   const [isSending, setIsSending] = useState(false);
   const { toast } = useToast();
 
+  // Pre-fill message with enrolled courses when data loads
   useEffect(() => {
-    if (user) {
-      // Load user-specific data from localStorage
-      const userKey = `user_${user.uid}`;
-      const enrolled = JSON.parse(localStorage.getItem(`${userKey}_enrolledCourses`) || '[]');
-      const purchased = JSON.parse(localStorage.getItem(`${userKey}_purchasedMaterials`) || '[]');
-      
-      setEnrolledCourses(enrolled);
-      setPurchasedMaterials(purchased);
-      
-      // Generate recent activity by combining both and sorting by date
-      const activity = [...enrolled, ...purchased]
-        .sort((a, b) => new Date(b.enrolledAt || b.purchasedAt) - new Date(a.enrolledAt || a.purchasedAt))
-        .slice(0, 3);
-      setRecentActivity(activity);
-
-      // Pre-fill message with enrolled courses if any
-      if (enrolled.length > 0) {
-        setMessage(`Dear Admin,\n\nI am currently enrolled in these courses:\n${enrolled.map(c => `- ${c.title}`).join('\n')}\n\nI would like to inquire about:\n`);
-      } else {
-        setMessage(`Dear Admin,\n\nI am interested in learning more about the following courses:\n`);
-      }
+    if (enrolledCourses.length > 0) {
+      setMessage(`Dear Admin,\n\nI am currently enrolled in these courses:\n${enrolledCourses.map(c => `- ${c.title}`).join('\n')}\n\nI would like to inquire about:\n`);
+    } else {
+      setMessage(`Dear Admin,\n\nI am interested in learning more about the following courses:\n`);
     }
-  }, [user]);
+  }, [enrolledCourses]);
+
+  // Show error toast if data loading fails
+  useEffect(() => {
+    if (error) {
+      toast({
+        title: 'Error',
+        description: 'Failed to load your dashboard data. Please try refreshing the page.',
+        variant: 'destructive',
+        duration: 5000,
+      });
+    }
+  }, [error, toast]);
 
   const getWelcomeMessage = () => {
     if (!user) return "Welcome to your dashboard!";
@@ -220,7 +221,7 @@ export default function DashboardPage() {
 
   const stats = getRoleSpecificStats();
 
-  if (loading) {
+  if (loading || dataLoading) {
     return (
       <DashboardLayout title="Loading..." description="Please wait">
         <div className="flex justify-center items-center h-64">

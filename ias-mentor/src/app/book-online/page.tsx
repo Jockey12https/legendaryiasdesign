@@ -9,6 +9,7 @@ import MainLayout from '@/components/layout/MainLayout';
 import { useAuth } from '@/contexts/AuthContext';
 import AuthModal from '@/components/auth/AuthModal';
 import { BookOpen, CheckCircle, Clock } from 'lucide-react';
+import UserDataService from '@/utils/userDataService';
 
 interface CourseProps {
   id: string;
@@ -91,17 +92,27 @@ const BookOnlinePage = () => {
   const [successMessage, setSuccessMessage] = useState('');
 
   useEffect(() => {
-    if (user) {
-      // Load enrolled courses from user-specific storage
-      const userKey = `user_${user.uid}`;
-      const enrolled = JSON.parse(localStorage.getItem(`${userKey}_enrolledCourses`) || '[]');
-      setEnrolledCourses(new Set(enrolled.map((course: any) => course.id)));
-    } else {
-      setEnrolledCourses(new Set());
-    }
+    const loadUserData = async () => {
+      if (user) {
+        try {
+          // Migrate data from localStorage to Firebase if needed
+          await UserDataService.migrateFromLocalStorage(user.uid);
+          
+          // Load enrolled courses from Firebase
+          const enrolled = await UserDataService.getEnrolledCourses(user.uid);
+          setEnrolledCourses(new Set(enrolled.map((course: any) => course.id)));
+        } catch (error) {
+          console.error('Error loading user data:', error);
+        }
+      } else {
+        setEnrolledCourses(new Set());
+      }
+    };
+
+    loadUserData();
   }, [user]);
 
-  const handleEnrollment = (course: CourseProps) => {
+  const handleEnrollment = async (course: CourseProps) => {
     if (!user) {
       setAuthModalOpen(true);
       setSuccessMessage('Please sign in to enroll in courses');
@@ -109,28 +120,33 @@ const BookOnlinePage = () => {
       return;
     }
 
-    // Add to enrolled courses
-    const userKey = `user_${user.uid}`;
-    const enrolledData = JSON.parse(localStorage.getItem(`${userKey}_enrolledCourses`) || '[]');
-    
-    const newEnrollment = {
-      id: course.id,
-      title: course.title,
-      type: 'course',
-      enrolledAt: new Date().toISOString(),
-      userId: user.uid,
-      price: course.price,
-      duration: course.duration,
-      category: course.category
-    };
+    try {
+      // Check if already enrolled
+      const isEnrolled = await UserDataService.isEnrolledInCourse(user.uid, course.id);
+      if (isEnrolled) {
+        setSuccessMessage('You are already enrolled in this course!');
+        setTimeout(() => setSuccessMessage(''), 3000);
+        return;
+      }
 
-    if (!enrolledData.some((item: any) => item.id === course.id)) {
-      enrolledData.push(newEnrollment);
-      localStorage.setItem(`${userKey}_enrolledCourses`, JSON.stringify(enrolledData));
+      // Enroll in course via Firebase
+      await UserDataService.enrollInCourse(user.uid, {
+        id: course.id,
+        title: course.title,
+        type: 'course',
+        price: course.price,
+        duration: course.duration,
+        category: course.category
+      });
+
       setEnrolledCourses(new Set([...enrolledCourses, course.id]));
       setSuccessMessage(`Successfully enrolled in ${course.title}!`);
-      setTimeout(() => setSuccessMessage(''), 3000);
+    } catch (error) {
+      console.error('Error enrolling in course:', error);
+      setSuccessMessage('Failed to enroll in course. Please try again.');
     }
+    
+    setTimeout(() => setSuccessMessage(''), 3000);
   };
 
   if (loading) {

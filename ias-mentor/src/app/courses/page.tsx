@@ -9,6 +9,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { CheckCircle, Download, Eye, ShoppingCart, LogIn, User } from 'lucide-react';
 import AuthModal from '@/components/auth/AuthModal';
+import UserDataService from '@/utils/userDataService';
 import { useAuth } from '@/contexts/AuthContext';
 
 // Latest programs from first code set
@@ -216,23 +217,35 @@ export default function UnifiedCoursesPage() {
 
   // Load user's enrolled courses and materials when user logs in
   useEffect(() => {
-    if (user) {
-      // Load from user-specific storage or database
-      const userKey = `user_${user.uid}`;
-      const enrolled = JSON.parse(localStorage.getItem(`${userKey}_enrolledCourses`) || '[]');
-      const purchased = JSON.parse(localStorage.getItem(`${userKey}_purchasedMaterials`) || '[]');
-      
-      setEnrolledCourses(new Set(enrolled.map(item => item.id)));
-      setPurchasedMaterials(new Set(purchased.map(item => item.id)));
-    } else {
-      // Clear state when user logs out
-      setEnrolledCourses(new Set());
-      setPurchasedMaterials(new Set());
-    }
+    const loadUserData = async () => {
+      if (user) {
+        try {
+          // Migrate data from localStorage to Firebase if needed
+          await UserDataService.migrateFromLocalStorage(user.uid);
+          
+          // Load data from Firebase
+          const [enrolled, purchased] = await Promise.all([
+            UserDataService.getEnrolledCourses(user.uid),
+            UserDataService.getPurchasedMaterials(user.uid)
+          ]);
+          
+          setEnrolledCourses(new Set(enrolled.map(item => item.id)));
+          setPurchasedMaterials(new Set(purchased.map(item => item.id)));
+        } catch (error) {
+          console.error('Error loading user data:', error);
+        }
+      } else {
+        // Clear state when user logs out
+        setEnrolledCourses(new Set());
+        setPurchasedMaterials(new Set());
+      }
+    };
+
+    loadUserData();
   }, [user]);
 
   // Handle course enrollment
-  const handleEnrollment = (courseId, courseTitle, courseType = 'course') => {
+  const handleEnrollment = async (courseId, courseTitle, courseType = 'course') => {
     if (!user) {
       setAuthModalMode('login');
       setAuthModalOpen(true);
@@ -241,23 +254,27 @@ export default function UnifiedCoursesPage() {
       return;
     }
 
-    setEnrolledCourses(prev => new Set([...prev, courseId]));
-    setSuccessMessage(`Successfully enrolled in ${courseTitle}!`);
-    
-    // Store in user-specific localStorage
-    const userKey = `user_${user.uid}`;
-    const enrolledData = JSON.parse(localStorage.getItem(`${userKey}_enrolledCourses`) || '[]');
-    const newEnrollment = {
-      id: courseId,
-      title: courseTitle,
-      type: courseType,
-      enrolledAt: new Date().toISOString(),
-      userId: user.uid
-    };
-    
-    if (!enrolledData.some(item => item.id === courseId)) {
-      enrolledData.push(newEnrollment);
-      localStorage.setItem(`${userKey}_enrolledCourses`, JSON.stringify(enrolledData));
+    try {
+      // Check if already enrolled
+      const isEnrolled = await UserDataService.isEnrolledInCourse(user.uid, courseId);
+      if (isEnrolled) {
+        setSuccessMessage('You are already enrolled in this course!');
+        setTimeout(() => setSuccessMessage(''), 3000);
+        return;
+      }
+
+      // Enroll in course via Firebase
+      await UserDataService.enrollInCourse(user.uid, {
+        id: courseId,
+        title: courseTitle,
+        type: courseType
+      });
+
+      setEnrolledCourses(prev => new Set([...prev, courseId]));
+      setSuccessMessage(`Successfully enrolled in ${courseTitle}!`);
+    } catch (error) {
+      console.error('Error enrolling in course:', error);
+      setSuccessMessage('Failed to enroll in course. Please try again.');
     }
     
     // Clear success message after 3 seconds
@@ -265,7 +282,7 @@ export default function UnifiedCoursesPage() {
   };
 
   // Handle material purchase
-  const handlePurchase = (materialId, materialTitle) => {
+  const handlePurchase = async (materialId, materialTitle) => {
     if (!user) {
       setAuthModalMode('login');
       setAuthModalOpen(true);
@@ -274,23 +291,26 @@ export default function UnifiedCoursesPage() {
       return;
     }
 
-    setPurchasedMaterials(prev => new Set([...prev, materialId]));
-    setSuccessMessage(`Successfully purchased ${materialTitle}!`);
-    
-    // Store in user-specific localStorage
-    const userKey = `user_${user.uid}`;
-    const purchasedData = JSON.parse(localStorage.getItem(`${userKey}_purchasedMaterials`) || '[]');
-    const newPurchase = {
-      id: materialId,
-      title: materialTitle,
-      type: 'material',
-      purchasedAt: new Date().toISOString(),
-      userId: user.uid
-    };
-    
-    if (!purchasedData.some(item => item.id === materialId)) {
-      purchasedData.push(newPurchase);
-      localStorage.setItem(`${userKey}_purchasedMaterials`, JSON.stringify(purchasedData));
+    try {
+      // Check if already purchased
+      const hasPurchased = await UserDataService.hasPurchasedMaterial(user.uid, materialId);
+      if (hasPurchased) {
+        setSuccessMessage('You have already purchased this material!');
+        setTimeout(() => setSuccessMessage(''), 3000);
+        return;
+      }
+
+      // Purchase material via Firebase
+      await UserDataService.purchaseMaterial(user.uid, {
+        id: materialId,
+        title: materialTitle
+      });
+
+      setPurchasedMaterials(prev => new Set([...prev, materialId]));
+      setSuccessMessage(`Successfully purchased ${materialTitle}!`);
+    } catch (error) {
+      console.error('Error purchasing material:', error);
+      setSuccessMessage('Failed to purchase material. Please try again.');
     }
     
     // Clear success message after 3 seconds
