@@ -13,30 +13,37 @@ import { useToast } from '@/hooks/use-toast';
 //import { Badge } from '@/components/ui/badge';
 
 export default function DashboardPage() {
-  const { user, loading } = useAuth();
+  const { user, loading, getUserEnrollments, getUserPurchases, getUserActivity } = useAuth();
   const [enrolledCourses, setEnrolledCourses] = useState([]);
   const [purchasedMaterials, setPurchasedMaterials] = useState([]);
   const [recentActivity, setRecentActivity] = useState([]);
   const [subject, setSubject] = useState('Course Inquiry from Student');
   const [message, setMessage] = useState('');
   const [isSending, setIsSending] = useState(false);
+  const [dataLoading, setDataLoading] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
-    if (user) {
-      // Load user-specific data from localStorage
-      const userKey = `user_${user.uid}`;
-      const enrolled = JSON.parse(localStorage.getItem(`${userKey}_enrolledCourses`) || '[]');
-      const purchased = JSON.parse(localStorage.getItem(`${userKey}_purchasedMaterials`) || '[]');
+    if (user && getUserEnrollments && getUserPurchases && getUserActivity) {
+      loadUserData();
+    }
+  }, [user, getUserEnrollments, getUserPurchases, getUserActivity]);
+
+  const loadUserData = async () => {
+    if (!user) return;
+    
+    setDataLoading(true);
+    try {
+      // Load user data from Firebase
+      const [enrolled, purchased, activity] = await Promise.all([
+        getUserEnrollments(),
+        getUserPurchases(),
+        getUserActivity()
+      ]);
       
       setEnrolledCourses(enrolled);
       setPurchasedMaterials(purchased);
-      
-      // Generate recent activity by combining both and sorting by date
-      const activity = [...enrolled, ...purchased]
-        .sort((a, b) => new Date(b.enrolledAt || b.purchasedAt) - new Date(a.enrolledAt || a.purchasedAt))
-        .slice(0, 3);
-      setRecentActivity(activity);
+      setRecentActivity(activity.slice(0, 3));
 
       // Pre-fill message with enrolled courses if any
       if (enrolled.length > 0) {
@@ -44,8 +51,17 @@ export default function DashboardPage() {
       } else {
         setMessage(`Dear Admin,\n\nI am interested in learning more about the following courses:\n`);
       }
+    } catch (error) {
+      console.error('Error loading user data:', error);
+      toast({
+        title: "Error",
+        description: "Failed to load your data. Please try refreshing the page.",
+        variant: "destructive",
+      });
+    } finally {
+      setDataLoading(false);
     }
-  }, [user]);
+  };
 
   const getWelcomeMessage = () => {
     if (!user) return "Welcome to your dashboard!";

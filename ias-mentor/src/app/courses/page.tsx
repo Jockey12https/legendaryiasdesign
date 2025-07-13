@@ -189,7 +189,7 @@ const materialCategories = [
 ];
 
 export default function UnifiedCoursesPage() {
-  const { user, loading, logout } = useAuth();
+  const { user, loading, logout, enrollInCourse, purchaseMaterial, getUserEnrollments, getUserPurchases } = useAuth();
   const [activeTab, setActiveTab] = useState('latest-programs');
   const [latestProgramCategory, setLatestProgramCategory] = useState('all');
   const [allProgramCategory, setAllProgramCategory] = useState('all');
@@ -200,6 +200,7 @@ export default function UnifiedCoursesPage() {
   const [purchasedMaterials, setPurchasedMaterials] = useState(new Set());
   const [successMessage, setSuccessMessage] = useState('');
   const [showPreview, setShowPreview] = useState(null);
+  const [dataLoading, setDataLoading] = useState(false);
 
   // Filter functions
   const filteredLatestCourses = latestProgramCategory === 'all'
@@ -216,23 +217,36 @@ export default function UnifiedCoursesPage() {
 
   // Load user's enrolled courses and materials when user logs in
   useEffect(() => {
-    if (user) {
-      // Load from user-specific storage or database
-      const userKey = `user_${user.uid}`;
-      const enrolled = JSON.parse(localStorage.getItem(`${userKey}_enrolledCourses`) || '[]');
-      const purchased = JSON.parse(localStorage.getItem(`${userKey}_purchasedMaterials`) || '[]');
-      
-      setEnrolledCourses(new Set(enrolled.map(item => item.id)));
-      setPurchasedMaterials(new Set(purchased.map(item => item.id)));
+    if (user && getUserEnrollments && getUserPurchases) {
+      loadUserData();
     } else {
       // Clear state when user logs out
       setEnrolledCourses(new Set());
       setPurchasedMaterials(new Set());
     }
-  }, [user]);
+  }, [user, getUserEnrollments, getUserPurchases]);
+
+  const loadUserData = async () => {
+    if (!user) return;
+    
+    setDataLoading(true);
+    try {
+      const [enrolled, purchased] = await Promise.all([
+        getUserEnrollments(),
+        getUserPurchases()
+      ]);
+      
+      setEnrolledCourses(new Set(enrolled.map(item => item.courseId || item.id)));
+      setPurchasedMaterials(new Set(purchased.map(item => item.materialId || item.id)));
+    } catch (error) {
+      console.error('Error loading user data:', error);
+    } finally {
+      setDataLoading(false);
+    }
+  };
 
   // Handle course enrollment
-  const handleEnrollment = (courseId, courseTitle, courseType = 'course') => {
+  const handleEnrollment = async (courseId: string, courseTitle: string, courseType = 'course') => {
     if (!user) {
       setAuthModalMode('login');
       setAuthModalOpen(true);
@@ -241,23 +255,37 @@ export default function UnifiedCoursesPage() {
       return;
     }
 
-    setEnrolledCourses(prev => new Set([...prev, courseId]));
-    setSuccessMessage(`Successfully enrolled in ${courseTitle}!`);
-    
-    // Store in user-specific localStorage
-    const userKey = `user_${user.uid}`;
-    const enrolledData = JSON.parse(localStorage.getItem(`${userKey}_enrolledCourses`) || '[]');
-    const newEnrollment = {
-      id: courseId,
-      title: courseTitle,
-      type: courseType,
-      enrolledAt: new Date().toISOString(),
-      userId: user.uid
-    };
-    
-    if (!enrolledData.some(item => item.id === courseId)) {
-      enrolledData.push(newEnrollment);
-      localStorage.setItem(`${userKey}_enrolledCourses`, JSON.stringify(enrolledData));
+    // Check if already enrolled
+    if (enrolledCourses.has(courseId)) {
+      setSuccessMessage(`You are already enrolled in ${courseTitle}!`);
+      setTimeout(() => setSuccessMessage(''), 3000);
+      return;
+    }
+
+    try {
+      // Update UI immediately for better UX
+      setEnrolledCourses(prev => new Set([...prev, courseId]));
+      setSuccessMessage(`Successfully enrolled in ${courseTitle}!`);
+      
+      // Store in Firebase
+      await enrollInCourse({
+        courseId: courseId,
+        title: courseTitle,
+        type: 'course',
+        enrolledAt: new Date(),
+        status: 'active',
+        progress: 0
+      });
+      
+    } catch (error) {
+      console.error('Error enrolling in course:', error);
+      // Revert UI update on error
+      setEnrolledCourses(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(courseId);
+        return newSet;
+      });
+      setSuccessMessage(`Failed to enroll in ${courseTitle}. Please try again.`);
     }
     
     // Clear success message after 3 seconds
@@ -265,7 +293,7 @@ export default function UnifiedCoursesPage() {
   };
 
   // Handle material purchase
-  const handlePurchase = (materialId, materialTitle) => {
+  const handlePurchase = async (materialId: string, materialTitle: string) => {
     if (!user) {
       setAuthModalMode('login');
       setAuthModalOpen(true);
@@ -274,23 +302,36 @@ export default function UnifiedCoursesPage() {
       return;
     }
 
-    setPurchasedMaterials(prev => new Set([...prev, materialId]));
-    setSuccessMessage(`Successfully purchased ${materialTitle}!`);
-    
-    // Store in user-specific localStorage
-    const userKey = `user_${user.uid}`;
-    const purchasedData = JSON.parse(localStorage.getItem(`${userKey}_purchasedMaterials`) || '[]');
-    const newPurchase = {
-      id: materialId,
-      title: materialTitle,
-      type: 'material',
-      purchasedAt: new Date().toISOString(),
-      userId: user.uid
-    };
-    
-    if (!purchasedData.some(item => item.id === materialId)) {
-      purchasedData.push(newPurchase);
-      localStorage.setItem(`${userKey}_purchasedMaterials`, JSON.stringify(purchasedData));
+    // Check if already purchased
+    if (purchasedMaterials.has(materialId)) {
+      setSuccessMessage(`You have already purchased ${materialTitle}!`);
+      setTimeout(() => setSuccessMessage(''), 3000);
+      return;
+    }
+
+    try {
+      // Update UI immediately for better UX
+      setPurchasedMaterials(prev => new Set([...prev, materialId]));
+      setSuccessMessage(`Successfully purchased ${materialTitle}!`);
+      
+      // Store in Firebase
+      await purchaseMaterial({
+        materialId: materialId,
+        title: materialTitle,
+        type: 'material',
+        purchasedAt: new Date(),
+        accessed: false
+      });
+      
+    } catch (error) {
+      console.error('Error purchasing material:', error);
+      // Revert UI update on error
+      setPurchasedMaterials(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(materialId);
+        return newSet;
+      });
+      setSuccessMessage(`Failed to purchase ${materialTitle}. Please try again.`);
     }
     
     // Clear success message after 3 seconds
