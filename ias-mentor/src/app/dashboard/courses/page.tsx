@@ -11,27 +11,41 @@ import { useAuth } from '@/contexts/AuthContext';
 import AuthModal from '@/components/auth/AuthModal';
 
 export default function MyCoursesPage() {
-  const { user, loading } = useAuth();
+  const { user, loading, getUserEnrollments, getUserPurchases } = useAuth();
   const [enrolledCourses, setEnrolledCourses] = useState([]);
   const [purchasedMaterials, setPurchasedMaterials] = useState([]);
   const [activeTab, setActiveTab] = useState('courses');
   const [authModalOpen, setAuthModalOpen] = useState(false);
+  const [dataLoading, setDataLoading] = useState(false);
 
   useEffect(() => {
-    if (user) {
-      // Load from user-specific storage
-      const userKey = `user_${user.uid}`;
-      const enrolled = JSON.parse(localStorage.getItem(`${userKey}_enrolledCourses`) || '[]');
-      const purchased = JSON.parse(localStorage.getItem(`${userKey}_purchasedMaterials`) || '[]');
-      
-      setEnrolledCourses(enrolled);
-      setPurchasedMaterials(purchased);
+    if (user && getUserEnrollments && getUserPurchases) {
+      loadUserData();
     } else {
       // Clear state for non-authenticated users
       setEnrolledCourses([]);
       setPurchasedMaterials([]);
     }
-  }, [user]);
+  }, [user, getUserEnrollments, getUserPurchases]);
+
+  const loadUserData = async () => {
+    if (!user) return;
+    
+    setDataLoading(true);
+    try {
+      const [enrolled, purchased] = await Promise.all([
+        getUserEnrollments(),
+        getUserPurchases()
+      ]);
+      
+      setEnrolledCourses(enrolled);
+      setPurchasedMaterials(purchased);
+    } catch (error) {
+      console.error('Error loading user data:', error);
+    } finally {
+      setDataLoading(false);
+    }
+  };
 
   const getStatusBadge = (enrolledDate) => {
     const daysSinceEnrollment = Math.floor((new Date() - new Date(enrolledDate)) / (1000 * 60 * 60 * 24));

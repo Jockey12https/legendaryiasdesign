@@ -13,6 +13,16 @@ import {
 } from 'firebase/auth';
 import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
 import { auth, db } from '@/utils/firebase';
+import { 
+  addEnrollment, 
+  addPurchase, 
+  getUserEnrollments, 
+  getUserPurchases, 
+  getUserActivity,
+  migrateLocalStorageToFirebase,
+  EnrollmentData,
+  PurchaseData
+} from '@/utils/firebase-user-data';
 
 // User roles
 export type UserRole = 'student' | 'faculty' | 'content_manager' | 'super_admin';
@@ -38,6 +48,13 @@ interface AuthContextType {
   resetPassword: (email: string) => Promise<void>;
   updateUserProfile: (data: Partial<ExtendedUser>) => Promise<void>;
   resendVerificationEmail: () => Promise<void>;
+  // User data management
+  enrollInCourse: (courseData: Omit<EnrollmentData, 'id' | 'userId'>) => Promise<string>;
+  purchaseMaterial: (purchaseData: Omit<PurchaseData, 'id' | 'userId'>) => Promise<string>;
+  getUserEnrollments: () => Promise<EnrollmentData[]>;
+  getUserPurchases: () => Promise<PurchaseData[]>;
+  getUserActivity: () => Promise<(EnrollmentData | PurchaseData)[]>;
+  refreshUserData: () => Promise<void>;
 }
 
 // Registration data interface
@@ -200,12 +217,58 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  // User data management functions
+  const enrollInCourse = async (courseData: Omit<EnrollmentData, 'id' | 'userId'>) => {
+    if (!user) throw new Error('No user logged in');
+    return await addEnrollment({ ...courseData, userId: user.uid });
+  };
+
+  const purchaseMaterial = async (purchaseData: Omit<PurchaseData, 'id' | 'userId'>) => {
+    if (!user) throw new Error('No user logged in');
+    return await addPurchase({ ...purchaseData, userId: user.uid });
+  };
+
+  const getUserEnrollmentsData = async () => {
+    if (!user) throw new Error('No user logged in');
+    return await getUserEnrollments(user.uid);
+  };
+
+  const getUserPurchasesData = async () => {
+    if (!user) throw new Error('No user logged in');
+    return await getUserPurchases(user.uid);
+  };
+
+  const getUserActivityData = async () => {
+    if (!user) throw new Error('No user logged in');
+    return await getUserActivity(user.uid);
+  };
+
+  const refreshUserData = async () => {
+    if (!user) return;
+    const extendedUser = await fetchUserData(user);
+    setUser(extendedUser);
+  };
+
   // Auth state listener
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       if (firebaseUser) {
         const extendedUser = await fetchUserData(firebaseUser);
         setUser(extendedUser);
+        
+        // Migrate localStorage data to Firebase if it exists
+        try {
+          const userKey = `user_${firebaseUser.uid}`;
+          const hasLocalEnrollments = localStorage.getItem(`${userKey}_enrolledCourses`);
+          const hasLocalPurchases = localStorage.getItem(`${userKey}_purchasedMaterials`);
+          
+          if (hasLocalEnrollments || hasLocalPurchases) {
+            console.log('Migrating localStorage data to Firebase...');
+            await migrateLocalStorageToFirebase(firebaseUser.uid);
+          }
+        } catch (error) {
+          console.error('Migration error:', error);
+        }
       } else {
         setUser(null);
       }
@@ -224,6 +287,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     resetPassword,
     updateUserProfile,
     resendVerificationEmail,
+    enrollInCourse,
+    purchaseMaterial,
+    getUserEnrollments: getUserEnrollmentsData,
+    getUserPurchases: getUserPurchasesData,
+    getUserActivity: getUserActivityData,
+    refreshUserData,
   };
 
   return (

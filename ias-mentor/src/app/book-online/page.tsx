@@ -85,23 +85,35 @@ const courses: CourseProps[] = [
 ];
 
 const BookOnlinePage = () => {
-  const { user, loading } = useAuth();
+  const { user, loading, enrollInCourse, getUserEnrollments } = useAuth();
   const [enrolledCourses, setEnrolledCourses] = useState<Set<string>>(new Set());
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
+  const [dataLoading, setDataLoading] = useState(false);
 
   useEffect(() => {
-    if (user) {
-      // Load enrolled courses from user-specific storage
-      const userKey = `user_${user.uid}`;
-      const enrolled = JSON.parse(localStorage.getItem(`${userKey}_enrolledCourses`) || '[]');
-      setEnrolledCourses(new Set(enrolled.map((course: any) => course.id)));
+    if (user && getUserEnrollments) {
+      loadUserEnrollments();
     } else {
       setEnrolledCourses(new Set());
     }
-  }, [user]);
+  }, [user, getUserEnrollments]);
 
-  const handleEnrollment = (course: CourseProps) => {
+  const loadUserEnrollments = async () => {
+    if (!user) return;
+    
+    setDataLoading(true);
+    try {
+      const enrolled = await getUserEnrollments();
+      setEnrolledCourses(new Set(enrolled.map(course => course.courseId || course.id)));
+    } catch (error) {
+      console.error('Error loading enrollments:', error);
+    } finally {
+      setDataLoading(false);
+    }
+  };
+
+  const handleEnrollment = async (course: CourseProps) => {
     if (!user) {
       setAuthModalOpen(true);
       setSuccessMessage('Please sign in to enroll in courses');
@@ -109,28 +121,42 @@ const BookOnlinePage = () => {
       return;
     }
 
-    // Add to enrolled courses
-    const userKey = `user_${user.uid}`;
-    const enrolledData = JSON.parse(localStorage.getItem(`${userKey}_enrolledCourses`) || '[]');
-    
-    const newEnrollment = {
-      id: course.id,
-      title: course.title,
-      type: 'course',
-      enrolledAt: new Date().toISOString(),
-      userId: user.uid,
-      price: course.price,
-      duration: course.duration,
-      category: course.category
-    };
+    // Check if already enrolled
+    if (enrolledCourses.has(course.id)) {
+      setSuccessMessage(`You are already enrolled in ${course.title}!`);
+      setTimeout(() => setSuccessMessage(''), 3000);
+      return;
+    }
 
-    if (!enrolledData.some((item: any) => item.id === course.id)) {
-      enrolledData.push(newEnrollment);
-      localStorage.setItem(`${userKey}_enrolledCourses`, JSON.stringify(enrolledData));
+    try {
+      // Update UI immediately for better UX
       setEnrolledCourses(new Set([...enrolledCourses, course.id]));
       setSuccessMessage(`Successfully enrolled in ${course.title}!`);
-      setTimeout(() => setSuccessMessage(''), 3000);
+      
+      // Store in Firebase
+      await enrollInCourse({
+        courseId: course.id,
+        title: course.title,
+        description: course.description,
+        duration: course.duration,
+        type: 'course',
+        enrolledAt: new Date(),
+        status: 'active',
+        progress: 0
+      });
+      
+    } catch (error) {
+      console.error('Error enrolling in course:', error);
+      // Revert UI update on error
+      setEnrolledCourses(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(course.id);
+        return newSet;
+      });
+      setSuccessMessage(`Failed to enroll in ${course.title}. Please try again.`);
     }
+
+    setTimeout(() => setSuccessMessage(''), 3000);
   };
 
   if (loading) {
