@@ -468,7 +468,7 @@ export default function UnifiedCoursesPage() {
                         <h4 className="text-xl font-bold mb-4">Key Features</h4>
                         <ul className="list-disc pl-5 space-y-2">
                           {course.features.map((feature, index) => (
-                            <li key={index} className="text-gray-600">{feature}</li>
+                            <li key={`${course.id}-feature-${index}`} className="text-gray-600">{feature}</li>
                           ))}
                         </ul>
 

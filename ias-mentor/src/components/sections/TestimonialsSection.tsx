@@ -135,7 +135,7 @@ export default function TestimonialsSection() {
           <div className="flex justify-center mt-6 space-x-2">
             {clientTestimonials.map((_, index) => (
               <Button
-                key={index}
+                key={`client-dot-${index}`}
                 variant="outline"
                 size="sm"
                 className={`h-2 w-2 rounded-full p-0 border-secondary transition-colors duration-300 ${
@@ -190,7 +190,7 @@ export default function TestimonialsSection() {
           <div className="flex justify-center mt-6 space-x-2">
             {studentTestimonials.map((_, index) => (
               <Button
-                key={index}
+                key={`student-dot-${index}`}
                 variant="outline"
                 size="sm"
                 className={`h-2 w-2 rounded-full p-0 border-secondary transition-colors duration-300 ${

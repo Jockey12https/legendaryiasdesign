@@ -259,8 +259,12 @@ export default function DashboardPage() {
 
         {/* Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {stats.map((stat, index) => (
-            <Card key={index}>
+          {stats.map((stat, index) => {
+            // Debug: Log the key to see if there are duplicates
+            const key = `stat-${stat.title}-${index}`;
+            console.log('Stat key:', key, 'Stat:', stat);
+            return (
+              <Card key={key}>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
                   {stat.title}
@@ -274,7 +278,8 @@ export default function DashboardPage() {
                 </p>
               </CardContent>
             </Card>
-          ))}
+          );
+        })}
         </div>
 
         {/* Quick Actions */}
@@ -290,8 +295,12 @@ export default function DashboardPage() {
               <CardContent>
                 <div className="space-y-4">
                   {recentActivity.length > 0 ? (
-                    recentActivity.map((activity, index) => (
-                      <div key={index} className="flex items-center space-x-4">
+                    recentActivity.filter(activity => activity && activity.id && activity.type).map((activity, index) => {
+                      // Debug: Log the key to see if there are duplicates
+                      const key = `activity-${activity.type}-${activity.id}-${activity.enrolledAt || activity.purchasedAt}-${index}`;
+                      console.log('Activity key:', key, 'Activity:', activity);
+                      return (
+                        <div key={key} className="flex items-center space-x-4">
                         <div className={`w-2 h-2 rounded-full ${
                           activity.type === 'material' ? 'bg-green-500' : 'bg-blue-500'
                         }`}></div>
@@ -312,7 +321,8 @@ export default function DashboardPage() {
                           </p>
                         </div>
                       </div>
-                    ))
+                    );
+                  })
                   ) : (
                     <div className="text-center py-4 text-muted-foreground">
                       No recent activity found
@@ -338,8 +348,12 @@ export default function DashboardPage() {
                 <div className="space-y-3">
                   {user?.role === 'student' ? (
                     enrolledCourses.length > 0 ? (
-                      enrolledCourses.slice(0, 2).map((course) => (
-                        <div key={course.id} className="p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
+                      enrolledCourses.filter(course => course && course.id).slice(0, 2).map((course, index) => {
+                        // Debug: Log the key to see if there are duplicates
+                        const key = `course-${course.id}-${index}`;
+                        console.log('Course key:', key, 'Course:', course);
+                        return (
+                          <div key={key} className="p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
                           <p className="font-medium">{course.title}</p>
                           <p className="text-sm text-muted-foreground">{course.description}</p>
                           <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
@@ -349,7 +363,8 @@ export default function DashboardPage() {
                             ></div>
                           </div>
                         </div>
-                      ))
+                      );
+                    })
                     ) : (
                       <div className="text-center py-4 text-muted-foreground">
                         No enrolled courses yet

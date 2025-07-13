@@ -150,7 +150,7 @@ export default function CommunitySection() {
           <div className="absolute bottom-4 left-0 right-0 flex justify-center space-x-2">
             {successStories.map((_, index) => (
               <button
-                key={index}
+                key={`story-dot-${index}`}
                 onClick={() => goToSlide(index)}
                 className={`h-3 w-3 rounded-full transition-all duration-300 ${
                   currentIndex === index 

@@ -86,6 +86,17 @@ export class UserDataService {
     return doc(db, 'users', userId);
   }
 
+  // Clean data to remove undefined values
+  private static cleanData<T>(data: T): T {
+    const cleaned = { ...data };
+    Object.keys(cleaned).forEach(key => {
+      if (cleaned[key] === undefined) {
+        cleaned[key] = null;
+      }
+    });
+    return cleaned;
+  }
+
   // Initialize user document if it doesn't exist
   static async initializeUser(userId: string, userData: Partial<UserData> = {}): Promise<UserData> {
     try {
@@ -140,20 +151,30 @@ export class UserDataService {
         await this.initializeUser(userId);
       }
       
+      // Check if already enrolled to prevent duplicates
+      const existingData = userDoc.data() as UserData;
+      const isAlreadyEnrolled = existingData.enrolledCourses?.some(course => course.id === courseData.id);
+      if (isAlreadyEnrolled) {
+        throw new Error('User is already enrolled in this course');
+      }
+      
       const enrollmentData: EnrollmentData = {
         id: courseData.id,
         title: courseData.title,
         type: courseData.type || 'course',
         enrolledAt: new Date().toISOString(),
         userId: userId,
-        price: courseData.price,
-        duration: courseData.duration,
-        category: courseData.category,
+        price: courseData.price || null,
+        duration: courseData.duration || null,
+        category: courseData.category || null,
         status: 'active'
       };
       
+      // Clean the data to ensure no undefined values
+      const cleanedEnrollmentData = this.cleanData(enrollmentData);
+      
       await updateDoc(userRef, {
-        enrolledCourses: arrayUnion(enrollmentData),
+        enrolledCourses: arrayUnion(cleanedEnrollmentData),
         updatedAt: new Date().toISOString()
       });
       
@@ -172,6 +193,13 @@ export class UserDataService {
       
       if (!userDoc.exists()) {
         await this.initializeUser(userId);
+      }
+      
+      // Check if already purchased to prevent duplicates
+      const existingData = userDoc.data() as UserData;
+      const isAlreadyPurchased = existingData.purchasedMaterials?.some(material => material.id === materialData.id);
+      if (isAlreadyPurchased) {
+        throw new Error('User has already purchased this material');
       }
       
       const purchaseData: PurchaseData = {
@@ -195,8 +223,11 @@ export class UserDataService {
         status: 'active'
       };
       
+      // Clean the data to ensure no undefined values
+      const cleanedPurchaseData = this.cleanData(purchaseData);
+      
       await updateDoc(userRef, {
-        purchasedMaterials: arrayUnion(purchaseData),
+        purchasedMaterials: arrayUnion(cleanedPurchaseData),
         updatedAt: new Date().toISOString()
       });
       
@@ -233,7 +264,14 @@ export class UserDataService {
   static async getEnrolledCourses(userId: string): Promise<EnrollmentData[]> {
     try {
       const userData = await this.getUserData(userId);
-      return userData.enrolledCourses || [];
+      const courses = userData.enrolledCourses || [];
+      // Filter out invalid courses and remove duplicates
+      const validCourses = courses.filter(course => course && course.id && course.title);
+      // Remove duplicates based on id
+      const uniqueCourses = validCourses.filter((course, index, self) => 
+        index === self.findIndex(c => c.id === course.id)
+      );
+      return uniqueCourses;
     } catch (error) {
       console.error('Error getting enrolled courses:', error);
       return [];
@@ -244,7 +282,14 @@ export class UserDataService {
   static async getPurchasedMaterials(userId: string): Promise<PurchaseData[]> {
     try {
       const userData = await this.getUserData(userId);
-      return userData.purchasedMaterials || [];
+      const materials = userData.purchasedMaterials || [];
+      // Filter out invalid materials and remove duplicates
+      const validMaterials = materials.filter(material => material && material.id && material.title);
+      // Remove duplicates based on id
+      const uniqueMaterials = validMaterials.filter((material, index, self) => 
+        index === self.findIndex(m => m.id === material.id)
+      );
+      return uniqueMaterials;
     } catch (error) {
       console.error('Error getting purchased materials:', error);
       return [];
@@ -298,6 +343,11 @@ export class UserDataService {
       const purchasedMaterials = userData.purchasedMaterials || [];
       
       const activity = [...enrolledCourses, ...purchasedMaterials]
+        .filter(item => item && item.id && item.title && item.type) // Filter out invalid items
+        .filter((item, index, self) => 
+          // Remove duplicates based on id and type combination
+          index === self.findIndex(i => i.id === item.id && i.type === item.type)
+        )
         .sort((a, b) => {
           const dateA = new Date(a.enrolledAt || a.purchasedAt);
           const dateB = new Date(b.enrolledAt || b.purchasedAt);
@@ -329,12 +379,22 @@ export class UserDataService {
         
         // Add enrolled courses to Firebase
         for (const course of enrolledCourses) {
-          await this.enrollInCourse(userId, course);
+          // Validate course data before migrating
+          if (course && course.id && course.title) {
+            // Clean the course data before enrolling
+            const cleanedCourse = this.cleanData(course);
+            await this.enrollInCourse(userId, cleanedCourse);
+          }
         }
         
         // Add purchased materials to Firebase
         for (const material of purchasedMaterials) {
-          await this.purchaseMaterial(userId, material);
+          // Validate material data before migrating
+          if (material && material.id && material.title) {
+            // Clean the material data before purchasing
+            const cleanedMaterial = this.cleanData(material);
+            await this.purchaseMaterial(userId, cleanedMaterial);
+          }
         }
         
         // Clear localStorage after successful migration

@@ -172,7 +172,7 @@ export default function MyCoursesPage() {
             </Card>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {enrolledCourses.map((course, index) => {
+              {enrolledCourses.filter(course => course && course.id).map((course, index) => {
                 const progress = getRandomProgress();
                 return (
                   <Card key={`course-${course.id}-${index}`} className="overflow-hidden">
@@ -248,7 +248,7 @@ export default function MyCoursesPage() {
             </Card>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {purchasedMaterials.map((material, index) => (
+              {purchasedMaterials.filter(material => material && material.id).map((material, index) => (
                 <Card key={`material-${material.id}-${index}`} className="overflow-hidden">
                   <div className="h-48 bg-gradient-to-br from-green-500 to-teal-600 flex items-center justify-center">
                     <div className="text-center text-white">
@@ -302,10 +302,11 @@ export default function MyCoursesPage() {
           <CardContent>
             <div className="space-y-4">
               {[...enrolledCourses, ...purchasedMaterials]
+                .filter(item => item && item.id && item.type) // Filter out invalid items
                 .sort((a, b) => new Date(b.enrolledAt || b.purchasedAt) - new Date(a.enrolledAt || a.purchasedAt))
                 .slice(0, 5)
                 .map((item, index) => (
-                  <div key={`${item.id}-${item.type}-${index}`} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                  <div key={`activity-${item.type}-${item.id}-${item.enrolledAt || item.purchasedAt}-${index}`} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                     <div className="flex items-center">
                       {item.type === 'material' ? (
                         <FileText className="h-5 w-5 mr-3 text-green-600" />
