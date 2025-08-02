@@ -29,6 +29,9 @@ export default function AdminLoginModal({ isOpen, onClose, onSuccess }: AdminLog
     
     const adminSecret = process.env.NEXT_PUBLIC_ADMIN_SECRET || 'ADMIN_SECRET';
     
+    // Debug: Log the admin secret (remove in production)
+    console.log('Admin secret check:', adminSecret ? 'Set' : 'Not set');
+    
     if (accessCode === adminSecret) {
       setStep('login');
     } else {

@@ -30,6 +30,7 @@ interface PaymentModalProps {
     price: number;
     description?: string;
   };
+  onPaymentSuccess?: () => void; // Callback for successful payment
 }
 
 type PaymentStatus = 'pending' | 'confirmed' | 'rejected' | 'expired';
@@ -45,7 +46,7 @@ interface PaymentData {
   adminNotes?: string;
 }
 
-export default function WhatsAppPaymentModal({ isOpen, onClose, product }: PaymentModalProps) {
+export default function WhatsAppPaymentModal({ isOpen, onClose, product, onPaymentSuccess }: PaymentModalProps) {
   const { user } = useAuth();
   const [paymentId, setPaymentId] = useState<string | null>(null);
   const [paymentData, setPaymentData] = useState<PaymentData | null>(null);
@@ -172,8 +173,10 @@ export default function WhatsAppPaymentModal({ isOpen, onClose, product }: Payme
           console.log('Payment confirmed, closing modal');
           setTimeout(() => {
             onClose();
-            // Refresh the page to update enrollment status
-            window.location.reload();
+            // Call the success callback to refresh enrollment status
+            if (onPaymentSuccess) {
+              onPaymentSuccess();
+            }
           }, 2000);
         }
         

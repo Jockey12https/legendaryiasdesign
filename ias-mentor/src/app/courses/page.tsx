@@ -225,31 +225,31 @@ export default function UnifiedCoursesPage() {
     : studyMaterials.filter(material => material.category === materialCategory);
 
   // Load user's enrolled courses and materials when user logs in
-  useEffect(() => {
-    const loadUserData = async () => {
-      if (user) {
-        try {
-          // Migrate data from localStorage to Firebase if needed
-          await UserDataService.migrateFromLocalStorage(user.uid);
-          
-          // Load data from Firebase
-          const [enrolled, purchased] = await Promise.all([
-            UserDataService.getEnrolledCourses(user.uid),
-            UserDataService.getPurchasedMaterials(user.uid)
-          ]);
-          
-          setEnrolledCourses(new Set(enrolled.map(item => item.id)));
-          setPurchasedMaterials(new Set(purchased.map(item => item.id)));
-        } catch (error) {
-          console.error('Error loading user data:', error);
-        }
-      } else {
-        // Clear state when user logs out
-        setEnrolledCourses(new Set());
-        setPurchasedMaterials(new Set());
+  const loadUserData = async () => {
+    if (user) {
+      try {
+        // Migrate data from localStorage to Firebase if needed
+        await UserDataService.migrateFromLocalStorage(user.uid);
+        
+        // Load data from Firebase
+        const [enrolled, purchased] = await Promise.all([
+          UserDataService.getEnrolledCourses(user.uid),
+          UserDataService.getPurchasedMaterials(user.uid)
+        ]);
+        
+        setEnrolledCourses(new Set(enrolled.map(item => item.id)));
+        setPurchasedMaterials(new Set(purchased.map(item => item.id)));
+      } catch (error) {
+        console.error('Error loading user data:', error);
       }
-    };
+    } else {
+      // Clear state when user logs out
+      setEnrolledCourses(new Set());
+      setPurchasedMaterials(new Set());
+    }
+  };
 
+  useEffect(() => {
     loadUserData();
   }, [user]);
 
@@ -465,7 +465,7 @@ export default function UnifiedCoursesPage() {
                             <p className="text-secondary font-bold">Duration: {course.duration}</p>
                             <p className="text-secondary font-bold">Fee: {course.fee}</p>
                           </div>
-                          {user && enrolledCourses.has(course.id) ? (
+                          {user && (enrolledCourses.has(course.id) || enrolledCourses.has(course.id.toString())) ? (
                             <Button 
                               disabled 
                               className="bg-green-600 text-white hover:bg-green-600"
@@ -553,7 +553,7 @@ export default function UnifiedCoursesPage() {
                       </div>
                     </CardContent>
                     <CardFooter>
-                      {user && enrolledCourses.has(program.id) ? (
+                      {user && (enrolledCourses.has(program.id) || enrolledCourses.has(program.id.toString())) ? (
                         <Button disabled className="w-full bg-green-600 hover:bg-green-600">
                           <CheckCircle className="h-4 w-4 mr-2" />
                           Enrolled
@@ -625,7 +625,7 @@ export default function UnifiedCoursesPage() {
                         <Eye className="h-4 w-4 mr-2" />
                         Preview
                       </Button>
-                      {user && purchasedMaterials.has(material.id) ? (
+                      {user && (purchasedMaterials.has(material.id) || purchasedMaterials.has(material.id.toString())) ? (
                         <Button 
                           disabled 
                           size="sm"
@@ -713,6 +713,7 @@ export default function UnifiedCoursesPage() {
             setSelectedProduct(null);
           }}
           product={selectedProduct}
+          onPaymentSuccess={loadUserData}
         />
       )}
     </div>
