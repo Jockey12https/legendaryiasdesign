@@ -7,8 +7,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { CheckCircle, Download, Eye, ShoppingCart, LogIn, User } from 'lucide-react';
+import { CheckCircle, Download, Eye, ShoppingCart, LogIn, User, MessageCircle } from 'lucide-react';
 import AuthModal from '@/components/auth/AuthModal';
+import WhatsAppPaymentModal from '@/components/payment/WhatsAppPaymentModal';
 import UserDataService from '@/utils/userDataService';
 import { useAuth } from '@/contexts/AuthContext';
 
@@ -201,6 +202,14 @@ export default function UnifiedCoursesPage() {
   const [purchasedMaterials, setPurchasedMaterials] = useState(new Set());
   const [successMessage, setSuccessMessage] = useState('');
   const [showPreview, setShowPreview] = useState(null);
+  const [paymentModalOpen, setPaymentModalOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<{
+    id: string;
+    title: string;
+    type: 'course' | 'material';
+    price: number;
+    description?: string;
+  } | null>(null);
 
   // Filter functions
   const filteredLatestCourses = latestProgramCategory === 'all'
@@ -245,7 +254,7 @@ export default function UnifiedCoursesPage() {
   }, [user]);
 
   // Handle course enrollment
-  const handleEnrollment = async (courseId, courseTitle, courseType = 'course') => {
+  const handleEnrollment = async (courseId: string, courseTitle: string, courseType = 'course') => {
     if (!user) {
       setAuthModalMode('login');
       setAuthModalOpen(true);
@@ -263,26 +272,36 @@ export default function UnifiedCoursesPage() {
         return;
       }
 
-      // Enroll in course via Firebase
-      await UserDataService.enrollInCourse(user.uid, {
+      // Extract price from course data
+      const course = latestCourses.find(c => c.id.toString() === courseId) || 
+                    allPrograms.find(c => c.id === courseId);
+      let price = 0;
+      if (course) {
+        if ('fee' in course) {
+          price = parseInt(course.fee.replace(/[^\d]/g, '') || '0');
+        } else if ('fees' in course) {
+          price = parseInt(course.fees.replace(/[^\d]/g, '') || '0');
+        }
+      }
+
+      // Open payment modal
+      setSelectedProduct({
         id: courseId,
         title: courseTitle,
-        type: courseType
+        type: 'course',
+        price,
+        description: course?.description
       });
-
-      setEnrolledCourses(prev => new Set([...prev, courseId]));
-      setSuccessMessage(`Successfully enrolled in ${courseTitle}!`);
+      setPaymentModalOpen(true);
     } catch (error) {
       console.error('Error enrolling in course:', error);
       setSuccessMessage('Failed to enroll in course. Please try again.');
+      setTimeout(() => setSuccessMessage(''), 3000);
     }
-    
-    // Clear success message after 3 seconds
-    setTimeout(() => setSuccessMessage(''), 3000);
   };
 
   // Handle material purchase
-  const handlePurchase = async (materialId, materialTitle) => {
+  const handlePurchase = async (materialId: string, materialTitle: string) => {
     if (!user) {
       setAuthModalMode('login');
       setAuthModalOpen(true);
@@ -300,25 +319,28 @@ export default function UnifiedCoursesPage() {
         return;
       }
 
-      // Purchase material via Firebase
-      await UserDataService.purchaseMaterial(user.uid, {
-        id: materialId,
-        title: materialTitle
-      });
+      // Extract price from material data
+      const material = studyMaterials.find(m => m.id === materialId);
+      const price = material ? parseInt(material.fees.replace(/[^\d]/g, '') || '0') : 0;
 
-      setPurchasedMaterials(prev => new Set([...prev, materialId]));
-      setSuccessMessage(`Successfully purchased ${materialTitle}!`);
+      // Open payment modal
+      setSelectedProduct({
+        id: materialId,
+        title: materialTitle,
+        type: 'material',
+        price,
+        description: material?.description
+      });
+      setPaymentModalOpen(true);
     } catch (error) {
       console.error('Error purchasing material:', error);
       setSuccessMessage('Failed to purchase material. Please try again.');
+      setTimeout(() => setSuccessMessage(''), 3000);
     }
-    
-    // Clear success message after 3 seconds
-    setTimeout(() => setSuccessMessage(''), 3000);
   };
 
   // Handle preview
-  const handlePreview = (material) => {
+  const handlePreview = (material: any) => {
     setShowPreview(material);
   };
 
@@ -454,7 +476,7 @@ export default function UnifiedCoursesPage() {
                           ) : (
                             <Button 
                               className="bg-secondary text-white hover:bg-secondary/90"
-                              onClick={() => handleEnrollment(course.id, course.title)}
+                              onClick={() => handleEnrollment(course.id.toString(), course.title)}
                             >
                               {user ? 'Enroll Now' : 'Sign In to Enroll'}
                             </Button>
@@ -636,7 +658,7 @@ export default function UnifiedCoursesPage() {
         <Dialog open={!!showPreview} onOpenChange={() => setShowPreview(null)}>
           <DialogContent className="max-w-4xl h-[80vh]">
             <DialogHeader>
-              <DialogTitle>Preview: {showPreview.title}</DialogTitle>
+              <DialogTitle>Preview: {(showPreview as any).title}</DialogTitle>
             </DialogHeader>
             <div className="flex-1 flex flex-col">
               <div className="flex-1 bg-gray-100 rounded-lg p-4 mb-4">
@@ -652,7 +674,7 @@ export default function UnifiedCoursesPage() {
               <div className="flex gap-2">
                 <Button 
                   variant="outline" 
-                  onClick={() => window.open(showPreview.previewUrl, '_blank')}
+                  onClick={() => window.open((showPreview as any).previewUrl, '_blank')}
                   className="flex-1"
                 >
                   <Download className="h-4 w-4 mr-2" />
@@ -660,7 +682,7 @@ export default function UnifiedCoursesPage() {
                 </Button>
                 <Button 
                   onClick={() => {
-                    handlePurchase(showPreview.id, showPreview.title);
+                    handlePurchase((showPreview as any).id, (showPreview as any).title);
                     setShowPreview(null);
                   }}
                   className="flex-1"
@@ -681,6 +703,18 @@ export default function UnifiedCoursesPage() {
         onClose={() => setAuthModalOpen(false)}
         defaultMode={authModalMode}
       />
+
+      {/* WhatsApp Payment Modal */}
+      {selectedProduct && (
+        <WhatsAppPaymentModal
+          isOpen={paymentModalOpen}
+          onClose={() => {
+            setPaymentModalOpen(false);
+            setSelectedProduct(null);
+          }}
+          product={selectedProduct}
+        />
+      )}
     </div>
   );
 }

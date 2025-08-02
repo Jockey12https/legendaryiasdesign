@@ -5,9 +5,11 @@ import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import { Menu, X, User, LogOut } from "lucide-react";
+import { Menu, X, User, LogOut, Shield, ChevronDown, Users } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
+import { useAdminAuth } from "@/hooks/useAdminAuth";
 import AuthModal from "@/components/auth/AuthModal";
+import AdminLoginModal from "@/components/auth/AdminLoginModal";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -34,7 +36,9 @@ export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [isAdminModalOpen, setIsAdminModalOpen] = useState(false);
   const { user, logout } = useAuth();
+  const { isAdminAuthenticated, logout: adminLogout } = useAdminAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -83,7 +87,11 @@ export default function Header() {
 
   const handleLogout = async () => {
     try {
-      await logout();
+      if (user) {
+        await logout();
+      } else if (isAdminAuthenticated) {
+        adminLogout();
+      }
     } catch (error) {
       console.error('Logout error:', error);
     }
@@ -95,6 +103,14 @@ export default function Header() {
 
   const closeAuthModal = () => {
     setIsAuthModalOpen(false);
+  };
+
+  const openAdminModal = () => {
+    setIsAdminModalOpen(true);
+  };
+
+  const closeAdminModal = () => {
+    setIsAdminModalOpen(false);
   };
 
   return (
@@ -208,13 +224,53 @@ export default function Header() {
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
+            ) : isAdminAuthenticated ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button className="bg-secondary text-white hover:bg-secondary/90 hidden lg:flex transition-all">
+                    Admin
+                    <ChevronDown className="ml-1 h-4 w-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-48" align="end" forceMount>
+                  <DropdownMenuItem asChild>
+                    <Link href="/admin/payments">
+                      <Shield className="mr-2 h-4 w-4" />
+                      <span>Payments</span>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/admin/analytics">
+                      <Users className="mr-2 h-4 w-4" />
+                      <span>Analytics</span>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={handleLogout}>
+                    <LogOut className="mr-2 h-4 w-4" />
+                    <span>Log out</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             ) : (
-              <Button
-                className="bg-secondary text-white hover:bg-secondary/90 hidden lg:flex transition-all"
-                onClick={openAuthModal}
-              >
-                Log In
-              </Button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button className="bg-secondary text-white hover:bg-secondary/90 hidden lg:flex transition-all">
+                    Log In
+                    <ChevronDown className="ml-1 h-4 w-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-48" align="end" forceMount>
+                  <DropdownMenuItem onClick={openAuthModal}>
+                    <User className="mr-2 h-4 w-4" />
+                    <span>User Login</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={openAdminModal}>
+                    <Shield className="mr-2 h-4 w-4" />
+                    <span>Admin Login</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             )}
           </div>
 
@@ -305,13 +361,56 @@ export default function Header() {
                     Sign Out
                   </Button>
                 </div>
+              ) : isAdminAuthenticated ? (
+                <div className="space-y-2">
+                  <div className="text-center">
+                    <Avatar className="h-12 w-12 mx-auto mb-2">
+                      <AvatarFallback className="bg-secondary text-white">
+                        A
+                      </AvatarFallback>
+                    </Avatar>
+                    <p className="font-medium">Admin</p>
+                    <p className="text-sm text-muted-foreground">Administrator</p>
+                  </div>
+                  <Button asChild className="w-full mb-2">
+                    <Link href="/admin/payments">
+                      <Shield className="mr-2 h-4 w-4" />
+                      Payments
+                    </Link>
+                  </Button>
+                  <Button asChild className="w-full mb-2">
+                    <Link href="/admin/analytics">
+                      <Users className="mr-2 h-4 w-4" />
+                      Analytics
+                    </Link>
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="w-full text-red-600 border-red-200 hover:bg-red-50"
+                    onClick={handleLogout}
+                  >
+                    <LogOut className="mr-2 h-4 w-4" />
+                    Sign Out
+                  </Button>
+                </div>
               ) : (
-                <Button
-                  className="w-full bg-secondary text-white hover:bg-secondary/90"
-                  onClick={openAuthModal}
-                >
-                  Log In
-                </Button>
+                <div className="space-y-2">
+                  <Button
+                    className="w-full bg-secondary text-white hover:bg-secondary/90"
+                    onClick={openAuthModal}
+                  >
+                    <User className="mr-2 h-4 w-4" />
+                    User Login
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="w-full border-secondary text-secondary hover:bg-secondary hover:text-white"
+                    onClick={openAdminModal}
+                  >
+                    <Shield className="mr-2 h-4 w-4" />
+                    Admin Login
+                  </Button>
+                </div>
               )}
             </div>
           </div>
@@ -323,6 +422,17 @@ export default function Header() {
         isOpen={isAuthModalOpen}
         onClose={closeAuthModal}
         defaultMode="login"
+      />
+
+      {/* Admin Login Modal */}
+      <AdminLoginModal
+        isOpen={isAdminModalOpen}
+        onClose={closeAdminModal}
+        onSuccess={() => {
+          closeAdminModal();
+          // Redirect to admin analytics dashboard
+          window.location.href = '/admin/analytics';
+        }}
       />
     </header>
   );

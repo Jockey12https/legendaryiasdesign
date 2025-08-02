@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import MainLayout from '@/components/layout/MainLayout';
 import { useAuth } from '@/contexts/AuthContext';
 import AuthModal from '@/components/auth/AuthModal';
+import WhatsAppPaymentModal from '@/components/payment/WhatsAppPaymentModal';
 import { BookOpen, CheckCircle, Clock } from 'lucide-react';
 import UserDataService from '@/utils/userDataService';
 
@@ -89,6 +90,8 @@ const BookOnlinePage = () => {
   const { user, loading } = useAuth();
   const [enrolledCourses, setEnrolledCourses] = useState<Set<string>>(new Set());
   const [authModalOpen, setAuthModalOpen] = useState(false);
+  const [paymentModalOpen, setPaymentModalOpen] = useState(false);
+  const [selectedCourse, setSelectedCourse] = useState<CourseProps | null>(null);
   const [successMessage, setSuccessMessage] = useState('');
 
   useEffect(() => {
@@ -112,41 +115,49 @@ const BookOnlinePage = () => {
     loadUserData();
   }, [user]);
 
-  const handleEnrollment = async (course: CourseProps) => {
+  const handlePurchase = (course: CourseProps) => {
     if (!user) {
       setAuthModalOpen(true);
-      setSuccessMessage('Please sign in to enroll in courses');
+      setSuccessMessage('Please sign in to purchase courses');
       setTimeout(() => setSuccessMessage(''), 3000);
       return;
     }
 
-    try {
-      // Check if already enrolled
-      const isEnrolled = await UserDataService.isEnrolledInCourse(user.uid, course.id);
-      if (isEnrolled) {
-        setSuccessMessage('You are already enrolled in this course!');
-        setTimeout(() => setSuccessMessage(''), 3000);
-        return;
-      }
-
-      // Enroll in course via Firebase
-      await UserDataService.enrollInCourse(user.uid, {
-        id: course.id,
-        title: course.title,
-        type: 'course',
-        price: course.price,
-        duration: course.duration,
-        category: course.category
-      });
-
-      setEnrolledCourses(new Set([...enrolledCourses, course.id]));
-      setSuccessMessage(`Successfully enrolled in ${course.title}!`);
-    } catch (error) {
-      console.error('Error enrolling in course:', error);
-      setSuccessMessage('Failed to enroll in course. Please try again.');
+    // Check if already enrolled
+    if (enrolledCourses.has(course.id)) {
+      setSuccessMessage('You are already enrolled in this course!');
+      setTimeout(() => setSuccessMessage(''), 3000);
+      return;
     }
-    
-    setTimeout(() => setSuccessMessage(''), 3000);
+
+    setSelectedCourse(course);
+    setPaymentModalOpen(true);
+  };
+
+  const handlePaymentSuccess = async () => {
+    if (selectedCourse && user) {
+      try {
+        // Enroll in course via Firebase
+        await UserDataService.enrollInCourse(user.uid, {
+          id: selectedCourse.id,
+          title: selectedCourse.title,
+          type: 'course',
+          price: selectedCourse.price,
+          duration: selectedCourse.duration,
+          category: selectedCourse.category
+        });
+
+        setEnrolledCourses(new Set([...enrolledCourses, selectedCourse.id]));
+        setSuccessMessage(`Successfully enrolled in ${selectedCourse.title}!`);
+        setPaymentModalOpen(false);
+        setSelectedCourse(null);
+      } catch (error) {
+        console.error('Error enrolling in course:', error);
+        setSuccessMessage('Failed to enroll in course. Please try again.');
+      }
+      
+      setTimeout(() => setSuccessMessage(''), 3000);
+    }
   };
 
   if (loading) {
@@ -226,9 +237,9 @@ const BookOnlinePage = () => {
                       className="w-full" 
                       variant={course.status === 'Available' ? 'default' : 'outline'} 
                       disabled={course.status !== 'Available'}
-                      onClick={() => course.status === 'Available' && handleEnrollment(course)}
+                      onClick={() => course.status === 'Available' && handlePurchase(course)}
                     >
-                      {course.status === 'Available' ? 'Enroll Now' : 'Not Available'}
+                      {course.status === 'Available' ? 'Purchase' : 'Not Available'}
                     </Button>
                   )}
                 </CardFooter>
@@ -242,6 +253,26 @@ const BookOnlinePage = () => {
         isOpen={authModalOpen} 
         onClose={() => setAuthModalOpen(false)}
       />
+
+      {selectedCourse && (
+        <WhatsAppPaymentModal
+          isOpen={paymentModalOpen}
+          onClose={() => {
+            setPaymentModalOpen(false);
+            setSelectedCourse(null);
+          }}
+          product={{
+            id: selectedCourse.id,
+            title: selectedCourse.title,
+            price: selectedCourse.price,
+            type: 'course',
+            description: selectedCourse.description,
+            duration: selectedCourse.duration,
+            category: selectedCourse.category
+          }}
+          onSuccess={handlePaymentSuccess}
+        />
+      )}
     </MainLayout>
   );
 };

@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export',
-  distDir: 'out',
+  // Removed output: 'export' to enable API routes and middleware
+  // distDir: 'out',
   images: {
     unoptimized: true,
     domains: [
