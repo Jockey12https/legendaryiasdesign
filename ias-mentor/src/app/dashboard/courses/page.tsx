@@ -272,14 +272,33 @@ export default function MyCoursesPage() {
                       </div>
                       
                       <div className="flex gap-2">
-                        <Button size="sm" className="flex-1">
-                          <Download className="h-4 w-4 mr-2" />
-                          Download
-                        </Button>
-                        <Button size="sm" variant="outline" className="flex-1">
-                          <Play className="h-4 w-4 mr-2" />
-                          View
-                        </Button>
+                        {material.downloadUrl && (
+                          <Button 
+                            size="sm" 
+                            className="flex-1"
+                            onClick={() => window.open(material.downloadUrl, '_blank')}
+                          >
+                            <Download className="h-4 w-4 mr-2" />
+                            Download
+                          </Button>
+                        )}
+                        {material.previewUrl && (
+                          <Button 
+                            size="sm" 
+                            variant="outline" 
+                            className="flex-1"
+                            onClick={() => window.open(material.previewUrl, '_blank')}
+                          >
+                            <Play className="h-4 w-4 mr-2" />
+                            View
+                          </Button>
+                        )}
+                        {!material.downloadUrl && !material.previewUrl && (
+                          <Button size="sm" className="flex-1" disabled>
+                            <FileText className="h-4 w-4 mr-2" />
+                            No URL Available
+                          </Button>
+                        )}
                       </div>
                     </div>
                   </CardContent>

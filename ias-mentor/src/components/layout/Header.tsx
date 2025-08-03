@@ -227,7 +227,7 @@ export default function Header() {
             ) : isAdminAuthenticated ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button className="bg-secondary text-white hover:bg-secondary/90 hidden sm:flex transition-all text-sm px-3 py-1.5 h-8">
+                  <Button className="bg-secondary text-white hover:bg-secondary/90 flex transition-all text-sm px-3 py-1.5 h-8">
                     <Shield className="mr-1.5 h-3.5 w-3.5" />
                     <span className="hidden sm:inline">Admin</span>
                     <ChevronDown className="ml-1 h-3.5 w-3.5" />
@@ -393,6 +393,12 @@ export default function Header() {
                     <Link href="/admin/analytics" className="flex items-center justify-center">
                       <Users className="mr-2 h-4 w-4 flex-shrink-0" />
                       <span>Analytics</span>
+                    </Link>
+                  </Button>
+                  <Button asChild className="w-full h-11 text-sm sm:text-base">
+                    <Link href="/admin/manage-courses" className="flex items-center justify-center">
+                      <BookOpen className="mr-2 h-4 w-4 flex-shrink-0" />
+                      <span>Manage Courses</span>
                     </Link>
                   </Button>
                   <Button

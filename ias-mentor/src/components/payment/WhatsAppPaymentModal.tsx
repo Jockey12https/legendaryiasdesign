@@ -19,6 +19,7 @@ import {
   ExternalLink
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
+import UPIQRCode from './UPIQRCode';
 
 interface PaymentModalProps {
   isOpen: boolean;
@@ -108,12 +109,23 @@ export default function WhatsAppPaymentModal({ isOpen, onClose, product, onPayme
         userId: user.uid,
         userEmail: user.email,
         userName: user.displayName || user.email,
+        userPhone: (user as any).phoneNumber || '',
         productId: product.id,
         productTitle: product.title,
         productType: product.type,
         amount: product.price,
         currency: 'INR'
       };
+
+      // Validate all required fields before sending
+      const requiredFields = ['userId', 'userEmail', 'userName', 'productId', 'productTitle', 'productType', 'amount'];
+      const missingFields = requiredFields.filter(field => !requestBody[field as keyof typeof requestBody]);
+      
+      if (missingFields.length > 0) {
+        console.error('WhatsAppPaymentModal: Missing required fields:', missingFields);
+        setError(`Missing required fields: ${missingFields.join(', ')}`);
+        return;
+      }
 
       console.log('WhatsAppPaymentModal: Request body:', requestBody);
 
@@ -347,6 +359,16 @@ export default function WhatsAppPaymentModal({ isOpen, onClose, product, onPayme
                             <Copy className="h-3 w-3" />
                           </Button>
                         </div>
+                      </div>
+                      
+                      {/* UPI QR Code */}
+                      <div className="mt-4">
+                        <UPIQRCode 
+                          upiId={paymentData.upiId}
+                          amount={product.price}
+                          merchantName="Legendary IAS Mentor"
+                          transactionNote={`${product.title} - Payment ID: ${paymentData.id}`}
+                        />
                       </div>
                       
                       <div className="bg-gray-50 p-3 rounded-lg">

@@ -34,6 +34,8 @@ interface StudyMaterial {
   price: string;
   type: string;
   image?: string;
+  previewUrl?: string;
+  purchaseUrl?: string;
   createdAt: any;
 }
 
@@ -74,7 +76,9 @@ export default function ManageCoursesPage() {
     description: "",
     price: "",
     type: "",
-    image: ""
+    image: "",
+    previewUrl: "",
+    purchaseUrl: ""
   });
 
   const [bookOnlineForm, setBookOnlineForm] = useState({
@@ -166,7 +170,7 @@ export default function ManageCoursesPage() {
       
       await addDoc(collection(db, "studyMaterials"), materialData);
       setMessage({ type: 'success', text: 'Study material added successfully!' });
-      setMaterialForm({ title: "", description: "", price: "", type: "", image: "" });
+      setMaterialForm({ title: "", description: "", price: "", type: "", image: "", previewUrl: "", purchaseUrl: "" });
       setMaterialDialogOpen(false);
       loadData();
     } catch (error) {
@@ -239,22 +243,22 @@ export default function ManageCoursesPage() {
             <div className="flex items-center space-x-4">
               <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Manage Courses</h1>
             </div>
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2 sm:space-x-4">
               <Link href="/admin/payments">
-                <Button variant="outline" size="sm" className="hidden sm:flex">
-                  <Shield className="mr-2 h-4 w-4" />
-                  Payments
+                <Button variant="outline" size="sm" className="flex">
+                  <Shield className="mr-1 sm:mr-2 h-3.5 sm:h-4 w-3.5 sm:w-4" />
+                  <span className="text-xs sm:text-sm">Payments</span>
                 </Button>
               </Link>
               <Link href="/admin/analytics">
-                <Button variant="outline" size="sm" className="hidden sm:flex">
-                  <BookOpen className="mr-2 h-4 w-4" />
-                  Analytics
+                <Button variant="outline" size="sm" className="flex">
+                  <BookOpen className="mr-1 sm:mr-2 h-3.5 sm:h-4 w-3.5 sm:w-4" />
+                  <span className="text-xs sm:text-sm">Analytics</span>
                 </Button>
               </Link>
               <Button onClick={logout} variant="outline" size="sm">
-                <LogOut className="mr-2 h-4 w-4" />
-                <span className="hidden sm:inline">Logout</span>
+                <LogOut className="mr-1 sm:mr-2 h-3.5 sm:h-4 w-3.5 sm:w-4" />
+                <span className="text-xs sm:text-sm">Logout</span>
               </Button>
             </div>
           </div>
@@ -291,11 +295,11 @@ export default function ManageCoursesPage() {
 
           {/* Courses Tab */}
           <TabsContent value="courses" className="space-y-6">
-            <div className="flex justify-between items-center">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-0">
               <h2 className="text-lg sm:text-xl font-semibold text-gray-900">Latest Programs</h2>
               <Dialog open={courseDialogOpen} onOpenChange={setCourseDialogOpen}>
                 <DialogTrigger asChild>
-                  <Button className="bg-secondary text-white hover:bg-secondary/90">
+                  <Button className="bg-secondary text-white hover:bg-secondary/90 w-full sm:w-auto">
                     <Plus className="mr-2 h-4 w-4" />
                     Add Course
                   </Button>
@@ -403,11 +407,11 @@ export default function ManageCoursesPage() {
 
           {/* Study Materials Tab */}
           <TabsContent value="materials" className="space-y-6">
-            <div className="flex justify-between items-center">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-0">
               <h2 className="text-lg sm:text-xl font-semibold text-gray-900">Study Materials</h2>
               <Dialog open={materialDialogOpen} onOpenChange={setMaterialDialogOpen}>
                 <DialogTrigger asChild>
-                  <Button className="bg-secondary text-white hover:bg-secondary/90">
+                  <Button className="bg-secondary text-white hover:bg-secondary/90 w-full sm:w-auto">
                     <Plus className="mr-2 h-4 w-4" />
                     Add Material
                   </Button>
@@ -452,17 +456,17 @@ export default function ManageCoursesPage() {
                         </SelectContent>
                       </Select>
                     </div>
-                    <div>
-                      <Label htmlFor="material-description">Description</Label>
-                      <Textarea
-                        id="material-description"
-                        value={materialForm.description}
-                        onChange={(e) => setMaterialForm({ ...materialForm, description: e.target.value })}
-                        placeholder="Material description"
-                        rows={3}
-                      />
-                    </div>
                                          <div>
+                       <Label htmlFor="material-description">Description</Label>
+                       <Textarea
+                         id="material-description"
+                         value={materialForm.description}
+                         onChange={(e) => setMaterialForm({ ...materialForm, description: e.target.value })}
+                         placeholder="Material description"
+                         rows={3}
+                       />
+                     </div>
+                     <div>
                        <Label htmlFor="material-image">Image URL (Optional)</Label>
                        <Input
                          id="material-image"
@@ -471,6 +475,27 @@ export default function ManageCoursesPage() {
                          placeholder="https://example.com/image.jpg"
                        />
                        <p className="text-xs text-gray-500 mt-1">Leave empty to use default image</p>
+                     </div>
+                     <div>
+                       <Label htmlFor="material-preview-url">Preview URL (Optional)</Label>
+                       <Input
+                         id="material-preview-url"
+                         value={materialForm.previewUrl}
+                         onChange={(e) => setMaterialForm({ ...materialForm, previewUrl: e.target.value })}
+                         placeholder="https://example.com/preview.pdf"
+                       />
+                       <p className="text-xs text-gray-500 mt-1">URL for previewing the material</p>
+                     </div>
+                     <div>
+                       <Label htmlFor="material-purchase-url">Purchase URL (Required)</Label>
+                       <Input
+                         id="material-purchase-url"
+                         value={materialForm.purchaseUrl}
+                         onChange={(e) => setMaterialForm({ ...materialForm, purchaseUrl: e.target.value })}
+                         placeholder="https://example.com/download.pdf"
+                         required
+                       />
+                       <p className="text-xs text-gray-500 mt-1">URL for downloading the purchased material</p>
                      </div>
                     <div className="flex flex-col sm:flex-row gap-2">
                       <Button onClick={handleAddStudyMaterial} disabled={saving} className="bg-secondary text-white hover:bg-secondary/90 w-full sm:w-auto">
@@ -496,11 +521,17 @@ export default function ManageCoursesPage() {
                       <CardDescription className="text-sm">{material.description}</CardDescription>
                     </CardHeader>
                     <CardContent>
-                      <div className="space-y-2 text-sm">
-                        <p><strong>Price:</strong> {material.price}</p>
-                        <p><strong>Type:</strong> {material.type}</p>
-                        <p><strong>Added:</strong> {material.createdAt?.toDate?.()?.toLocaleDateString() || 'N/A'}</p>
-                      </div>
+                                           <div className="space-y-2 text-sm">
+                       <p><strong>Price:</strong> {material.price}</p>
+                       <p><strong>Type:</strong> {material.type}</p>
+                       {material.previewUrl && (
+                         <p><strong>Preview:</strong> <span className="text-blue-600 truncate block">{material.previewUrl}</span></p>
+                       )}
+                       {material.purchaseUrl && (
+                         <p><strong>Download:</strong> <span className="text-green-600 truncate block">{material.purchaseUrl}</span></p>
+                       )}
+                       <p><strong>Added:</strong> {material.createdAt?.toDate?.()?.toLocaleDateString() || 'N/A'}</p>
+                     </div>
                       <div className="flex justify-end mt-4">
                         <Button
                           variant="outline"
@@ -520,11 +551,11 @@ export default function ManageCoursesPage() {
 
           {/* Book Online Tab */}
           <TabsContent value="bookOnline" className="space-y-6">
-            <div className="flex justify-between items-center">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-0">
               <h2 className="text-lg sm:text-xl font-semibold text-gray-900">Book Online Courses</h2>
               <Dialog open={bookOnlineDialogOpen} onOpenChange={setBookOnlineDialogOpen}>
                 <DialogTrigger asChild>
-                  <Button className="bg-secondary text-white hover:bg-secondary/90">
+                  <Button className="bg-secondary text-white hover:bg-secondary/90 w-full sm:w-auto">
                     <Plus className="mr-2 h-4 w-4" />
                     Add Course
                   </Button>

@@ -373,8 +373,18 @@ export default function UnifiedCoursesPage() {
       }
 
       // Extract price from material data
-      const material = studyMaterials.find(m => m.id === materialId);
-      const price = material ? parseInt(material.fees.replace(/[^\d]/g, '') || '0') : 0;
+      const material = allStudyMaterials.find(m => m.id === materialId);
+      let price = 0;
+      
+      if (material) {
+        // Handle both old format (fees) and new format (price)
+        if (material.fees) {
+          price = parseInt(material.fees.replace(/[^\d]/g, '') || '0');
+        } else if (material.price) {
+          // For newly added materials from admin panel
+          price = parseInt(material.price.toString().replace(/[^\d]/g, '') || '0');
+        }
+      }
 
       // Open payment modal
       setSelectedProduct({
@@ -663,24 +673,28 @@ export default function UnifiedCoursesPage() {
                       <div className="grid grid-cols-2 gap-4">
                         <div>
                           <p className="text-sm text-gray-500">Format</p>
-                          <p className="font-medium">{material.format}</p>
+                          <p className="font-medium">{material.format || material.type || 'PDF'}</p>
                         </div>
                         <div>
-                          <p className="text-sm text-gray-500">Fees</p>
-                          <p className="font-medium">{material.fees}</p>
+                          <p className="text-sm text-gray-500">Price</p>
+                          <p className="font-medium">
+                            {material.fees || (material.price ? `₹${material.price}` : '₹0')}
+                          </p>
                         </div>
                       </div>
                     </CardContent>
                     <CardFooter className="flex gap-2">
-                      <Button 
-                        variant="outline" 
-                        size="sm"
-                        onClick={() => handlePreview(material)}
-                        className="flex-1"
-                      >
-                        <Eye className="h-4 w-4 mr-2" />
-                        Preview
-                      </Button>
+                      {material.previewUrl && (
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          onClick={() => handlePreview(material)}
+                          className="flex-1"
+                        >
+                          <Eye className="h-4 w-4 mr-2" />
+                          Preview
+                        </Button>
+                      )}
                       {user && (purchasedMaterials.has(material.id) || purchasedMaterials.has(material.id.toString())) ? (
                         <Button 
                           disabled 
@@ -712,40 +726,50 @@ export default function UnifiedCoursesPage() {
       {/* Preview Dialog */}
       {showPreview && (
         <Dialog open={!!showPreview} onOpenChange={() => setShowPreview(null)}>
-          <DialogContent className="max-w-4xl h-[80vh]">
-            <DialogHeader>
-              <DialogTitle>Preview: {(showPreview as any).title}</DialogTitle>
+          <DialogContent className="w-[95vw] max-w-4xl max-h-[90vh] mx-auto p-0 sm:p-6">
+            <DialogHeader className="px-4 sm:px-0 pb-4">
+              <DialogTitle className="text-base sm:text-lg lg:text-xl">
+                Preview: {(showPreview as any).title}
+              </DialogTitle>
             </DialogHeader>
-            <div className="flex-1 flex flex-col">
-              <div className="flex-1 bg-gray-100 rounded-lg p-4 mb-4">
-                <p className="text-gray-600 mb-4">PDF Preview</p>
-                <div className="bg-white rounded border-2 border-dashed border-gray-300 h-full flex items-center justify-center">
-                  <div className="text-center">
-                    <Download className="h-16 w-16 mx-auto mb-4 text-gray-400" />
-                    <p className="text-gray-500 mb-2">PDF Preview would appear here</p>
-                    <p className="text-sm text-gray-400">This is a sample preview interface</p>
+            <div className="flex flex-col h-full max-h-[calc(90vh-120px)]">
+              <div className="flex-1 bg-gray-100 rounded-lg p-2 sm:p-4 mb-3 sm:mb-4 min-h-[200px] sm:min-h-[300px]">
+                <div className="h-full flex flex-col">
+                  <p className="text-gray-600 mb-2 sm:mb-4 text-sm sm:text-base">PDF Preview</p>
+                  <div className="bg-white rounded border-2 border-dashed border-gray-300 flex-1 flex items-center justify-center p-4">
+                    <div className="text-center">
+                      <Download className="h-8 w-8 sm:h-12 sm:w-12 lg:h-16 lg:w-16 mx-auto mb-2 sm:mb-4 text-gray-400" />
+                      <p className="text-gray-500 mb-1 sm:mb-2 text-sm sm:text-base">PDF Preview would appear here</p>
+                      <p className="text-xs sm:text-sm text-gray-400">This is a sample preview interface</p>
+                    </div>
                   </div>
                 </div>
               </div>
-              <div className="flex gap-2">
+              <div className="flex flex-col sm:flex-row gap-2 px-4 sm:px-0">
                 <Button 
                   variant="outline" 
                   onClick={() => window.open((showPreview as any).previewUrl, '_blank')}
-                  className="flex-1"
+                  className="flex-1 h-10 sm:h-auto text-sm sm:text-base"
                 >
-                  <Download className="h-4 w-4 mr-2" />
-                  Download Preview
+                  <Download className="h-4 w-4 mr-1 sm:mr-2" />
+                  <span className="hidden sm:inline">Download Preview</span>
+                  <span className="sm:hidden">Preview</span>
                 </Button>
                 <Button 
                   onClick={() => {
                     handlePurchase((showPreview as any).id, (showPreview as any).title);
                     setShowPreview(null);
                   }}
-                  className="flex-1"
+                  className="flex-1 h-10 sm:h-auto text-sm sm:text-base"
                   disabled={!user}
                 >
-                  <ShoppingCart className="h-4 w-4 mr-2" />
-                  {user ? 'Purchase Full Version' : 'Sign In to Purchase'}
+                  <ShoppingCart className="h-4 w-4 mr-1 sm:mr-2" />
+                  <span className="hidden sm:inline">
+                    {user ? 'Purchase Full Version' : 'Sign In to Purchase'}
+                  </span>
+                  <span className="sm:hidden">
+                    {user ? 'Purchase' : 'Sign In'}
+                  </span>
                 </Button>
               </div>
             </div>

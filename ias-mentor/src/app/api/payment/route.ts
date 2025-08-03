@@ -11,6 +11,7 @@ interface PaymentData {
   userId: string;
   userEmail: string;
   userName: string;
+  userPhone?: string;
   productId: string;
   productTitle: string;
   productType: 'course' | 'material';
@@ -48,7 +49,7 @@ export async function POST(request: Request) {
     const body = await request.json();
     console.log('Payment API: Request body:', body);
     
-    const { userId, userEmail, userName, productId, productTitle, productType, amount, currency = 'INR' } = body;
+    const { userId, userEmail, userName, userPhone, productId, productTitle, productType, amount, currency = 'INR' } = body;
 
     // Validate required fields
     if (!userId || !userEmail || !userName || !productId || !productTitle || !productType || !amount) {
@@ -82,7 +83,7 @@ export async function POST(request: Request) {
         const payments = existingSnapshot.docs.map(doc => ({
           id: doc.id,
           ...doc.data()
-        }));
+        })) as PaymentData[];
         
         // Sort by creation date and keep only the oldest
         payments.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
@@ -98,10 +99,12 @@ export async function POST(request: Request) {
         }
       }
       
-      const existingPayment = existingSnapshot.docs[0].data();
+      const existingPayment = existingSnapshot.docs[0].data() as PaymentData;
       
-      // Generate WhatsApp URL for existing payment
-      const whatsappMessage = `Hi! I want to purchase ${existingPayment.productTitle} for ₹${existingPayment.amount}. Please provide payment instructions. Payment ID: ${existingPayment.id}`;
+      // Generate WhatsApp URL for existing payment with user details
+      const userDetails = existingPayment.userName ? `\nName: ${existingPayment.userName}` : '';
+      const phoneDetails = existingPayment.userPhone ? `\nPhone: ${existingPayment.userPhone}` : '';
+      const whatsappMessage = `Hi! I want to purchase ${existingPayment.productTitle} for ₹${existingPayment.amount}.${userDetails}${phoneDetails}\n\nPlease provide payment instructions.\nPayment ID: ${existingPayment.id}`;
       const whatsappNumber = process.env.WHATSAPP_NUMBER || '919876543210';
       const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
 
@@ -123,6 +126,7 @@ export async function POST(request: Request) {
       userId,
       userEmail,
       userName,
+      userPhone,
       productId,
       productTitle,
       productType,
@@ -150,8 +154,10 @@ export async function POST(request: Request) {
       );
     }
 
-    // Generate WhatsApp message
-    const whatsappMessage = `Hi! I want to purchase ${productTitle} for ₹${amount}. Please provide payment instructions. Payment ID: ${paymentId}`;
+    // Generate WhatsApp message with user details
+    const userDetails = userName ? `\nName: ${userName}` : '';
+    const phoneDetails = userPhone ? `\nPhone: ${userPhone}` : '';
+    const whatsappMessage = `Hi! I want to purchase ${productTitle} for ₹${amount}.${userDetails}${phoneDetails}\n\nPlease provide payment instructions.\nPayment ID: ${paymentId}`;
     
     // Generate WhatsApp URL
     const whatsappNumber = process.env.WHATSAPP_NUMBER || '919876543210';
@@ -277,11 +283,40 @@ export async function PUT(request: Request) {
           price: paymentData.amount
         });
       } else if (paymentData.productType === 'material') {
-        await UserDataService.purchaseMaterial(paymentData.userId, {
-          id: paymentData.productId,
-          title: paymentData.productTitle,
-          price: paymentData.amount
-        });
+        // Fetch material details from Firebase to get URLs
+        try {
+          const materialRef = doc(db, 'studyMaterials', paymentData.productId);
+          const materialDoc = await getDoc(materialRef);
+          
+          if (materialDoc.exists()) {
+            const materialData = materialDoc.data();
+            await UserDataService.purchaseMaterial(paymentData.userId, {
+              id: paymentData.productId,
+              title: paymentData.productTitle,
+              price: paymentData.amount,
+              description: materialData.description || null,
+              previewUrl: materialData.previewUrl || null,
+              downloadUrl: materialData.purchaseUrl || null, // Map purchaseUrl to downloadUrl
+              category: materialData.category || null,
+              fileType: materialData.type || null
+            });
+          } else {
+            // Fallback if material not found
+            await UserDataService.purchaseMaterial(paymentData.userId, {
+              id: paymentData.productId,
+              title: paymentData.productTitle,
+              price: paymentData.amount
+            });
+          }
+        } catch (error) {
+          console.error('Error fetching material details:', error);
+          // Fallback if error occurs
+          await UserDataService.purchaseMaterial(paymentData.userId, {
+            id: paymentData.productId,
+            title: paymentData.productTitle,
+            price: paymentData.amount
+          });
+        }
       }
     }
 
