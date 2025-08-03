@@ -105,7 +105,7 @@ export async function POST(request: Request) {
       const userDetails = existingPayment.userName ? `\nName: ${existingPayment.userName}` : '';
       const phoneDetails = existingPayment.userPhone ? `\nPhone: ${existingPayment.userPhone}` : '';
       const whatsappMessage = `Hi! I want to purchase ${existingPayment.productTitle} for ₹${existingPayment.amount}.${userDetails}${phoneDetails}\n\nPlease provide payment instructions.\nPayment ID: ${existingPayment.id}`;
-      const whatsappNumber = process.env.WHATSAPP_NUMBER;
+      const whatsappNumber = process.env.WHATSAPP_NUMBER || '918921519949';
       const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
 
       return NextResponse.json({
