@@ -40,7 +40,7 @@ export async function GET(request: Request) {
       
       // Generate WhatsApp URL for the existing payment
       const whatsappMessage = `Hi! I want to purchase ${paymentData.productTitle} for ₹${paymentData.amount}. Please provide payment instructions. Payment ID: ${paymentData.id}`;
-      const whatsappNumber = process.env.WHATSAPP_NUMBER || '919876543210';
+      const whatsappNumber = process.env.WHATSAPP_NUMBER;
       const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
 
       return NextResponse.json({

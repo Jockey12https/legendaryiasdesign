@@ -277,64 +277,64 @@ export default function AdminPaymentsPage() {
   }
 
   return (
-    <div className="p-6 max-w-7xl mx-auto">
-      <div className="mb-8 flex justify-between items-start">
-        <div>
-          <h1 className="text-3xl font-bold mb-2">Payment Management</h1>
-          <p className="text-gray-600">Manage WhatsApp payments and confirm access</p>
+    <div className="p-4 sm:p-6 max-w-7xl mx-auto">
+      <div className="mb-6 sm:mb-8 flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
+        <div className="flex-1">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2">Payment Management</h1>
+          <p className="text-sm sm:text-base text-gray-600">Manage WhatsApp payments and confirm access</p>
         </div>
-        <Button onClick={logout} variant="outline" size="sm">
-          <LogOut className="h-4 w-4 mr-2" />
-          Logout
+        <Button onClick={logout} variant="outline" size="sm" className="w-full sm:w-auto h-10 sm:h-9">
+          <LogOut className="h-4 w-4 mr-2 flex-shrink-0" />
+          <span>Logout</span>
         </Button>
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-        <Card>
-          <CardContent className="p-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
+        <Card className="p-4 sm:p-6">
+          <CardContent className="p-0">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Total Payments</p>
-                <p className="text-2xl font-bold">{payments.length}</p>
+                <p className="text-xs sm:text-sm text-gray-600">Total Payments</p>
+                <p className="text-xl sm:text-2xl font-bold">{payments.length}</p>
               </div>
               <DollarSign className="h-8 w-8 text-blue-600" />
             </div>
           </CardContent>
         </Card>
         
-        <Card>
-          <CardContent className="p-6">
+        <Card className="p-4 sm:p-6">
+          <CardContent className="p-0">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Pending</p>
-                <p className="text-2xl font-bold">{filteredPayments.pending.length}</p>
+                <p className="text-xs sm:text-sm text-gray-600">Pending</p>
+                <p className="text-xl sm:text-2xl font-bold">{filteredPayments.pending.length}</p>
               </div>
-              <Clock className="h-8 w-8 text-blue-600" />
+              <Clock className="h-6 w-6 sm:h-8 sm:w-8 text-blue-600 flex-shrink-0" />
             </div>
           </CardContent>
         </Card>
         
-        <Card>
-          <CardContent className="p-6">
+        <Card className="p-4 sm:p-6">
+          <CardContent className="p-0">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Confirmed</p>
-                <p className="text-2xl font-bold">{filteredPayments.confirmed.length}</p>
+                <p className="text-xs sm:text-sm text-gray-600">Confirmed</p>
+                <p className="text-xl sm:text-2xl font-bold">{filteredPayments.confirmed.length}</p>
               </div>
-              <CheckCircle className="h-8 w-8 text-green-600" />
+              <CheckCircle className="h-6 w-6 sm:h-8 sm:w-8 text-green-600 flex-shrink-0" />
             </div>
           </CardContent>
         </Card>
         
-        <Card>
-          <CardContent className="p-6">
+        <Card className="p-4 sm:p-6">
+          <CardContent className="p-0">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Rejected</p>
-                <p className="text-2xl font-bold">{filteredPayments.rejected.length}</p>
+                <p className="text-xs sm:text-sm text-gray-600">Rejected</p>
+                <p className="text-xl sm:text-2xl font-bold">{filteredPayments.rejected.length}</p>
               </div>
-              <XCircle className="h-8 w-8 text-red-600" />
+              <XCircle className="h-6 w-6 sm:h-8 sm:w-8 text-red-600 flex-shrink-0" />
             </div>
           </CardContent>
         </Card>
@@ -342,21 +342,21 @@ export default function AdminPaymentsPage() {
 
       {/* Duplicates Warning */}
       {duplicates.length > 0 && (
-        <Alert className="mb-6 border-orange-200 bg-orange-50">
-          <AlertTriangle className="h-4 w-4 text-orange-600" />
+        <Alert className="mb-4 sm:mb-6 border-orange-200 bg-orange-50">
+          <AlertTriangle className="h-4 w-4 text-orange-600 flex-shrink-0" />
           <AlertDescription className="text-orange-800">
-            <div className="flex items-center justify-between">
-              <span>
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+              <span className="text-sm sm:text-base">
                 <strong>Duplicate Payments Detected:</strong> {duplicates.length} groups of duplicate payments found. 
                 This can cause confusion in payment tracking.
               </span>
               <Button
                 onClick={() => setShowCleanupDialog(true)}
                 size="sm"
-                className="bg-orange-600 hover:bg-orange-700 text-white"
+                className="w-full sm:w-auto h-9 bg-orange-600 hover:bg-orange-700 text-white text-sm"
               >
-                <Shield className="h-4 w-4 mr-2" />
-                Clean Up Duplicates
+                <Shield className="h-4 w-4 mr-2 flex-shrink-0" />
+                <span>Clean Up Duplicates</span>
               </Button>
             </div>
           </AlertDescription>
@@ -364,28 +364,30 @@ export default function AdminPaymentsPage() {
       )}
 
       {error && (
-        <Alert className="mb-6">
-          <XCircle className="h-4 w-4" />
-          <AlertDescription>{error}</AlertDescription>
+        <Alert className="mb-4 sm:mb-6">
+          <XCircle className="h-4 w-4 flex-shrink-0" />
+          <AlertDescription className="text-sm sm:text-base">{error}</AlertDescription>
         </Alert>
       )}
 
       {/* Payments Table */}
       <Tabs defaultValue="pending" className="w-full">
-        <TabsList className="grid w-full grid-cols-4 mb-6">
-          <TabsTrigger value="pending">
-            Pending ({filteredPayments.pending.length})
-          </TabsTrigger>
-          <TabsTrigger value="confirmed">
-            Confirmed ({filteredPayments.confirmed.length})
-          </TabsTrigger>
-          <TabsTrigger value="rejected">
-            Rejected ({filteredPayments.rejected.length})
-          </TabsTrigger>
-          <TabsTrigger value="all">
-            All ({filteredPayments.all.length})
-          </TabsTrigger>
-        </TabsList>
+        <div className="overflow-x-auto mb-4 sm:mb-6">
+          <TabsList className="grid w-full grid-cols-4 min-w-max h-10 sm:h-11">
+            <TabsTrigger value="pending" className="text-xs sm:text-sm whitespace-nowrap">
+              Pending ({filteredPayments.pending.length})
+            </TabsTrigger>
+            <TabsTrigger value="confirmed" className="text-xs sm:text-sm whitespace-nowrap">
+              Confirmed ({filteredPayments.confirmed.length})
+            </TabsTrigger>
+            <TabsTrigger value="rejected" className="text-xs sm:text-sm whitespace-nowrap">
+              Rejected ({filteredPayments.rejected.length})
+            </TabsTrigger>
+            <TabsTrigger value="all" className="text-xs sm:text-sm whitespace-nowrap">
+              All ({filteredPayments.all.length})
+            </TabsTrigger>
+          </TabsList>
+        </div>
 
         {['pending', 'confirmed', 'rejected', 'all'].map((status) => (
           <TabsContent key={status} value={status} className="space-y-4">
@@ -396,50 +398,50 @@ export default function AdminPaymentsPage() {
                 </CardContent>
               </Card>
             ) : (
-              <div className="grid gap-4">
+              <div className="grid gap-3 sm:gap-4">
                 {filteredPayments[status as keyof typeof filteredPayments].map((payment) => (
                   <Card key={payment.id} className="overflow-hidden">
-                    <CardHeader>
-                      <div className="flex justify-between items-start">
-                        <div>
-                          <CardTitle className="flex items-center">
+                    <CardHeader className="pb-3">
+                      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3">
+                        <div className="flex-1 min-w-0">
+                          <CardTitle className="flex items-center text-sm sm:text-base">
                             {getStatusIcon(payment.status)}
-                            <span className="ml-2">{payment.productTitle}</span>
+                            <span className="ml-2 truncate">{payment.productTitle}</span>
                           </CardTitle>
-                          <p className="text-sm text-gray-600 mt-1">
+                          <p className="text-xs sm:text-sm text-gray-600 mt-1 truncate">
                             Payment ID: {payment.id}
                           </p>
                         </div>
-                        <Badge className={getStatusColor(payment.status)}>
+                        <Badge className={`${getStatusColor(payment.status)} text-xs sm:text-sm flex-shrink-0`}>
                           {payment.status.toUpperCase()}
                         </Badge>
                       </div>
                     </CardHeader>
                     <CardContent>
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
                         <div>
-                          <p className="text-sm text-gray-500">User</p>
-                          <p className="font-medium">{payment.userName}</p>
-                          <p className="text-sm text-gray-600">{payment.userEmail}</p>
+                          <p className="text-xs sm:text-sm text-gray-500">User</p>
+                          <p className="font-medium text-sm sm:text-base truncate">{payment.userName}</p>
+                          <p className="text-xs sm:text-sm text-gray-600 truncate">{payment.userEmail}</p>
                         </div>
                         
                         <div>
-                          <p className="text-sm text-gray-500">Product</p>
-                          <p className="font-medium">{payment.productTitle}</p>
-                          <p className="text-sm text-gray-600 capitalize">{payment.productType}</p>
+                          <p className="text-xs sm:text-sm text-gray-500">Product</p>
+                          <p className="font-medium text-sm sm:text-base truncate">{payment.productTitle}</p>
+                          <p className="text-xs sm:text-sm text-gray-600 capitalize">{payment.productType}</p>
                         </div>
                         
                         <div>
-                          <p className="text-sm text-gray-500">Amount</p>
-                          <p className="font-medium">₹{payment.amount}</p>
-                          <p className="text-sm text-gray-600">UPI: {payment.upiId}</p>
+                          <p className="text-xs sm:text-sm text-gray-500">Amount</p>
+                          <p className="font-medium text-sm sm:text-base">₹{payment.amount}</p>
+                          <p className="text-xs sm:text-sm text-gray-600 truncate">UPI: {payment.upiId}</p>
                         </div>
                         
                         <div>
-                          <p className="text-sm text-gray-500">Date</p>
-                          <p className="font-medium">{formatDate(payment.createdAt)}</p>
+                          <p className="text-xs sm:text-sm text-gray-500">Date</p>
+                          <p className="font-medium text-sm sm:text-base">{formatDate(payment.createdAt)}</p>
                           {payment.transactionId && (
-                            <p className="text-sm text-gray-600">TXN: {payment.transactionId}</p>
+                            <p className="text-xs sm:text-sm text-gray-600 truncate">TXN: {payment.transactionId}</p>
                           )}
                         </div>
                       </div>
@@ -451,20 +453,20 @@ export default function AdminPaymentsPage() {
                         </div>
                       )}
 
-                      <div className="flex gap-2 mt-4">
+                      <div className="flex flex-col sm:flex-row gap-2 mt-4">
                         <Dialog>
                           <DialogTrigger asChild>
-                            <Button variant="outline" size="sm">
+                            <Button variant="outline" size="sm" className="w-full sm:w-auto">
                               <Eye className="h-4 w-4 mr-2" />
                               View Details
                             </Button>
                           </DialogTrigger>
-                          <DialogContent className="max-w-2xl">
+                          <DialogContent className="w-[95vw] max-w-2xl mx-auto">
                             <DialogHeader>
-                              <DialogTitle>Payment Details</DialogTitle>
+                              <DialogTitle className="text-lg sm:text-xl">Payment Details</DialogTitle>
                             </DialogHeader>
                             <div className="space-y-4">
-                              <div className="grid grid-cols-2 gap-4">
+                              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div>
                                   <p className="text-sm text-gray-500">Payment ID</p>
                                   <p className="font-mono text-sm">{payment.id}</p>
@@ -539,11 +541,11 @@ export default function AdminPaymentsPage() {
                                       placeholder="Add notes (optional)"
                                     />
                                   </div>
-                                  <div className="flex gap-2">
+                                  <div className="flex flex-col sm:flex-row gap-2">
                                     <Button
                                       onClick={() => updatePaymentStatus(payment.id, 'confirmed', adminNotes, transactionId)}
                                       disabled={actionLoading === payment.id}
-                                      className="bg-green-600 hover:bg-green-700"
+                                      className="bg-green-600 hover:bg-green-700 w-full sm:w-auto"
                                     >
                                       {actionLoading === payment.id ? (
                                         <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
@@ -556,7 +558,7 @@ export default function AdminPaymentsPage() {
                                       onClick={() => updatePaymentStatus(payment.id, 'rejected', adminNotes)}
                                       disabled={actionLoading === payment.id}
                                       variant="outline"
-                                      className="border-red-200 text-red-600 hover:bg-red-50"
+                                      className="border-red-200 text-red-600 hover:bg-red-50 w-full sm:w-auto"
                                     >
                                       {actionLoading === payment.id ? (
                                         <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
@@ -577,7 +579,7 @@ export default function AdminPaymentsPage() {
                             onClick={() => updatePaymentStatus(payment.id, 'confirmed')}
                             disabled={actionLoading === payment.id}
                             size="sm"
-                            className="bg-green-600 hover:bg-green-700"
+                            className="bg-green-600 hover:bg-green-700 w-full sm:w-auto"
                           >
                             {actionLoading === payment.id ? (
                               <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
@@ -592,6 +594,7 @@ export default function AdminPaymentsPage() {
                           onClick={fetchPayments}
                           variant="outline"
                           size="sm"
+                          className="w-full sm:w-auto"
                         >
                           <RefreshCw className="h-4 w-4 mr-2" />
                           Refresh
@@ -608,9 +611,9 @@ export default function AdminPaymentsPage() {
 
       {/* Cleanup Duplicates Dialog */}
       <Dialog open={showCleanupDialog} onOpenChange={setShowCleanupDialog}>
-        <DialogContent className="max-w-2xl">
+        <DialogContent className="w-[95vw] max-w-2xl mx-auto">
           <DialogHeader>
-            <DialogTitle className="flex items-center">
+            <DialogTitle className="flex items-center text-lg sm:text-xl">
               <Shield className="h-5 w-5 text-orange-600 mr-2" />
               Clean Up Duplicate Payments
             </DialogTitle>

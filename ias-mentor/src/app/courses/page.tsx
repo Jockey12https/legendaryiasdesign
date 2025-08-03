@@ -12,6 +12,8 @@ import AuthModal from '@/components/auth/AuthModal';
 import WhatsAppPaymentModal from '@/components/payment/WhatsAppPaymentModal';
 import UserDataService from '@/utils/userDataService';
 import { useAuth } from '@/contexts/AuthContext';
+import { collection, getDocs, query, orderBy } from 'firebase/firestore';
+import { db } from '@/utils/firebase';
 
 // Latest programs from first code set
 const latestCourses = [
@@ -211,18 +213,68 @@ export default function UnifiedCoursesPage() {
     description?: string;
   } | null>(null);
 
+  // Dynamic data from Firebase
+  const [dynamicLatestCourses, setDynamicLatestCourses] = useState<any[]>([]);
+  const [dynamicStudyMaterials, setDynamicStudyMaterials] = useState<any[]>([]);
+  const [loadingData, setLoadingData] = useState(false);
+
+  // Load dynamic data from Firebase
+  const loadDynamicData = async () => {
+    try {
+      setLoadingData(true);
+      
+      // Load latest courses from Firebase
+      const latestCoursesQuery = query(collection(db, "latestCourses"), orderBy("createdAt", "desc"));
+      const latestCoursesSnapshot = await getDocs(latestCoursesQuery);
+      const latestCoursesData = latestCoursesSnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+        // Add default values for missing properties
+        features: doc.data().features || ['Comprehensive study material', 'Regular assessments', 'Expert guidance'],
+        details: doc.data().details || doc.data().description || 'Comprehensive course designed for success',
+        category: doc.data().category || 'foundation',
+        image: doc.data().image || 'https://ext.same-assets.com/1137026266/2875867135.jpeg' // Default image for courses
+      }));
+      setDynamicLatestCourses(latestCoursesData);
+
+      // Load study materials from Firebase
+      const materialsQuery = query(collection(db, "studyMaterials"), orderBy("createdAt", "desc"));
+      const materialsSnapshot = await getDocs(materialsQuery);
+      const materialsData = materialsSnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+        // Add default values for missing properties
+        category: doc.data().category || 'general',
+        image: doc.data().image || 'https://ext.same-assets.com/1137026266/2875867135.jpeg' // Default image for study materials
+      }));
+      setDynamicStudyMaterials(materialsData);
+
+    } catch (error) {
+      console.error("Error loading dynamic data:", error);
+      // Set empty arrays on error to prevent undefined issues
+      setDynamicLatestCourses([]);
+      setDynamicStudyMaterials([]);
+    } finally {
+      setLoadingData(false);
+    }
+  };
+
+  // Combine static and dynamic data (with fallback to empty arrays)
+  const allLatestCourses = [...latestCourses, ...(dynamicLatestCourses || [])];
+  const allStudyMaterials = [...studyMaterials, ...(dynamicStudyMaterials || [])];
+
   // Filter functions
   const filteredLatestCourses = latestProgramCategory === 'all'
-    ? latestCourses
-    : latestCourses.filter(course => course.category === latestProgramCategory);
+    ? allLatestCourses
+    : allLatestCourses.filter(course => course.category === latestProgramCategory);
 
   const filteredAllPrograms = allProgramCategory === 'all'
     ? allPrograms
     : allPrograms.filter(program => program.category === allProgramCategory);
 
   const filteredMaterials = materialCategory === 'all'
-    ? studyMaterials
-    : studyMaterials.filter(material => material.category === materialCategory);
+    ? allStudyMaterials
+    : allStudyMaterials.filter(material => material.category === materialCategory);
 
   // Load user's enrolled courses and materials when user logs in
   const loadUserData = async () => {
@@ -251,6 +303,7 @@ export default function UnifiedCoursesPage() {
 
   useEffect(() => {
     loadUserData();
+    loadDynamicData();
   }, [user]);
 
   // Handle course enrollment
@@ -273,7 +326,7 @@ export default function UnifiedCoursesPage() {
       }
 
       // Extract price from course data
-      const course = latestCourses.find(c => c.id.toString() === courseId) || 
+      const course = allLatestCourses.find(c => c.id.toString() === courseId) || 
                     allPrograms.find(c => c.id === courseId);
       let price = 0;
       if (course) {
@@ -485,11 +538,11 @@ export default function UnifiedCoursesPage() {
                       </div>
                       <div className="md:w-2/3 p-8">
                         <h4 className="text-xl font-bold mb-4">Course Overview</h4>
-                        <p className="text-gray-600 mb-6">{course.details}</p>
+                        <p className="text-gray-600 mb-6">{course.details || course.description || 'Comprehensive course designed for success'}</p>
 
                         <h4 className="text-xl font-bold mb-4">Key Features</h4>
                         <ul className="list-disc pl-5 space-y-2">
-                          {course.features.map((feature, index) => (
+                          {(course.features || []).map((feature, index) => (
                             <li key={`${course.id}-feature-${index}`} className="text-gray-600">{feature}</li>
                           ))}
                         </ul>
@@ -592,13 +645,16 @@ export default function UnifiedCoursesPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {filteredMaterials.map((material) => (
                   <Card key={material.id} className="overflow-hidden flex flex-col h-full">
-                    <div className="relative h-48 w-full bg-gray-200 flex items-center justify-center">
-                      <img
-                        src={material.image}
-                        alt={material.title}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
+                                          <div className="relative h-48 w-full bg-gray-200 flex items-center justify-center">
+                        <img
+                          src={material.image || 'https://ext.same-assets.com/1137026266/2875867135.jpeg'}
+                          alt={material.title}
+                          className="w-full h-full object-cover"
+                          onError={(e) => {
+                            e.currentTarget.src = 'https://ext.same-assets.com/1137026266/2875867135.jpeg';
+                          }}
+                        />
+                      </div>
                     <CardHeader>
                       <CardTitle>{material.title}</CardTitle>
                       <CardDescription>{material.description}</CardDescription>

@@ -11,6 +11,8 @@ import AuthModal from '@/components/auth/AuthModal';
 import WhatsAppPaymentModal from '@/components/payment/WhatsAppPaymentModal';
 import { BookOpen, CheckCircle, Clock } from 'lucide-react';
 import UserDataService from '@/utils/userDataService';
+import { collection, getDocs, query, orderBy } from 'firebase/firestore';
+import { db } from '@/utils/firebase';
 
 interface CourseProps {
   id: string;
@@ -93,6 +95,42 @@ const BookOnlinePage = () => {
   const [paymentModalOpen, setPaymentModalOpen] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState<CourseProps | null>(null);
   const [successMessage, setSuccessMessage] = useState('');
+  
+  // Dynamic data from Firebase
+  const [dynamicBookOnlineCourses, setDynamicBookOnlineCourses] = useState<any[]>([]);
+  const [loadingData, setLoadingData] = useState(false);
+
+  // Load dynamic data from Firebase
+  const loadDynamicData = async () => {
+    try {
+      setLoadingData(true);
+      
+      // Load book online courses from Firebase
+      const bookOnlineQuery = query(collection(db, "bookOnlineCourses"), orderBy("createdAt", "desc"));
+      const bookOnlineSnapshot = await getDocs(bookOnlineQuery);
+      const bookOnlineData = bookOnlineSnapshot.docs.map(doc => ({
+        id: doc.id,
+        title: doc.data().title,
+        description: doc.data().description,
+        image: doc.data().image || 'https://ext.same-assets.com/1137026266/2875867135.jpeg',
+        price: parseInt(doc.data().fees?.replace(/[^\d]/g, '') || '0'),
+        status: 'Available' as const,
+        duration: doc.data().duration,
+        category: 'foundation'
+      }));
+      setDynamicBookOnlineCourses(bookOnlineData);
+
+    } catch (error) {
+      console.error("Error loading dynamic data:", error);
+      // Set empty array on error to prevent undefined issues
+      setDynamicBookOnlineCourses([]);
+    } finally {
+      setLoadingData(false);
+    }
+  };
+
+  // Combine static and dynamic data (with fallback to empty array)
+  const allBookOnlineCourses = [...courses, ...(dynamicBookOnlineCourses || [])];
 
   useEffect(() => {
     const loadUserData = async () => {
@@ -113,6 +151,7 @@ const BookOnlinePage = () => {
     };
 
     loadUserData();
+    loadDynamicData();
   }, [user]);
 
   const handlePurchase = (course: CourseProps) => {
@@ -190,16 +229,21 @@ const BookOnlinePage = () => {
           )}
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {courses.map((course) => (
+            {allBookOnlineCourses.map((course) => (
               <Card key={course.id} className="overflow-hidden flex flex-col h-full hover:shadow-lg transition-shadow">
                 <div className="relative h-48 w-full">
-                  <Image
-                    src={course.image}
-                    alt={course.title}
-                    fill
-                    className="object-cover"
-                    priority
-                  />
+                                     <Image
+                     src={course.image || 'https://ext.same-assets.com/1137026266/2875867135.jpeg'}
+                     alt={course.title}
+                     fill
+                     className="object-cover"
+                     priority
+                     onError={(e) => {
+                       // Fallback for Next.js Image component
+                       const imgElement = e.currentTarget as HTMLImageElement;
+                       imgElement.src = 'https://ext.same-assets.com/1137026266/2875867135.jpeg';
+                     }}
+                   />
                   {course.status !== 'Available' && (
                     <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
                       <span className="text-white font-bold text-lg">

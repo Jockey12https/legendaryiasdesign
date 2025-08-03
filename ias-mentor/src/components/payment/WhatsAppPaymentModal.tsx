@@ -259,13 +259,13 @@ export default function WhatsAppPaymentModal({ isOpen, onClose, product, onPayme
   if (!user) {
     return (
       <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent className="max-w-md">
+        <DialogContent className="w-[95vw] max-w-md mx-auto sm:max-w-lg md:max-w-xl lg:max-w-2xl">
           <DialogHeader>
-            <DialogTitle>Authentication Required</DialogTitle>
+            <DialogTitle className="text-lg sm:text-xl">Authentication Required</DialogTitle>
           </DialogHeader>
-          <div className="text-center py-6">
-            <p className="text-gray-600 mb-4">Please sign in to proceed with payment.</p>
-            <Button onClick={onClose}>Close</Button>
+          <div className="text-center py-4 sm:py-6">
+            <p className="text-gray-600 mb-4 text-sm sm:text-base">Please sign in to proceed with payment.</p>
+            <Button onClick={onClose} className="w-full sm:w-auto">Close</Button>
           </div>
         </DialogContent>
       </Dialog>
@@ -274,25 +274,25 @@ export default function WhatsAppPaymentModal({ isOpen, onClose, product, onPayme
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-md">
-        <DialogHeader>
-          <DialogTitle className="flex items-center">
-            <MessageCircle className="h-5 w-5 mr-2" />
-            WhatsApp Payment
+      <DialogContent className="w-[95vw] max-w-md mx-auto sm:max-w-lg md:max-w-xl lg:max-w-2xl max-h-[90vh] overflow-y-auto">
+        <DialogHeader className="pb-4">
+          <DialogTitle className="flex items-center text-lg sm:text-xl">
+            <MessageCircle className="h-5 w-5 mr-2 flex-shrink-0" />
+            <span className="break-words">WhatsApp Payment</span>
           </DialogTitle>
         </DialogHeader>
 
         {loading && (
-          <div className="text-center py-6">
+          <div className="text-center py-4 sm:py-6">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
-            <p className="text-gray-600">Initializing payment...</p>
+            <p className="text-gray-600 text-sm sm:text-base">Initializing payment...</p>
           </div>
         )}
 
         {error && (
           <Alert className="mb-4">
-            <XCircle className="h-4 w-4" />
-            <AlertDescription>{error}</AlertDescription>
+            <XCircle className="h-4 w-4 flex-shrink-0" />
+            <AlertDescription className="text-sm sm:text-base break-words">{error}</AlertDescription>
           </Alert>
         )}
 
@@ -300,49 +300,49 @@ export default function WhatsAppPaymentModal({ isOpen, onClose, product, onPayme
           <div className="space-y-4">
             {/* Product Info */}
             <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">{product.title}</CardTitle>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-base sm:text-lg break-words">{product.title}</CardTitle>
               </CardHeader>
-              <CardContent>
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-600">Amount:</span>
-                  <span className="font-bold text-lg">₹{product.price}</span>
+              <CardContent className="space-y-3">
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
+                  <span className="text-gray-600 text-sm sm:text-base">Amount:</span>
+                  <span className="font-bold text-lg sm:text-xl">₹{product.price}</span>
                 </div>
-                <div className="flex justify-between items-center mt-2">
-                  <span className="text-gray-600">Payment ID:</span>
-                  <span className="text-sm font-mono">{paymentData.id}</span>
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
+                  <span className="text-gray-600 text-sm sm:text-base">Payment ID:</span>
+                  <span className="text-xs sm:text-sm font-mono break-all">{paymentData.id}</span>
                 </div>
               </CardContent>
             </Card>
 
             {/* Payment Status */}
             <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center">
+              <CardHeader className="pb-3">
+                <CardTitle className="flex items-center text-base sm:text-lg">
                   {getStatusIcon(paymentData.status)}
-                  <span className="ml-2">Payment Status</span>
+                  <span className="ml-2 break-words">Payment Status</span>
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span>Status:</span>
-                    <Badge className={getStatusColor(paymentData.status)}>
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                    <span className="text-sm sm:text-base">Status:</span>
+                    <Badge className={`${getStatusColor(paymentData.status)} text-xs sm:text-sm`}>
                       {getStatusText(paymentData.status)}
                     </Badge>
                   </div>
                   
                   {paymentData.status === 'pending' && (
                     <div className="space-y-3">
-                      <div className="flex items-center justify-between">
-                        <span>UPI ID:</span>
-                        <div className="flex items-center space-x-2">
-                          <span className="font-mono text-sm">{paymentData.upiId}</span>
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                        <span className="text-sm sm:text-base">UPI ID:</span>
+                        <div className="flex items-center gap-2">
+                          <span className="font-mono text-xs sm:text-sm break-all">{paymentData.upiId}</span>
                           <Button
                             size="sm"
                             variant="outline"
                             onClick={copyUpiId}
-                            className="h-6 w-6 p-0"
+                            className="h-6 w-6 p-0 flex-shrink-0"
                           >
                             <Copy className="h-3 w-3" />
                           </Button>
@@ -350,12 +350,24 @@ export default function WhatsAppPaymentModal({ isOpen, onClose, product, onPayme
                       </div>
                       
                       <div className="bg-gray-50 p-3 rounded-lg">
-                        <p className="text-sm text-gray-600 mb-2">Instructions:</p>
-                        <ol className="text-sm space-y-1">
-                          <li>1. Send ₹{product.price} to {paymentData.upiId}</li>
-                          <li>2. Click "Contact WhatsApp" below</li>
-                          <li>3. Send payment screenshot</li>
-                          <li>4. Wait for confirmation (2-3 hours)</li>
+                        <p className="text-sm text-gray-600 mb-2 font-medium">Instructions:</p>
+                        <ol className="text-xs sm:text-sm space-y-1.5">
+                          <li className="flex items-start gap-2">
+                            <span className="flex-shrink-0">1.</span>
+                            <span>Send ₹{product.price} to <span className="font-mono break-all">{paymentData.upiId}</span></span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="flex-shrink-0">2.</span>
+                            <span>Click "Contact WhatsApp" below</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="flex-shrink-0">3.</span>
+                            <span>Send payment screenshot</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="flex-shrink-0">4.</span>
+                            <span>Wait for confirmation (2-3 hours)</span>
+                          </li>
                         </ol>
                       </div>
                     </div>
@@ -363,8 +375,8 @@ export default function WhatsAppPaymentModal({ isOpen, onClose, product, onPayme
 
                   {paymentData.status === 'confirmed' && (
                     <Alert className="bg-green-50 border-green-200">
-                      <CheckCircle className="h-4 w-4 text-green-600" />
-                      <AlertDescription>
+                      <CheckCircle className="h-4 w-4 text-green-600 flex-shrink-0" />
+                      <AlertDescription className="text-sm sm:text-base break-words">
                         Payment confirmed! You now have access to {product.title}.
                       </AlertDescription>
                     </Alert>
@@ -372,8 +384,8 @@ export default function WhatsAppPaymentModal({ isOpen, onClose, product, onPayme
 
                   {paymentData.status === 'rejected' && (
                     <Alert className="bg-red-50 border-red-200">
-                      <XCircle className="h-4 w-4 text-red-600" />
-                      <AlertDescription>
+                      <XCircle className="h-4 w-4 text-red-600 flex-shrink-0" />
+                      <AlertDescription className="text-sm sm:text-base break-words">
                         Payment rejected: {paymentData.adminNotes || 'No reason provided'}
                       </AlertDescription>
                     </Alert>
@@ -383,24 +395,24 @@ export default function WhatsAppPaymentModal({ isOpen, onClose, product, onPayme
             </Card>
 
             {/* Action Buttons */}
-            <div className="space-y-2">
+            <div className="space-y-3 pt-2">
               {paymentData.status === 'pending' && (
                 <>
                   <Button 
                     onClick={openWhatsApp} 
-                    className="w-full bg-green-600 hover:bg-green-700"
+                    className="w-full bg-green-600 hover:bg-green-700 h-10 sm:h-11 text-sm sm:text-base"
                   >
-                    <MessageCircle className="h-4 w-4 mr-2" />
-                    Contact WhatsApp
+                    <MessageCircle className="h-4 w-4 mr-2 flex-shrink-0" />
+                    <span className="break-words">Contact WhatsApp</span>
                   </Button>
                   
                   <Button 
                     onClick={checkPaymentStatus} 
                     variant="outline" 
-                    className="w-full"
+                    className="w-full h-10 sm:h-11 text-sm sm:text-base"
                   >
-                    <RefreshCw className="h-4 w-4 mr-2" />
-                    Check Status
+                    <RefreshCw className="h-4 w-4 mr-2 flex-shrink-0" />
+                    <span className="break-words">Check Status</span>
                   </Button>
                 </>
               )}
@@ -409,9 +421,9 @@ export default function WhatsAppPaymentModal({ isOpen, onClose, product, onPayme
                 <Button 
                   onClick={onClose} 
                   variant="outline" 
-                  className="w-full"
+                  className="w-full h-10 sm:h-11 text-sm sm:text-base"
                 >
-                  Close
+                  <span className="break-words">Close</span>
                 </Button>
               )}
 
@@ -419,12 +431,14 @@ export default function WhatsAppPaymentModal({ isOpen, onClose, product, onPayme
                 <Button 
                   onClick={() => {
                     onClose();
-                    window.location.reload();
+                    if (onPaymentSuccess) {
+                      onPaymentSuccess();
+                    }
                   }} 
-                  className="w-full bg-green-600 hover:bg-green-700"
+                  className="w-full bg-green-600 hover:bg-green-700 h-10 sm:h-11 text-sm sm:text-base"
                 >
-                  <CheckCircle className="h-4 w-4 mr-2" />
-                  Access Content
+                  <CheckCircle className="h-4 w-4 mr-2 flex-shrink-0" />
+                  <span className="break-words">Access Content</span>
                 </Button>
               )}
 
@@ -432,9 +446,9 @@ export default function WhatsAppPaymentModal({ isOpen, onClose, product, onPayme
                 <Button 
                   onClick={onClose} 
                   variant="outline" 
-                  className="w-full"
+                  className="w-full h-10 sm:h-11 text-sm sm:text-base"
                 >
-                  Close
+                  <span className="break-words">Close</span>
                 </Button>
               )}
             </div>

@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import { Menu, X, User, LogOut, Shield, ChevronDown, Users } from "lucide-react";
+import { Menu, X, User, LogOut, Shield, ChevronDown, Users, BookOpen } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useAdminAuth } from "@/hooks/useAdminAuth";
 import AuthModal from "@/components/auth/AuthModal";
@@ -137,12 +137,12 @@ export default function Header() {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-6">
+          <nav className="hidden md:flex items-center space-x-4 lg:space-x-5">
             {navigation.map((item) => (
               <Link
                 key={item.name}
                 href={item.href}
-                className={`text-sm font-medium transition-colors hover:text-primary relative group ${
+                className={`text-sm font-medium transition-colors hover:text-primary relative group whitespace-nowrap ${
                   pathname === item.href ? "text-primary" : "text-secondary"
                 }`}
               >
@@ -157,26 +157,26 @@ export default function Header() {
           </nav>
 
           {/* Desktop Right Section */}
-          <div className="hidden md:flex items-center space-x-4">
-            <span className="text-secondary">123-456-7890</span>
-            <div className="flex space-x-2">
+          <div className="hidden md:flex items-center space-x-3 lg:space-x-4">
+            <span className="text-secondary text-sm hidden lg:inline">123-456-7890</span>
+            <div className="flex space-x-1">
               <Link href="https://www.facebook.com/wix" target="_blank" rel="noreferrer">
-                <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-primary hover:text-secondary">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" className="h-4 w-4">
+                <Button variant="ghost" size="icon" className="h-7 w-7 hover:bg-primary hover:text-secondary">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" className="h-3.5 w-3.5">
                     <path fill="currentColor" d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z" />
                   </svg>
                 </Button>
               </Link>
               <Link href="https://www.twitter.com/wix" target="_blank" rel="noreferrer">
-                <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-primary hover:text-secondary">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" className="h-4 w-4">
+                <Button variant="ghost" size="icon" className="h-7 w-7 hover:bg-primary hover:text-secondary">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" className="h-3.5 w-3.5">
                     <path fill="currentColor" d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z" />
                   </svg>
                 </Button>
               </Link>
               <Link href="https://www.linkedin.com/company/wix-com" target="_blank" rel="noreferrer">
-                <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-primary hover:text-secondary">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" className="h-4 w-4">
+                <Button variant="ghost" size="icon" className="h-7 w-7 hover:bg-primary hover:text-secondary">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" className="h-3.5 w-3.5">
                     <path fill="currentColor" d="M100.28 448H7.4V148.9h92.88zM53.79 108.1C24.09 108.1 0 83.5 0 53.8a53.79 53.79 0 0 1 107.58 0c0 29.7-24.1 54.3-53.79 54.3zM447.9 448h-92.68V302.4c0-34.7-.7-79.2-48.29-79.2-48.29 0-55.69 37.7-55.69 76.7V448h-92.78V148.9h89.08v40.8h1.3c12.4-23.5 42.69-48.3 87.88-48.3 94 0 111.28 61.9 111.28 142.3V448z" />
                   </svg>
                 </Button>
@@ -186,10 +186,10 @@ export default function Header() {
             {user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-                    <Avatar className="h-8 w-8">
+                  <Button variant="ghost" className="relative h-7 w-7 rounded-full">
+                    <Avatar className="h-7 w-7">
                       <AvatarImage src={user.photoURL || ''} alt={getUserDisplayName()} />
-                      <AvatarFallback className="bg-primary text-primary-foreground">
+                      <AvatarFallback className="bg-primary text-primary-foreground text-xs">
                         {getUserInitials()}
                       </AvatarFallback>
                     </Avatar>
@@ -227,47 +227,55 @@ export default function Header() {
             ) : isAdminAuthenticated ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button className="bg-secondary text-white hover:bg-secondary/90 hidden lg:flex transition-all">
-                    Admin
-                    <ChevronDown className="ml-1 h-4 w-4" />
+                  <Button className="bg-secondary text-white hover:bg-secondary/90 hidden sm:flex transition-all text-sm px-3 py-1.5 h-8">
+                    <Shield className="mr-1.5 h-3.5 w-3.5" />
+                    <span className="hidden sm:inline">Admin</span>
+                    <ChevronDown className="ml-1 h-3.5 w-3.5" />
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-48" align="end" forceMount>
+                <DropdownMenuContent className="w-48 sm:w-56" align="end" forceMount>
                   <DropdownMenuItem asChild>
-                    <Link href="/admin/payments">
-                      <Shield className="mr-2 h-4 w-4" />
-                      <span>Payments</span>
+                    <Link href="/admin/payments" className="flex items-center py-2 sm:py-3">
+                      <Shield className="mr-2 h-4 w-4 flex-shrink-0" />
+                      <span className="text-sm sm:text-base">Payments</span>
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
-                    <Link href="/admin/analytics">
-                      <Users className="mr-2 h-4 w-4" />
-                      <span>Analytics</span>
+                    <Link href="/admin/analytics" className="flex items-center py-2 sm:py-3">
+                      <Users className="mr-2 h-4 w-4 flex-shrink-0" />
+                      <span className="text-sm sm:text-base">Analytics</span>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/admin/manage-courses" className="flex items-center py-2 sm:py-3">
+                      <BookOpen className="mr-2 h-4 w-4 flex-shrink-0" />
+                      <span className="text-sm sm:text-base">Manage Courses</span>
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={handleLogout}>
-                    <LogOut className="mr-2 h-4 w-4" />
-                    <span>Log out</span>
+                  <DropdownMenuItem onClick={handleLogout} className="py-2 sm:py-3">
+                    <LogOut className="mr-2 h-4 w-4 flex-shrink-0" />
+                    <span className="text-sm sm:text-base">Log out</span>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button className="bg-secondary text-white hover:bg-secondary/90 hidden lg:flex transition-all">
-                    Log In
-                    <ChevronDown className="ml-1 h-4 w-4" />
+                  <Button className="bg-secondary text-white hover:bg-secondary/90 hidden sm:flex transition-all text-sm px-3 py-1.5 h-8">
+                    <User className="mr-1.5 h-3.5 w-3.5" />
+                    <span className="hidden sm:inline">Log In</span>
+                    <ChevronDown className="ml-1 h-3.5 w-3.5" />
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-48" align="end" forceMount>
-                  <DropdownMenuItem onClick={openAuthModal}>
-                    <User className="mr-2 h-4 w-4" />
-                    <span>User Login</span>
+                <DropdownMenuContent className="w-48 sm:w-56" align="end" forceMount>
+                  <DropdownMenuItem onClick={openAuthModal} className="py-2 sm:py-3">
+                    <User className="mr-2 h-4 w-4 flex-shrink-0" />
+                    <span className="text-sm sm:text-base">User Login</span>
                   </DropdownMenuItem>
-                  <DropdownMenuItem onClick={openAdminModal}>
-                    <Shield className="mr-2 h-4 w-4" />
-                    <span>Admin Login</span>
+                  <DropdownMenuItem onClick={openAdminModal} className="py-2 sm:py-3">
+                    <Shield className="mr-2 h-4 w-4 flex-shrink-0" />
+                    <span className="text-sm sm:text-base">Admin Login</span>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -338,77 +346,80 @@ export default function Header() {
               </div>
               <p className="text-center text-secondary mb-4">123-456-7890</p>
               {user ? (
-                <div className="space-y-2">
+                <div className="space-y-3">
                   <div className="text-center">
-                    <Avatar className="h-12 w-12 mx-auto mb-2">
+                    <Avatar className="h-12 w-12 mx-auto mb-3">
                       <AvatarImage src={user.photoURL || ''} alt={getUserDisplayName()} />
-                      <AvatarFallback className="bg-primary text-primary-foreground">
+                      <AvatarFallback className="bg-primary text-primary-foreground text-lg">
                         {getUserInitials()}
                       </AvatarFallback>
                     </Avatar>
-                    <p className="font-medium">{getUserDisplayName()}</p>
-                    <p className="text-sm text-muted-foreground">{user.email}</p>
+                    <p className="font-medium text-base">{getUserDisplayName()}</p>
+                    <p className="text-sm text-muted-foreground break-words">{user.email}</p>
                   </div>
-                  <Button asChild className="w-full mb-2">
-                    <Link href="/dashboard">Dashboard</Link>
+                  <Button asChild className="w-full h-11 text-sm sm:text-base">
+                    <Link href="/dashboard" className="flex items-center justify-center">
+                      <User className="mr-2 h-4 w-4 flex-shrink-0" />
+                      <span>Dashboard</span>
+                    </Link>
                   </Button>
                   <Button
                     variant="outline"
-                    className="w-full text-red-600 border-red-200 hover:bg-red-50"
+                    className="w-full h-11 text-sm sm:text-base text-red-600 border-red-200 hover:bg-red-50"
                     onClick={handleLogout}
                   >
-                    <LogOut className="mr-2 h-4 w-4" />
-                    Sign Out
+                    <LogOut className="mr-2 h-4 w-4 flex-shrink-0" />
+                    <span>Sign Out</span>
                   </Button>
                 </div>
               ) : isAdminAuthenticated ? (
-                <div className="space-y-2">
+                <div className="space-y-3">
                   <div className="text-center">
-                    <Avatar className="h-12 w-12 mx-auto mb-2">
-                      <AvatarFallback className="bg-secondary text-white">
+                    <Avatar className="h-12 w-12 mx-auto mb-3">
+                      <AvatarFallback className="bg-secondary text-white text-lg">
                         A
                       </AvatarFallback>
                     </Avatar>
-                    <p className="font-medium">Admin</p>
+                    <p className="font-medium text-base">Admin</p>
                     <p className="text-sm text-muted-foreground">Administrator</p>
                   </div>
-                  <Button asChild className="w-full mb-2">
-                    <Link href="/admin/payments">
-                      <Shield className="mr-2 h-4 w-4" />
-                      Payments
+                  <Button asChild className="w-full h-11 text-sm sm:text-base">
+                    <Link href="/admin/payments" className="flex items-center justify-center">
+                      <Shield className="mr-2 h-4 w-4 flex-shrink-0" />
+                      <span>Payments</span>
                     </Link>
                   </Button>
-                  <Button asChild className="w-full mb-2">
-                    <Link href="/admin/analytics">
-                      <Users className="mr-2 h-4 w-4" />
-                      Analytics
+                  <Button asChild className="w-full h-11 text-sm sm:text-base">
+                    <Link href="/admin/analytics" className="flex items-center justify-center">
+                      <Users className="mr-2 h-4 w-4 flex-shrink-0" />
+                      <span>Analytics</span>
                     </Link>
                   </Button>
                   <Button
                     variant="outline"
-                    className="w-full text-red-600 border-red-200 hover:bg-red-50"
+                    className="w-full h-11 text-sm sm:text-base text-red-600 border-red-200 hover:bg-red-50"
                     onClick={handleLogout}
                   >
-                    <LogOut className="mr-2 h-4 w-4" />
-                    Sign Out
+                    <LogOut className="mr-2 h-4 w-4 flex-shrink-0" />
+                    <span>Sign Out</span>
                   </Button>
                 </div>
               ) : (
-                <div className="space-y-2">
+                <div className="space-y-3">
                   <Button
-                    className="w-full bg-secondary text-white hover:bg-secondary/90"
+                    className="w-full h-11 text-sm sm:text-base bg-secondary text-white hover:bg-secondary/90"
                     onClick={openAuthModal}
                   >
-                    <User className="mr-2 h-4 w-4" />
-                    User Login
+                    <User className="mr-2 h-4 w-4 flex-shrink-0" />
+                    <span>User Login</span>
                   </Button>
                   <Button
                     variant="outline"
-                    className="w-full border-secondary text-secondary hover:bg-secondary hover:text-white"
+                    className="w-full h-11 text-sm sm:text-base border-secondary text-secondary hover:bg-secondary hover:text-white"
                     onClick={openAdminModal}
                   >
-                    <Shield className="mr-2 h-4 w-4" />
-                    Admin Login
+                    <Shield className="mr-2 h-4 w-4 flex-shrink-0" />
+                    <span>Admin Login</span>
                   </Button>
                 </div>
               )}

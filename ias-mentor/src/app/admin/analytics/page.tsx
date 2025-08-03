@@ -283,11 +283,11 @@ export default function AdminAnalyticsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-gray-50 py-4 sm:py-6 lg:py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Analytics Dashboard</h1>
-          <p className="text-gray-600 mt-2">Overview of students, revenue, and enrollment statistics</p>
+        <div className="mb-6 sm:mb-8">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900">Analytics Dashboard</h1>
+          <p className="text-gray-600 mt-2 text-sm sm:text-base">Overview of students, revenue, and enrollment statistics</p>
         </div>
 
         {analyticsLoading ? (
@@ -297,53 +297,53 @@ export default function AdminAnalyticsPage() {
         ) : (
           <>
             {/* Analytics Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Total Students</CardTitle>
-                  <Users className="h-4 w-4 text-muted-foreground" />
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
+              <Card className="p-4 sm:p-6">
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 px-0 pt-0">
+                  <CardTitle className="text-xs sm:text-sm font-medium">Total Students</CardTitle>
+                  <Users className="h-4 w-4 text-muted-foreground flex-shrink-0" />
                 </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">{getTotalStudents()}</div>
+                <CardContent className="px-0 pb-0">
+                  <div className="text-xl sm:text-2xl font-bold">{getTotalStudents()}</div>
                   <p className="text-xs text-muted-foreground">
                     Registered students
                   </p>
                 </CardContent>
               </Card>
 
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
-                  <DollarSign className="h-4 w-4 text-muted-foreground" />
+              <Card className="p-4 sm:p-6">
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 px-0 pt-0">
+                  <CardTitle className="text-xs sm:text-sm font-medium">Total Revenue</CardTitle>
+                  <DollarSign className="h-4 w-4 text-muted-foreground flex-shrink-0" />
                 </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">{formatCurrency(getTotalRevenue())}</div>
+                <CardContent className="px-0 pb-0">
+                  <div className="text-xl sm:text-2xl font-bold">{formatCurrency(getTotalRevenue())}</div>
                   <p className="text-xs text-muted-foreground">
                     From confirmed payments
                   </p>
                 </CardContent>
               </Card>
 
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Course Enrollments</CardTitle>
-                  <BookOpen className="h-4 w-4 text-muted-foreground" />
+              <Card className="p-4 sm:p-6">
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 px-0 pt-0">
+                  <CardTitle className="text-xs sm:text-sm font-medium">Course Enrollments</CardTitle>
+                  <BookOpen className="h-4 w-4 text-muted-foreground flex-shrink-0" />
                 </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">{getTotalEnrollments()}</div>
+                <CardContent className="px-0 pb-0">
+                  <div className="text-xl sm:text-2xl font-bold">{getTotalEnrollments()}</div>
                   <p className="text-xs text-muted-foreground">
                     Total course enrollments
                   </p>
                 </CardContent>
               </Card>
 
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Study Materials</CardTitle>
-                  <GraduationCap className="h-4 w-4 text-muted-foreground" />
+              <Card className="p-4 sm:p-6">
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 px-0 pt-0">
+                  <CardTitle className="text-xs sm:text-sm font-medium">Study Materials</CardTitle>
+                  <GraduationCap className="h-4 w-4 text-muted-foreground flex-shrink-0" />
                 </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">{getTotalPurchases()}</div>
+                <CardContent className="px-0 pb-0">
+                  <div className="text-xl sm:text-2xl font-bold">{getTotalPurchases()}</div>
                   <p className="text-xs text-muted-foreground">
                     Material purchases
                   </p>
@@ -353,46 +353,47 @@ export default function AdminAnalyticsPage() {
 
             {/* Students List */}
             <Card>
-              <CardHeader>
-                <CardTitle>Students List</CardTitle>
+              <CardHeader className="pb-4">
+                <CardTitle className="text-lg sm:text-xl">Students List</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4">
+                <div className="space-y-3 sm:space-y-4">
                   {students.map((student) => (
-                    <div key={student.uid} className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50">
-                      <div className="flex items-center space-x-4">
-                        <Avatar className="h-12 w-12">
+                    <div key={student.uid} className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-3 sm:p-4 border rounded-lg hover:bg-gray-50 gap-3 sm:gap-4">
+                      <div className="flex items-start sm:items-center space-x-3 sm:space-x-4">
+                        <Avatar className="h-10 w-10 sm:h-12 sm:w-12 flex-shrink-0">
                           <AvatarImage src={student.photoURL || ''} alt={getStudentDisplayName(student)} />
-                          <AvatarFallback className="bg-blue-100 text-blue-600">
+                          <AvatarFallback className="bg-blue-100 text-blue-600 text-sm sm:text-base">
                             {getStudentInitials(student)}
                           </AvatarFallback>
                         </Avatar>
-                        <div>
-                          <h3 className="font-medium">{getStudentDisplayName(student)}</h3>
-                          <p className="text-sm text-gray-600">{student.email}</p>
-                          <div className="flex items-center space-x-4 mt-1">
+                        <div className="flex-1 min-w-0">
+                          <h3 className="font-medium text-sm sm:text-base truncate">{getStudentDisplayName(student)}</h3>
+                          <p className="text-xs sm:text-sm text-gray-600 truncate">{student.email}</p>
+                          <div className="flex flex-wrap items-center gap-2 sm:gap-4 mt-1">
                             <Badge variant="outline" className="text-xs">
                               {student.enrolledCourses.length} Courses
                             </Badge>
                             <Badge variant="outline" className="text-xs">
                               {student.purchasedMaterials.length} Materials
                             </Badge>
-                                                         <span className="text-xs text-gray-500">
-                               Joined: {formatDate(student.createdAt || student.metadata?.creationTime || '')}
-                             </span>
+                            <span className="text-xs text-gray-500">
+                              Joined: {formatDate(student.createdAt || student.metadata?.creationTime || '')}
+                            </span>
                           </div>
                         </div>
                       </div>
                       <Button
                         variant="outline"
                         size="sm"
+                        className="w-full sm:w-auto h-8 sm:h-9 text-xs sm:text-sm"
                         onClick={() => {
                           setSelectedStudent(student);
                           setStudentDetailsOpen(true);
                         }}
                       >
-                        <Eye className="h-4 w-4 mr-2" />
-                        View Details
+                        <Eye className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 flex-shrink-0" />
+                        <span>View Details</span>
                       </Button>
                     </div>
                   ))}
@@ -404,34 +405,34 @@ export default function AdminAnalyticsPage() {
 
         {/* Student Details Dialog */}
         <Dialog open={studentDetailsOpen} onOpenChange={setStudentDetailsOpen}>
-          <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
-            <DialogHeader>
-              <DialogTitle>Student Details</DialogTitle>
+          <DialogContent className="w-[95vw] max-w-4xl mx-auto sm:max-w-5xl lg:max-w-6xl max-h-[90vh] overflow-y-auto">
+            <DialogHeader className="pb-4">
+              <DialogTitle className="text-lg sm:text-xl lg:text-2xl">Student Details</DialogTitle>
             </DialogHeader>
             {selectedStudent && (
-              <div className="space-y-6">
+              <div className="space-y-4 sm:space-y-6">
                 {/* Student Profile */}
-                <div className="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg">
-                  <Avatar className="h-16 w-16">
+                <div className="flex flex-col sm:flex-row sm:items-center space-y-3 sm:space-x-4 p-3 sm:p-4 bg-gray-50 rounded-lg">
+                  <Avatar className="h-14 w-14 sm:h-16 sm:w-16 flex-shrink-0">
                     <AvatarImage src={selectedStudent.photoURL || ''} alt={getStudentDisplayName(selectedStudent)} />
-                    <AvatarFallback className="bg-blue-100 text-blue-600 text-lg">
+                    <AvatarFallback className="bg-blue-100 text-blue-600 text-base sm:text-lg">
                       {getStudentInitials(selectedStudent)}
                     </AvatarFallback>
                   </Avatar>
-                  <div>
-                    <h2 className="text-xl font-bold">{getStudentDisplayName(selectedStudent)}</h2>
-                    <p className="text-gray-600">{selectedStudent.email}</p>
-                    <div className="flex items-center space-x-4 mt-2">
+                  <div className="flex-1 min-w-0">
+                    <h2 className="text-lg sm:text-xl lg:text-2xl font-bold truncate">{getStudentDisplayName(selectedStudent)}</h2>
+                    <p className="text-sm sm:text-base text-gray-600 truncate">{selectedStudent.email}</p>
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 mt-2">
                       {selectedStudent.phoneNumber && (
-                        <div className="flex items-center text-sm text-gray-600">
-                          <Phone className="h-4 w-4 mr-1" />
-                          {selectedStudent.phoneNumber}
+                        <div className="flex items-center text-xs sm:text-sm text-gray-600">
+                          <Phone className="h-3 w-3 sm:h-4 sm:w-4 mr-1 flex-shrink-0" />
+                          <span className="truncate">{selectedStudent.phoneNumber}</span>
                         </div>
                       )}
                       {selectedStudent.address && (
-                        <div className="flex items-center text-sm text-gray-600">
-                          <MapPin className="h-4 w-4 mr-1" />
-                          {selectedStudent.address}
+                        <div className="flex items-start text-xs sm:text-sm text-gray-600">
+                          <MapPin className="h-3 w-3 sm:h-4 sm:w-4 mr-1 mt-0.5 flex-shrink-0" />
+                          <span className="truncate">{selectedStudent.address}</span>
                         </div>
                       )}
                     </div>
@@ -439,9 +440,9 @@ export default function AdminAnalyticsPage() {
                 </div>
 
                 <Tabs defaultValue="courses" className="w-full">
-                  <TabsList className="grid w-full grid-cols-2">
-                    <TabsTrigger value="courses">Enrolled Courses</TabsTrigger>
-                    <TabsTrigger value="materials">Purchased Materials</TabsTrigger>
+                  <TabsList className="grid w-full grid-cols-2 h-10 sm:h-11">
+                    <TabsTrigger value="courses" className="text-xs sm:text-sm">Enrolled Courses</TabsTrigger>
+                    <TabsTrigger value="materials" className="text-xs sm:text-sm">Purchased Materials</TabsTrigger>
                   </TabsList>
                   
                   <TabsContent value="courses" className="space-y-4">
