@@ -283,39 +283,88 @@ export async function PUT(request: Request) {
           price: paymentData.amount
         });
       } else if (paymentData.productType === 'material') {
-        // Fetch material details from Firebase to get URLs
-        try {
-          const materialRef = doc(db, 'studyMaterials', paymentData.productId);
-          const materialDoc = await getDoc(materialRef);
-          
-          if (materialDoc.exists()) {
-            const materialData = materialDoc.data();
-            await UserDataService.purchaseMaterial(paymentData.userId, {
-              id: paymentData.productId,
-              title: paymentData.productTitle,
-              price: paymentData.amount,
-              description: materialData.description || null,
-              previewUrl: materialData.previewUrl || null,
-              downloadUrl: materialData.purchaseUrl || null, // Map purchaseUrl to downloadUrl
-              category: materialData.category || null,
-              fileType: materialData.type || null
-            });
-          } else {
-            // Fallback if material not found
+        // Check if it's a hardcoded material first
+        const hardcodedMaterials = [
+          {
+            id: 'prelims-study-material',
+            title: 'Prelims Study Material',
+            description: 'Comprehensive study material covering all topics for UPSC Prelims.',
+            previewUrl: 'https://example.com/prelims-preview.pdf',
+            purchaseUrl: 'https://example.com/prelims-download.pdf'
+          },
+          {
+            id: 'mains-answer-writing',
+            title: 'Mains Answer Writing Material',
+            description: 'Model answers and writing techniques for UPSC Mains papers.',
+            previewUrl: 'https://example.com/mains-preview.pdf',
+            purchaseUrl: 'https://example.com/mains-download.pdf'
+          },
+          {
+            id: 'current-affairs-compilation',
+            title: 'Current Affairs Compilation',
+            description: 'Monthly and yearly compilation of current affairs relevant for UPSC.',
+            previewUrl: 'https://example.com/current-affairs-preview.pdf',
+            purchaseUrl: 'https://example.com/current-affairs-download.pdf'
+          },
+          {
+            id: 'optional-subject-material',
+            title: 'Optional Subject Materials',
+            description: 'Specialized study materials for various optional subjects.',
+            previewUrl: 'https://example.com/optional-preview.pdf',
+            purchaseUrl: 'https://example.com/optional-download.pdf'
+          }
+        ];
+
+        // Find hardcoded material
+        const hardcodedMaterial = hardcodedMaterials.find(m => m.id === paymentData.productId);
+        
+        if (hardcodedMaterial) {
+          // Use hardcoded material data
+          await UserDataService.purchaseMaterial(paymentData.userId, {
+            id: paymentData.productId,
+            title: paymentData.productTitle,
+            price: paymentData.amount,
+            description: hardcodedMaterial.description || null,
+            previewUrl: hardcodedMaterial.previewUrl || null,
+            downloadUrl: hardcodedMaterial.purchaseUrl || null, // Map purchaseUrl to downloadUrl
+            category: null,
+            fileType: null
+          });
+        } else {
+          // Fetch material details from Firebase to get URLs
+          try {
+            const materialRef = doc(db, 'studyMaterials', paymentData.productId);
+            const materialDoc = await getDoc(materialRef);
+            
+            if (materialDoc.exists()) {
+              const materialData = materialDoc.data();
+              await UserDataService.purchaseMaterial(paymentData.userId, {
+                id: paymentData.productId,
+                title: paymentData.productTitle,
+                price: paymentData.amount,
+                description: materialData.description || null,
+                previewUrl: materialData.previewUrl || null,
+                downloadUrl: materialData.purchaseUrl || null, // Map purchaseUrl to downloadUrl
+                category: materialData.category || null,
+                fileType: materialData.type || null
+              });
+            } else {
+              // Fallback if material not found
+              await UserDataService.purchaseMaterial(paymentData.userId, {
+                id: paymentData.productId,
+                title: paymentData.productTitle,
+                price: paymentData.amount
+              });
+            }
+          } catch (error) {
+            console.error('Error fetching material details:', error);
+            // Fallback if error occurs
             await UserDataService.purchaseMaterial(paymentData.userId, {
               id: paymentData.productId,
               title: paymentData.productTitle,
               price: paymentData.amount
             });
           }
-        } catch (error) {
-          console.error('Error fetching material details:', error);
-          // Fallback if error occurs
-          await UserDataService.purchaseMaterial(paymentData.userId, {
-            id: paymentData.productId,
-            title: paymentData.productTitle,
-            price: paymentData.amount
-          });
         }
       }
     }

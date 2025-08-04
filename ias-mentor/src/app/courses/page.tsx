@@ -133,7 +133,8 @@ const studyMaterials = [
     fees: '₹5,000',
     image: 'https://ext.same-assets.com/1137026266/2875867135.jpeg',
     category: 'prelims',
-    previewUrl: 'https://example.com/prelims-preview.pdf'
+    previewUrl: 'https://example.com/prelims-preview.pdf',
+    purchaseUrl: 'https://example.com/prelims-download.pdf'
   },
   {
     id: 'mains-answer-writing',
@@ -143,7 +144,8 @@ const studyMaterials = [
     fees: '₹6,000',
     image: 'https://ext.same-assets.com/1137026266/1169935981.jpeg',
     category: 'mains',
-    previewUrl: 'https://example.com/mains-preview.pdf'
+    previewUrl: 'https://example.com/mains-preview.pdf',
+    purchaseUrl: 'https://example.com/mains-download.pdf'
   },
   {
     id: 'current-affairs-compilation',
@@ -153,7 +155,8 @@ const studyMaterials = [
     fees: '₹2,500',
     image: 'https://ext.same-assets.com/1137026266/853365983.jpeg',
     category: 'current',
-    previewUrl: 'https://example.com/current-affairs-preview.pdf'
+    previewUrl: 'https://example.com/current-affairs-preview.pdf',
+    purchaseUrl: 'https://example.com/current-affairs-download.pdf'
   },
   {
     id: 'optional-subject-material',
@@ -163,7 +166,8 @@ const studyMaterials = [
     fees: '₹7,000',
     image: 'https://ext.same-assets.com/1137026266/1195490810.jpeg',
     category: 'optional',
-    previewUrl: 'https://example.com/optional-preview.pdf'
+    previewUrl: 'https://example.com/optional-preview.pdf',
+    purchaseUrl: 'https://example.com/optional-download.pdf'
   },
 ];
 
