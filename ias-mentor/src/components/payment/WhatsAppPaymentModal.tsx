@@ -75,7 +75,6 @@ export default function WhatsAppPaymentModal({ isOpen, onClose, product, onPayme
       setWhatsappSent(null);
       setWhatsappError(null);
       setSendingWhatsApp(false);
-      setError(null);
       setCopied(false);
     }
   }, [isOpen]);
@@ -229,12 +228,11 @@ export default function WhatsAppPaymentModal({ isOpen, onClose, product, onPayme
     setWhatsappError(null);
     
     try {
-      // Define multiple numbers to contact
+      // Define numbers for Contact WhatsApp button (Primary + First manual)
       const numbers = [
         '918921519949', // Primary number (Twilio-enabled)
-        '917012009893',  // Secondary number (manual)
-        '918547629326'
-        // Add more numbers here as needed
+        '918848559575',  // First manual number
+        '918547698407'
       ];
       
       const message = `Hi! I want to purchase ${product.title} for ₹${product.price}.\nName: ${user.displayName || user.email}\nPhone: ${(user as any).phoneNumber || 'Not provided'}\n\nPlease provide payment instructions.\nPayment ID: ${paymentData?.id}`;
@@ -257,12 +255,11 @@ export default function WhatsAppPaymentModal({ isOpen, onClose, product, onPayme
         setWhatsappSent(true);
         setWhatsappError(null);
         
-        // Open WhatsApp URLs for manual numbers
-        data.results.forEach((result: any) => {
-          if (result.method === 'manual' && result.whatsappUrl) {
-            window.open(result.whatsappUrl, '_blank');
-          }
-        });
+        // Open first WhatsApp URL if available
+        const manualResults = data.results.filter((result: any) => result.method === 'manual' && result.whatsappUrl);
+        if (manualResults.length > 0) {
+          window.open(manualResults[0].whatsappUrl, '_blank');
+        }
       } else {
         setWhatsappSent(false);
         setWhatsappError(data.error || 'Failed to send WhatsApp messages');
@@ -286,6 +283,13 @@ export default function WhatsAppPaymentModal({ isOpen, onClose, product, onPayme
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     }
+  };
+
+  const informAdmin = () => {
+    const adminNumber = '918547698407'; // Second manual number
+    const message = `Hi! I want to purchase ${product.title} for ₹${product.price}.\nName: ${user?.displayName || user?.email}\nPhone: ${(user as any)?.phoneNumber || 'Not provided'}\n\nPlease provide payment instructions.\nPayment ID: ${paymentData?.id}`;
+    const whatsappUrl = `https://wa.me/${adminNumber}?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, '_blank');
   };
 
   const getStatusIcon = (status: PaymentStatus) => {
@@ -526,6 +530,15 @@ export default function WhatsAppPaymentModal({ isOpen, onClose, product, onPayme
                     <span className="break-words">
                       {sendingWhatsApp ? 'Sending...' : 'Contact WhatsApp'}
                     </span>
+                  </Button>
+                  
+                  <Button 
+                    onClick={informAdmin}
+                    variant="outline"
+                    className="w-full h-10 sm:h-11 text-sm sm:text-base"
+                  >
+                    <MessageCircle className="h-4 w-4 mr-2 flex-shrink-0" />
+                    <span className="break-words">Inform Admin</span>
                   </Button>
                   
                   <Button 
