@@ -450,6 +450,10 @@ export default function WhatsAppPaymentModal({ isOpen, onClose, product, onPayme
                             <span>Send payment screenshot</span>
                           </li>
                           <li className="flex items-start gap-2">
+                            <span className="flex-shrink-0">3.</span>
+                            <span>Inform Admin about the payment</span>
+                          </li>
+                          <li className="flex items-start gap-2">
                             <span className="flex-shrink-0">4.</span>
                             <span>Wait for confirmation (2-3 hours)</span>
                           </li>
