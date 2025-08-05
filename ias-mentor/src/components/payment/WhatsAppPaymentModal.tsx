@@ -54,6 +54,9 @@ export default function WhatsAppPaymentModal({ isOpen, onClose, product, onPayme
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [whatsappUrl, setWhatsappUrl] = useState<string | null>(null);
+  const [whatsappSent, setWhatsappSent] = useState<boolean | null>(null);
+  const [whatsappError, setWhatsappError] = useState<string | null>(null);
+  const [sendingWhatsApp, setSendingWhatsApp] = useState(false);
   const [copied, setCopied] = useState(false);
 
   // Initialize payment when modal opens
@@ -69,6 +72,9 @@ export default function WhatsAppPaymentModal({ isOpen, onClose, product, onPayme
       setPaymentId(null);
       setPaymentData(null);
       setWhatsappUrl(null);
+      setWhatsappSent(null);
+      setWhatsappError(null);
+      setSendingWhatsApp(false);
       setError(null);
       setCopied(false);
     }
@@ -215,9 +221,62 @@ export default function WhatsAppPaymentModal({ isOpen, onClose, product, onPayme
     }
   };
 
-  const openWhatsApp = () => {
-    if (whatsappUrl) {
+  const openWhatsApp = async () => {
+    if (!whatsappUrl || !user) return;
+    
+    setSendingWhatsApp(true);
+    setWhatsappSent(null);
+    setWhatsappError(null);
+    
+    try {
+      // Define multiple numbers to contact
+      const numbers = [
+        '918921519949', // Primary number (Twilio-enabled)
+        '917012009893',  // Secondary number (manual)
+        '918547629326'
+        // Add more numbers here as needed
+      ];
+      
+      const message = `Hi! I want to purchase ${product.title} for ₹${product.price}.\nName: ${user.displayName || user.email}\nPhone: ${(user as any).phoneNumber || 'Not provided'}\n\nPlease provide payment instructions.\nPayment ID: ${paymentData?.id}`;
+      
+      // Send WhatsApp messages to multiple numbers
+      const response = await fetch('/api/send-whatsapp-multiple', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          message: message,
+          numbers: numbers
+        })
+      });
+      
+      const data = await response.json();
+      
+      if (data.success) {
+        setWhatsappSent(true);
+        setWhatsappError(null);
+        
+        // Open WhatsApp URLs for manual numbers
+        data.results.forEach((result: any) => {
+          if (result.method === 'manual' && result.whatsappUrl) {
+            window.open(result.whatsappUrl, '_blank');
+          }
+        });
+      } else {
+        setWhatsappSent(false);
+        setWhatsappError(data.error || 'Failed to send WhatsApp messages');
+        // Fallback to original WhatsApp URL
+        window.open(whatsappUrl, '_blank');
+      }
+    } catch (error) {
+      console.error('Error sending WhatsApp messages:', error);
+      setWhatsappSent(false);
+      setWhatsappError('Failed to send WhatsApp messages. Opening WhatsApp manually.');
+      // Fallback to original WhatsApp URL
       window.open(whatsappUrl, '_blank');
+    } finally {
+      setSendingWhatsApp(false);
     }
   };
 
@@ -416,16 +475,57 @@ export default function WhatsAppPaymentModal({ isOpen, onClose, product, onPayme
               </CardContent>
             </Card>
 
+            {/* WhatsApp Message Status */}
+            {paymentData.status === 'pending' && (
+              <Card>
+                <CardHeader className="pb-3">
+                  <CardTitle className="flex items-center text-base sm:text-lg">
+                    <MessageCircle className="h-5 w-5 mr-2 flex-shrink-0" />
+                    <span className="break-words">WhatsApp Message</span>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  {whatsappSent === true && (
+                    <Alert className="bg-green-50 border-green-200">
+                      <CheckCircle className="h-4 w-4 text-green-600 flex-shrink-0" />
+                      <AlertDescription className="text-sm sm:text-base break-words">
+                        WhatsApp messages sent successfully! Check your WhatsApp for payment instructions.
+                      </AlertDescription>
+                    </Alert>
+                  )}
+                  
+                  {whatsappSent === false && whatsappError && (
+                    <Alert className="bg-red-50 border-red-200">
+                      <XCircle className="h-4 w-4 text-red-600 flex-shrink-0" />
+                      <AlertDescription className="text-sm sm:text-base break-words">
+                        Failed to send WhatsApp message: {whatsappError}
+                      </AlertDescription>
+                    </Alert>
+                  )}
+                  
+                  {sendingWhatsApp && (
+                    <div className="text-center py-2">
+                      <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600 mx-auto mb-2"></div>
+                      <p className="text-sm text-gray-600">Sending WhatsApp message...</p>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            )}
+
             {/* Action Buttons */}
             <div className="space-y-3 pt-2">
               {paymentData.status === 'pending' && (
                 <>
                   <Button 
                     onClick={openWhatsApp} 
+                    disabled={sendingWhatsApp}
                     className="w-full bg-green-600 hover:bg-green-700 h-10 sm:h-11 text-sm sm:text-base"
                   >
                     <MessageCircle className="h-4 w-4 mr-2 flex-shrink-0" />
-                    <span className="break-words">Contact WhatsApp</span>
+                    <span className="break-words">
+                      {sendingWhatsApp ? 'Sending...' : 'Contact WhatsApp'}
+                    </span>
                   </Button>
                   
                   <Button 

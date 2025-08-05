@@ -101,10 +101,12 @@ export async function POST(request: Request) {
       
       const existingPayment = existingSnapshot.docs[0].data() as PaymentData;
       
-      // Generate WhatsApp URL for existing payment with user details
+      // Generate WhatsApp message for existing payment with user details
       const userDetails = existingPayment.userName ? `\nName: ${existingPayment.userName}` : '';
       const phoneDetails = existingPayment.userPhone ? `\nPhone: ${existingPayment.userPhone}` : '';
       const whatsappMessage = `Hi! I want to purchase ${existingPayment.productTitle} for ₹${existingPayment.amount}.${userDetails}${phoneDetails}\n\nPlease provide payment instructions.\nPayment ID: ${existingPayment.id}`;
+      
+      // Generate WhatsApp URL for manual contact
       const whatsappNumber = process.env.WHATSAPP_NUMBER || '918921519949';
       const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
 
@@ -159,8 +161,8 @@ export async function POST(request: Request) {
     const phoneDetails = userPhone ? `\nPhone: ${userPhone}` : '';
     const whatsappMessage = `Hi! I want to purchase ${productTitle} for ₹${amount}.${userDetails}${phoneDetails}\n\nPlease provide payment instructions.\nPayment ID: ${paymentId}`;
     
-    // Generate WhatsApp URL
-    const whatsappNumber = process.env.WHATSAPP_NUMBER || '919876543210';
+    // Generate WhatsApp URL for manual contact
+    const whatsappNumber = process.env.WHATSAPP_NUMBER || '918921519949';
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
 
     console.log('Payment API: Returning success response');
