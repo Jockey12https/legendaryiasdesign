@@ -4,14 +4,14 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import DashboardLayout from '@/components/dashboard/DashboardLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { BookOpen, Users, CreditCard, TrendingUp, Clock, Award, Mail, Send } from 'lucide-react';
+import { BookOpen, Users, CreditCard, TrendingUp, Clock, Award, Mail, Send, CheckCircle, Play } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-//import { Progress } from '@/components/ui/progress';
+import { Progress } from '@/components/ui/progress';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import useUserData from '@/hooks/useUserData';
-//import { Badge } from '@/components/ui/badge';
+import { Badge } from '@/components/ui/badge';
 
 export default function DashboardPage() {
   const { user, loading } = useAuth();
@@ -25,6 +25,13 @@ export default function DashboardPage() {
   const [subject, setSubject] = useState('Course Inquiry from Student');
   const [message, setMessage] = useState('');
   const [isSending, setIsSending] = useState(false);
+  const [paymentData, setPaymentData] = useState({
+    totalSpent: 0,
+    confirmedPayments: 0,
+    pendingPayments: 0,
+    totalPayments: 0
+  });
+  const [paymentLoading, setPaymentLoading] = useState(false);
   const { toast } = useToast();
 
   // Pre-fill message with enrolled courses when data loads
@@ -35,6 +42,13 @@ export default function DashboardPage() {
       setMessage(`Dear Admin,\n\nI am interested in learning more about the following courses:\n`);
     }
   }, [enrolledCourses]);
+
+  // Fetch payment data for dashboard
+  useEffect(() => {
+    if (user) {
+      fetchPaymentData();
+    }
+  }, [user]);
 
   // Show error toast if data loading fails
   useEffect(() => {
@@ -47,6 +61,34 @@ export default function DashboardPage() {
       });
     }
   }, [error, toast]);
+
+  const fetchPaymentData = async () => {
+    if (!user) return;
+
+    setPaymentLoading(true);
+    try {
+      const response = await fetch(`/api/payments/user?userId=${user.uid}`);
+      const data = await response.json();
+
+      if (data.success) {
+        const payments = data.payments || [];
+        const confirmedPayments = payments.filter((p: any) => p.status === 'confirmed');
+        const pendingPayments = payments.filter((p: any) => p.status === 'pending');
+        const totalSpent = confirmedPayments.reduce((sum: number, payment: any) => sum + (payment.amount || 0), 0);
+
+        setPaymentData({
+          totalSpent,
+          confirmedPayments: confirmedPayments.length,
+          pendingPayments: pendingPayments.length,
+          totalPayments: payments.length
+        });
+      }
+    } catch (err) {
+      console.error('Error fetching payment data:', err);
+    } finally {
+      setPaymentLoading(false);
+    }
+  };
 
   const getWelcomeMessage = () => {
     if (!user) return "Welcome to your dashboard!";
@@ -142,37 +184,37 @@ export default function DashboardPage() {
             color: 'text-purple-600',
           },
         ];
-      default: // student
-        return [
-          {
-            title: 'Enrolled Courses',
-            value: enrolledCourses.length,
-            description: 'Active enrollments',
-            icon: BookOpen,
-            color: 'text-blue-600',
-          },
-          {
-            title: 'Study Materials',
-            value: purchasedMaterials.length,
-            description: 'Purchased resources',
-            icon: Award,
-            color: 'text-green-600',
-          },
-          {
-            title: 'Progress',
-            value: `${Math.floor(Math.random() * 100)}%`,
-            description: 'Overall completion',
-            icon: TrendingUp,
-            color: 'text-yellow-600',
-          },
-          {
-            title: 'Recent Activity',
-            value: recentActivity.length,
-            description: 'Latest interactions',
-            icon: Clock,
-            color: 'text-purple-600',
-          },
-        ];
+             default: // student
+         return [
+           {
+             title: 'Enrolled Courses',
+             value: enrolledCourses.length,
+             description: 'Active enrollments',
+             icon: BookOpen,
+             color: 'text-blue-600',
+           },
+           {
+             title: 'Study Materials',
+             value: purchasedMaterials.length,
+             description: 'Purchased resources',
+             icon: Award,
+             color: 'text-green-600',
+           },
+           {
+             title: 'Total Spent',
+             value: `₹${paymentData.totalSpent.toLocaleString()}`,
+             description: 'All confirmed payments',
+             icon: CreditCard,
+             color: 'text-yellow-600',
+           },
+           {
+             title: 'Payments',
+             value: paymentData.totalPayments,
+             description: 'Total transactions',
+             icon: Clock,
+             color: 'text-purple-600',
+           },
+         ];
     }
   };
 
@@ -210,7 +252,7 @@ export default function DashboardPage() {
     } catch (error) {
       toast({
         title: 'Error',
-        description: error.message,
+        description: error instanceof Error ? error.message : 'Failed to send email',
         variant: 'destructive',
         duration: 5000,
       });
@@ -221,7 +263,7 @@ export default function DashboardPage() {
 
   const stats = getRoleSpecificStats();
 
-  if (loading || dataLoading) {
+  if (loading || dataLoading || paymentLoading) {
     return (
       <DashboardLayout title="Loading..." description="Please wait">
         <div className="flex justify-center items-center h-64">
@@ -282,6 +324,106 @@ export default function DashboardPage() {
         })}
         </div>
 
+        {/* Course Progress Overview */}
+        {user?.role === 'student' && enrolledCourses.length > 0 && (
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <TrendingUp className="h-5 w-5" />
+                Course Progress Overview
+              </CardTitle>
+              <CardDescription>
+                Track your progress across all enrolled courses
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {enrolledCourses.slice(0, 3).map((course, index) => {
+                  const progress = Math.floor(Math.random() * 100);
+                  const status = progress === 100 ? 'completed' : progress > 50 ? 'active' : 'paused';
+                  
+                  return (
+                    <div key={`progress-${course.id}-${index}`} className="flex items-center gap-4">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-2">
+                          <h4 className="font-medium">{course.title}</h4>
+                          {status === 'completed' && <CheckCircle className="h-4 w-4 text-green-600" />}
+                          {status === 'active' && <Play className="h-4 w-4 text-blue-600" />}
+                          {status === 'paused' && <Clock className="h-4 w-4 text-yellow-600" />}
+                        </div>
+                        <Progress value={progress} className="h-2" />
+                        <p className="text-xs text-muted-foreground mt-1">
+                          {progress}% completed
+                        </p>
+                      </div>
+                      <Button variant="outline" size="sm">
+                        Continue
+                      </Button>
+                    </div>
+                  );
+                })}
+                {enrolledCourses.length > 3 && (
+                  <div className="text-center pt-2">
+                    <Button variant="ghost" size="sm" asChild>
+                      <a href="/dashboard/progress">View All Progress</a>
+                    </Button>
+                  </div>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+                 {/* Payment Summary */}
+         {user?.role === 'student' && (
+           <Card>
+             <CardHeader>
+               <CardTitle className="flex items-center gap-2">
+                 <CreditCard className="h-5 w-5" />
+                 Payment Summary
+               </CardTitle>
+               <CardDescription>
+                 Overview of your recent payments and transactions
+               </CardDescription>
+             </CardHeader>
+             <CardContent>
+               {paymentLoading ? (
+                 <div className="flex justify-center items-center h-32">
+                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600" />
+                 </div>
+               ) : (
+                 <>
+                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                     <div className="text-center p-3 bg-blue-50 rounded-lg">
+                       <div className="text-2xl font-bold text-blue-600">
+                         ₹{paymentData.totalSpent.toLocaleString()}
+                       </div>
+                       <p className="text-sm text-muted-foreground">Total Spent</p>
+                     </div>
+                     <div className="text-center p-3 bg-green-50 rounded-lg">
+                       <div className="text-2xl font-bold text-green-600">
+                         {paymentData.confirmedPayments}
+                       </div>
+                       <p className="text-sm text-muted-foreground">Successful Payments</p>
+                     </div>
+                     <div className="text-center p-3 bg-yellow-50 rounded-lg">
+                       <div className="text-2xl font-bold text-yellow-600">
+                         {paymentData.pendingPayments}
+                       </div>
+                       <p className="text-sm text-muted-foreground">Pending Payments</p>
+                     </div>
+                   </div>
+                   <div className="text-center">
+                     <Button variant="outline" asChild>
+                       <a href="/dashboard/payments">View Payment History</a>
+                     </Button>
+                   </div>
+                 </>
+               )}
+             </CardContent>
+           </Card>
+         )}
+
         {/* Quick Actions */}
         {user && (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -297,7 +439,8 @@ export default function DashboardPage() {
                   {recentActivity.length > 0 ? (
                     recentActivity.filter(activity => activity && activity.id && activity.type).map((activity, index) => {
                       // Debug: Log the key to see if there are duplicates
-                      const key = `activity-${activity.type}-${activity.id}-${activity.enrolledAt || activity.purchasedAt}-${index}`;
+                      const date = 'enrolledAt' in activity ? activity.enrolledAt : activity.purchasedAt;
+                      const key = `activity-${activity.type}-${activity.id}-${date}-${index}`;
                       console.log('Activity key:', key, 'Activity:', activity);
                       return (
                         <div key={key} className="flex items-center space-x-4">
@@ -312,7 +455,7 @@ export default function DashboardPage() {
                             }
                           </p>
                           <p className="text-xs text-muted-foreground">
-                            {new Date(activity.enrolledAt || activity.purchasedAt).toLocaleDateString('en-US', {
+                            {new Date(date).toLocaleDateString('en-US', {
                               month: 'short',
                               day: 'numeric',
                               hour: '2-digit',
@@ -355,7 +498,7 @@ export default function DashboardPage() {
                         return (
                           <div key={key} className="p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
                           <p className="font-medium">{course.title}</p>
-                          <p className="text-sm text-muted-foreground">{course.description}</p>
+                          <p className="text-sm text-muted-foreground">Continue your learning journey</p>
                           <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
                             <div 
                               className="bg-blue-600 h-2 rounded-full" 

@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
+import { toast } from "@/hooks/use-toast";
 
 export default function ContactSection() {
   const [formData, setFormData] = useState({
@@ -13,6 +14,7 @@ export default function ContactSection() {
     subject: "",
     message: "",
   });
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -21,18 +23,55 @@ export default function ContactSection() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
-    // Here you would typically send the data to a server
-    // Reset form after submission
-    setFormData({
-      firstName: "",
-      lastName: "",
-      email: "",
-      subject: "",
-      message: "",
-    });
+    setLoading(true);
+
+    try {
+      const response = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          to: 'jithinsj123@gmail.com',
+          from: formData.email,
+          subject: `Contact Form: ${formData.subject}`,
+          text: `Name: ${formData.firstName} ${formData.lastName}\nEmail: ${formData.email}\nSubject: ${formData.subject}\n\nMessage:\n${formData.message}`,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        toast({
+          title: "Message Sent Successfully!",
+          description: "Thank you for contacting us. We'll get back to you soon.",
+          duration: 5000,
+        });
+        
+        // Reset form after successful submission
+        setFormData({
+          firstName: "",
+          lastName: "",
+          email: "",
+          subject: "",
+          message: "",
+        });
+      } else {
+        throw new Error(data.error || 'Failed to send message');
+      }
+    } catch (error) {
+      console.error('Error sending email:', error);
+      toast({
+        title: "Error",
+        description: "Failed to send message. Please try again later.",
+        variant: "destructive",
+        duration: 5000,
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -66,6 +105,7 @@ export default function ContactSection() {
                   value={formData.firstName}
                   onChange={handleChange}
                   className="border-gray-300"
+                  required
                 />
               </div>
               <div>
@@ -75,6 +115,7 @@ export default function ContactSection() {
                   value={formData.lastName}
                   onChange={handleChange}
                   className="border-gray-300"
+                  required
                 />
               </div>
             </div>
@@ -87,6 +128,7 @@ export default function ContactSection() {
                 value={formData.email}
                 onChange={handleChange}
                 className="border-gray-300"
+                required
               />
             </div>
 
@@ -97,6 +139,7 @@ export default function ContactSection() {
                 value={formData.subject}
                 onChange={handleChange}
                 className="border-gray-300"
+                required
               />
             </div>
 
@@ -108,15 +151,17 @@ export default function ContactSection() {
                 value={formData.message}
                 onChange={handleChange}
                 className="border-gray-300 w-full"
+                required
               />
             </div>
 
             <div>
               <Button
                 type="submit"
-                className="w-full bg-black text-white hover:bg-gray-800"
+                disabled={loading}
+                className="w-full bg-black text-white hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Submit
+                {loading ? "Sending..." : "Submit"}
               </Button>
             </div>
           </form>

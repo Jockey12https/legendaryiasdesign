@@ -1,18 +1,18 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { useAuth } from "@/contexts/AuthContext";
+import AuthModal from "@/components/auth/AuthModal";
+import { useRouter } from "next/navigation";
+import { CheckCircle, Users, Award, BookOpen, Clock, Target } from "lucide-react";
 
 export default function HeroSection() {
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
-  });
-
+  const { user } = useAuth();
+  const router = useRouter();
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  
   const [animationComplete, setAnimationComplete] = useState(false);
 
   useEffect(() => {
@@ -24,24 +24,14 @@ export default function HeroSection() {
     return () => clearTimeout(timer);
   }, []);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log("Form submitted:", formData);
-    // Here you would typically send the data to a server
-    // Reset form after submission
-    setFormData({
-      firstName: "",
-      lastName: "",
-      email: "",
-      phone: "",
-    });
-    // Show success message or redirect
-    alert("Thank you for your interest! We'll contact you soon.");
+  const handleEnrollNow = () => {
+    if (user) {
+      // User is logged in, redirect to courses
+      router.push('/courses');
+    } else {
+      // User is not logged in, open auth modal
+      setIsAuthModalOpen(true);
+    }
   };
 
   const containerVariants = {
@@ -66,6 +56,39 @@ export default function HeroSection() {
       }
     }
   };
+
+  const features = [
+    {
+      icon: <Users className="h-6 w-6" />,
+      title: "Expert Mentors",
+      description: "Learn from experienced IAS officers and subject matter experts"
+    },
+    {
+      icon: <BookOpen className="h-6 w-6" />,
+      title: "Comprehensive Curriculum",
+      description: "Structured learning path covering all UPSC subjects"
+    },
+    {
+      icon: <Target className="h-6 w-6" />,
+      title: "Personalized Guidance",
+      description: "One-on-one mentoring tailored to your learning style"
+    },
+    {
+      icon: <Clock className="h-6 w-6" />,
+      title: "Flexible Learning",
+      description: "Study at your own pace with 24/7 access to materials"
+    },
+    {
+      icon: <Award className="h-6 w-6" />,
+      title: "Proven Results",
+      description: "Track record of successful IAS candidates"
+    },
+    {
+      icon: <CheckCircle className="h-6 w-6" />,
+      title: "Mock Tests",
+      description: "Regular assessments to evaluate your progress"
+    }
+  ];
 
   return (
     <section className="relative bg-black text-white overflow-hidden">
@@ -111,72 +134,74 @@ export default function HeroSection() {
                 variant="default"
                 size="lg"
                 className="bg-primary text-secondary hover:bg-primary/90 transform transition-transform duration-300 hover:scale-105"
+                onClick={handleEnrollNow}
               >
-                Enroll Now
+                {user ? 'View Courses' : 'Enroll Now'}
               </Button>
             </motion.div>
           </div>
+          
+          {/* Key Features Grid */}
           <motion.div
-            className="bg-black/60 p-5 md:p-6 rounded-lg border border-gray-700 max-w-md mx-auto lg:ml-auto w-full"
+            className="space-y-4"
             variants={itemVariants}
             initial={{ x: 100, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.4 }}
           >
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
-                <div>
-                  <Input
-                    name="firstName"
-                    placeholder="First Name"
-                    className="bg-transparent border-gray-600 text-white"
-                    value={formData.firstName}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-                <div>
-                  <Input
-                    name="lastName"
-                    placeholder="Last Name"
-                    className="bg-transparent border-gray-600 text-white"
-                    value={formData.lastName}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-              </div>
-              <div>
-                <Input
-                  name="email"
-                  type="email"
-                  placeholder="Email"
-                  className="bg-transparent border-gray-600 text-white"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div>
-                <Input
-                  name="phone"
-                  placeholder="Phone"
-                  className="bg-transparent border-gray-600 text-white"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {features.map((feature, index) => (
+                <motion.div
+                  key={index}
+                  className="bg-black/60 p-4 rounded-lg border border-gray-700 hover:border-primary/50 transition-all duration-300 hover:bg-black/80 group cursor-pointer"
+                  variants={itemVariants}
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.1 * index }}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <div className="flex items-start space-x-3">
+                    <div className="text-primary group-hover:text-primary/80 transition-colors duration-300 flex-shrink-0">
+                      {feature.icon}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-semibold text-white mb-1 group-hover:text-primary transition-colors duration-300 text-sm">
+                        {feature.title}
+                      </h3>
+                      <p className="text-xs text-gray-300 leading-relaxed">
+                        {feature.description}
+                      </p>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+            
+            {/* Additional CTA */}
+            <motion.div
+              className="text-center pt-4"
+              variants={itemVariants}
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.8 }}
+            >
+              <p className="text-sm text-gray-400 mb-3">
+                Ready to start your IAS journey?
+              </p>
               <Button
-                type="submit"
-                className="w-full bg-primary text-secondary hover:bg-primary/90 transform transition-transform duration-300 hover:scale-105"
+                variant="outline"
+                size="sm"
+                className="border-primary text-primary hover:bg-primary hover:text-secondary"
+                onClick={handleEnrollNow}
               >
-                Submit
+                {user ? 'Explore Courses' : 'Get Started Today'}
               </Button>
-            </form>
+            </motion.div>
           </motion.div>
         </motion.div>
       </div>
+      
       <div className="bg-primary text-primary w-full py-3 overflow-hidden">
         <div className="flex animate-marquee whitespace-nowrap">
           <div className="mx-16 text-sm font-semibold uppercase">New Admission Open</div>
@@ -189,6 +214,13 @@ export default function HeroSection() {
           <div className="mx-16 text-sm font-semibold uppercase">New Admission Open</div>
         </div>
       </div>
+
+      {/* Auth Modal */}
+      <AuthModal
+        isOpen={isAuthModalOpen}
+        onClose={() => setIsAuthModalOpen(false)}
+        defaultMode="register"
+      />
     </section>
   );
 }

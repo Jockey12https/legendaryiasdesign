@@ -1,8 +1,79 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { useState } from "react";
+import { toast } from "@/hooks/use-toast";
 
 export default function ContactPage() {
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    subject: "",
+    message: "",
+  });
+  const [loading, setLoading] = useState(false);
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const response = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          to: 'jithinsj123@gmail.com',
+          from: formData.email,
+          subject: `Contact Form: ${formData.subject}`,
+          text: `Name: ${formData.firstName} ${formData.lastName}\nEmail: ${formData.email}\nSubject: ${formData.subject}\n\nMessage:\n${formData.message}`,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        toast({
+          title: "Message Sent Successfully!",
+          description: "Thank you for contacting us. We'll get back to you soon.",
+          duration: 5000,
+        });
+        
+        // Reset form after successful submission
+        setFormData({
+          firstName: "",
+          lastName: "",
+          email: "",
+          subject: "",
+          message: "",
+        });
+      } else {
+        throw new Error(data.error || 'Failed to send message');
+      }
+    } catch (error) {
+      console.error('Error sending email:', error);
+      toast({
+        title: "Error",
+        description: "Failed to send message. Please try again later.",
+        variant: "destructive",
+        duration: 5000,
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div>
       {/* Contact Header */}
@@ -91,20 +162,26 @@ export default function ContactPage() {
               <h2 className="text-3xl font-bold mb-8 text-secondary font-['Oswald']">
                 Send a Message
               </h2>
-              <form className="space-y-6 bg-white p-8 rounded-lg shadow-sm">
+              <form onSubmit={handleSubmit} className="space-y-6 bg-white p-8 rounded-lg shadow-sm">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <Input
                       name="firstName"
                       placeholder="First Name"
+                      value={formData.firstName}
+                      onChange={handleChange}
                       className="border-gray-300"
+                      required
                     />
                   </div>
                   <div>
                     <Input
                       name="lastName"
                       placeholder="Last Name"
+                      value={formData.lastName}
+                      onChange={handleChange}
                       className="border-gray-300"
+                      required
                     />
                   </div>
                 </div>
@@ -114,7 +191,10 @@ export default function ContactPage() {
                     name="email"
                     type="email"
                     placeholder="Email"
+                    value={formData.email}
+                    onChange={handleChange}
                     className="border-gray-300"
+                    required
                   />
                 </div>
 
@@ -122,7 +202,10 @@ export default function ContactPage() {
                   <Input
                     name="subject"
                     placeholder="Subject"
+                    value={formData.subject}
+                    onChange={handleChange}
                     className="border-gray-300"
+                    required
                   />
                 </div>
 
@@ -131,16 +214,20 @@ export default function ContactPage() {
                     name="message"
                     placeholder="Type your message here..."
                     rows={5}
+                    value={formData.message}
+                    onChange={handleChange}
                     className="border-gray-300 w-full"
+                    required
                   />
                 </div>
 
                 <div>
                   <Button
                     type="submit"
-                    className="w-full bg-black text-white hover:bg-gray-800"
+                    disabled={loading}
+                    className="w-full bg-black text-white hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    Submit
+                    {loading ? "Sending..." : "Submit"}
                   </Button>
                 </div>
               </form>

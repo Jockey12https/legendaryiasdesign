@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import { Menu, X, User, LogOut, Shield, ChevronDown, Users, BookOpen } from "lucide-react";
+import { Menu, X, User, LogOut, Shield, ChevronDown, Users, BookOpen, FileText } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useAdminAuth } from "@/hooks/useAdminAuth";
 import AuthModal from "@/components/auth/AuthModal";
@@ -216,6 +216,17 @@ export default function Header() {
                       <User className="mr-2 h-4 w-4" />
                       <span>Profile</span>
                     </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <a 
+                      href="https://legendaryiasmentor.ezexam.in/login" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="flex items-center"
+                    >
+                      <FileText className="mr-2 h-4 w-4" />
+                      <span>Exam</span>
+                    </a>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={handleLogout}>
