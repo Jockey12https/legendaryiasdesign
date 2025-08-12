@@ -157,7 +157,7 @@ export default function CommunitySection() {
           </div>
 
           {/* Navigation Arrows */}
-          <button
+          {/*<button
             onClick={goToPrevious}
             className="absolute left-2 top-1/2 -translate-y-1/2 p-2 bg-white/80 hover:bg-white rounded-full shadow-lg transition-all duration-300 hover:scale-110 z-10"
           >
@@ -169,7 +169,7 @@ export default function CommunitySection() {
             className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-white/80 hover:bg-white rounded-full shadow-lg transition-all duration-300 hover:scale-110 z-10"
           >
             <ChevronRight className="w-6 h-6 text-gray-800" />
-          </button>
+          </button>*/}
 
           {/* Dots Navigation */}
           <div className="absolute bottom-4 left-0 right-0 flex justify-center space-x-2">
