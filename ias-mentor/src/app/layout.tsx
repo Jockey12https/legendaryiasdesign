@@ -26,6 +26,13 @@ export const metadata: Metadata = {
   description: "Leading online academy for individuals aspiring to excel in civil services.",
 };
 
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+};
+
 // Mock data - replace with actual data from your backend
 const mockAnnouncements = [
   {
@@ -81,7 +88,7 @@ export default function RootLayout({
       <ClientBody>
         <AuthProvider>
           <ContentManagementProvider>
-            <div className="flex flex-col min-h-screen">
+            <div className="flex flex-col min-h-screen overflow-x-hidden">
               <Header />
               <ClientOnly>
                 <AnnouncementBanner 
@@ -89,7 +96,7 @@ export default function RootLayout({
                   isEnabled={false}
                 />
               </ClientOnly>
-              <main className="flex-grow">{children}</main>
+              <main className="flex-grow overflow-x-hidden">{children}</main>
               <Footer />
               <ClientOnly>
                 <LiveUpdatesWidget 

@@ -11,10 +11,11 @@ import { Shield, Lock, User, Eye, EyeOff } from 'lucide-react';
 interface AdminLoginModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSuccess: () => void;
+  onSuccess?: () => void;
+  login?: () => void;
 }
 
-export default function AdminLoginModal({ isOpen, onClose, onSuccess }: AdminLoginModalProps) {
+export default function AdminLoginModal({ isOpen, onClose, onSuccess, login }: AdminLoginModalProps) {
   const [step, setStep] = useState<'access-code' | 'login'>('access-code');
   const [accessCode, setAccessCode] = useState('');
   const [username, setUsername] = useState('');
@@ -28,9 +29,6 @@ export default function AdminLoginModal({ isOpen, onClose, onSuccess }: AdminLog
     setError('');
     
     const adminSecret = process.env.NEXT_PUBLIC_ADMIN_SECRET || 'ADMIN_SECRET';
-    
-    // Debug: Log the admin secret (remove in production)
-    console.log('Admin secret check:', adminSecret ? 'Set' : 'Not set');
     
     if (accessCode === adminSecret) {
       setStep('login');
@@ -51,7 +49,9 @@ export default function AdminLoginModal({ isOpen, onClose, onSuccess }: AdminLog
         localStorage.setItem('adminAuthenticated', 'true');
         localStorage.setItem('adminLoginTime', new Date().toISOString());
         
-        onSuccess();
+        // Call the login function from the hook to update the state
+        login?.();
+        onSuccess?.();
         onClose();
         resetForm();
       } else {

@@ -38,7 +38,7 @@ export default function Header() {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isAdminModalOpen, setIsAdminModalOpen] = useState(false);
   const { user, logout } = useAuth();
-  const { isAdminAuthenticated, logout: adminLogout } = useAdminAuth();
+  const { isAdminAuthenticated, logout: adminLogout, login } = useAdminAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -478,6 +478,7 @@ export default function Header() {
           // Redirect to admin analytics dashboard
           window.location.href = '/admin/analytics';
         }}
+        login={login}
       />
     </header>
   );

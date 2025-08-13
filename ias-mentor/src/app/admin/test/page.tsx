@@ -1,12 +1,16 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useAdminAuth } from '@/hooks/useAdminAuth';
+import AdminLoginModal from '@/components/auth/AdminLoginModal';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { CheckCircle, XCircle, Loader2 } from 'lucide-react';
+import { CheckCircle, XCircle, Loader2, Shield, LogOut } from 'lucide-react';
 
 export default function AdminTestPage() {
+  const { isAdminAuthenticated, logout, login } = useAdminAuth();
+  const [isAdminModalOpen, setIsAdminModalOpen] = useState(false);
   const [payments, setPayments] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -38,12 +42,52 @@ export default function AdminTestPage() {
   };
 
   useEffect(() => {
-    fetchPayments();
-  }, []);
+    if (isAdminAuthenticated) {
+      fetchPayments();
+    }
+  }, [isAdminAuthenticated]);
+
+  // Show login modal if not authenticated
+  if (!isAdminAuthenticated) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="max-w-md w-full mx-auto p-6">
+          <div className="text-center mb-8">
+            <Shield className="h-16 w-16 text-gray-400 mx-auto mb-4" />
+            <h1 className="text-2xl font-bold text-gray-900 mb-2">Admin Access Required</h1>
+            <p className="text-gray-600">Please log in to access the admin test page.</p>
+          </div>
+          <Button 
+            onClick={() => setIsAdminModalOpen(true)}
+            className="w-full bg-primary hover:bg-primary/90 text-secondary"
+          >
+            Admin Login
+          </Button>
+        </div>
+        
+        <AdminLoginModal
+          isOpen={isAdminModalOpen}
+          onClose={() => setIsAdminModalOpen(false)}
+          onSuccess={login}
+          login={login}
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto py-8 px-4">
-      <h1 className="text-3xl font-bold mb-8">Admin Test Page</h1>
+      <div className="flex items-center justify-between mb-8">
+        <h1 className="text-3xl font-bold">Admin Test Page</h1>
+        <Button
+          onClick={logout}
+          variant="outline"
+          className="flex items-center space-x-2"
+        >
+          <LogOut className="h-4 w-4" />
+          <span>Logout</span>
+        </Button>
+      </div>
       
       <Card className="mb-6">
         <CardHeader>

@@ -50,7 +50,7 @@ interface BookOnlineCourse {
 }
 
 export default function ManageCoursesPage() {
-  const { isAdminAuthenticated, logout } = useAdminAuth();
+  const { isAdminAuthenticated, logout, login } = useAdminAuth();
   const [isAdminModalOpen, setIsAdminModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("courses");
   const [loading, setLoading] = useState(true);
@@ -228,7 +228,12 @@ export default function ManageCoursesPage() {
             <Shield className="mr-2 h-4 w-4" />
             Admin Login
           </Button>
-          <AdminLoginModal isOpen={isAdminModalOpen} onClose={closeAdminModal} />
+          <AdminLoginModal 
+            isOpen={isAdminModalOpen} 
+            onClose={closeAdminModal} 
+            onSuccess={login}
+            login={login}
+          />
         </div>
       </div>
     );

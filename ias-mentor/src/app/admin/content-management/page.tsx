@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useAdminAuth } from "@/hooks/useAdminAuth";
+import AdminLoginModal from "@/components/auth/AdminLoginModal";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -28,12 +30,16 @@ import {
   EyeOff,
   Save,
   X,
-  Loader2
+  Loader2,
+  LogOut,
+  Shield
 } from "lucide-react";
 
 
 
 export default function ContentManagementPage() {
+  const { isAdminAuthenticated, logout, login } = useAdminAuth();
+  const [isAdminModalOpen, setIsAdminModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("announcements");
   const [isEditing, setIsEditing] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -62,30 +68,32 @@ export default function ContentManagementPage() {
 
   // Load data from Firebase on mount
   useEffect(() => {
-    const loadData = async () => {
-      try {
-        setIsLoading(true);
-        const [announcementsData, newsData, coursesData, eventsData] = await Promise.all([
-          ContentManagementService.getAllAnnouncements(),
-          ContentManagementService.getNewsItems(),
-          ContentManagementService.getCourses(),
-          ContentManagementService.getCalendarEvents()
-        ]);
-        
-        console.log('Loaded announcements:', announcementsData);
-        setAnnouncements(announcementsData);
-        setNewsItems(newsData);
-        setCourses(coursesData);
-        setCalendarEvents(eventsData);
-      } catch (error) {
-        console.error('Error loading data:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+    if (isAdminAuthenticated) {
+      const loadData = async () => {
+        try {
+          setIsLoading(true);
+          const [announcementsData, newsData, coursesData, eventsData] = await Promise.all([
+            ContentManagementService.getAllAnnouncements(),
+            ContentManagementService.getNewsItems(),
+            ContentManagementService.getCourses(),
+            ContentManagementService.getCalendarEvents()
+          ]);
+          
+          console.log('Loaded announcements:', announcementsData);
+          setAnnouncements(announcementsData);
+          setNewsItems(newsData);
+          setCourses(coursesData);
+          setCalendarEvents(eventsData);
+        } catch (error) {
+          console.error('Error loading data:', error);
+        } finally {
+          setIsLoading(false);
+        }
+      };
 
-    loadData();
-  }, []);
+      loadData();
+    }
+  }, [isAdminAuthenticated]);
 
   const handleToggleAnnouncement = async (id: string, isActive: boolean) => {
     try {
@@ -169,13 +177,53 @@ export default function ContentManagementPage() {
     setCalendarEvents(updatedEvents);
   };
 
+  // Show login modal if not authenticated
+  if (!isAdminAuthenticated) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="max-w-md w-full mx-auto p-6">
+          <div className="text-center mb-8">
+            <Shield className="h-16 w-16 text-gray-400 mx-auto mb-4" />
+            <h1 className="text-2xl font-bold text-gray-900 mb-2">Admin Access Required</h1>
+            <p className="text-gray-600">Please log in to access the content management system.</p>
+          </div>
+          <Button 
+            onClick={() => setIsAdminModalOpen(true)}
+            className="w-full bg-primary hover:bg-primary/90 text-secondary"
+          >
+            Admin Login
+          </Button>
+        </div>
+        
+        <AdminLoginModal
+          isOpen={isAdminModalOpen}
+          onClose={() => setIsAdminModalOpen(false)}
+          onSuccess={login}
+          login={login}
+        />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-7xl mx-auto px-4 md:px-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Content Management</h1>
-          <p className="text-gray-600">Manage announcements, news, courses, and calendar events</p>
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">Content Management</h1>
+              <p className="text-gray-600">Manage announcements, news, courses, and calendar events</p>
+            </div>
+            <Button
+              onClick={logout}
+              variant="outline"
+              className="flex items-center space-x-2"
+            >
+              <LogOut className="h-4 w-4" />
+              <span>Logout</span>
+            </Button>
+          </div>
         </div>
 
         {/* Global Settings */}
@@ -260,22 +308,26 @@ export default function ContentManagementPage() {
 
         {/* Content Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="announcements" className="flex items-center space-x-2">
-              <Bell className="h-4 w-4" />
-              <span>Announcements</span>
+          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 gap-1 sm:gap-2">
+            <TabsTrigger value="announcements" className="flex items-center space-x-1 sm:space-x-2 text-xs sm:text-sm">
+              <Bell className="h-3 w-3 sm:h-4 sm:w-4" />
+              <span className="hidden sm:inline">Announcements</span>
+              <span className="sm:hidden">Announce</span>
             </TabsTrigger>
-            <TabsTrigger value="news" className="flex items-center space-x-2">
-              <FileText className="h-4 w-4" />
-              <span>News & Updates</span>
+            <TabsTrigger value="news" className="flex items-center space-x-1 sm:space-x-2 text-xs sm:text-sm">
+              <FileText className="h-3 w-3 sm:h-4 sm:w-4" />
+              <span className="hidden sm:inline">News & Updates</span>
+              <span className="sm:hidden">News</span>
             </TabsTrigger>
-            <TabsTrigger value="courses" className="flex items-center space-x-2">
-              <BookOpen className="h-4 w-4" />
-              <span>Courses</span>
+            <TabsTrigger value="courses" className="flex items-center space-x-1 sm:space-x-2 text-xs sm:text-sm">
+              <BookOpen className="h-3 w-3 sm:h-4 sm:w-4" />
+              <span className="hidden sm:inline">Courses</span>
+              <span className="sm:hidden">Courses</span>
             </TabsTrigger>
-            <TabsTrigger value="calendar" className="flex items-center space-x-2">
-              <Calendar className="h-4 w-4" />
-              <span>Calendar Events</span>
+            <TabsTrigger value="calendar" className="flex items-center space-x-1 sm:space-x-2 text-xs sm:text-sm">
+              <Calendar className="h-3 w-3 sm:h-4 sm:w-4" />
+              <span className="hidden sm:inline">Calendar Events</span>
+              <span className="sm:hidden">Calendar</span>
             </TabsTrigger>
           </TabsList>
 
@@ -283,10 +335,10 @@ export default function ContentManagementPage() {
           <TabsContent value="announcements" className="mt-6">
             <Card>
               <CardHeader>
-                                  <div className="flex items-center justify-between">
-                    <CardTitle>Manage Announcements</CardTitle>
-                    <Button className="flex items-center space-x-2" onClick={handleAddAnnouncement}>
-                      <Plus className="h-4 w-4" />
+                                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-2 sm:space-y-0">
+                    <CardTitle className="text-lg sm:text-xl">Manage Announcements</CardTitle>
+                    <Button className="flex items-center space-x-1 sm:space-x-2 text-xs sm:text-sm" onClick={handleAddAnnouncement}>
+                      <Plus className="h-3 w-3 sm:h-4 sm:w-4" />
                       <span>Add Announcement</span>
                     </Button>
                   </div>
@@ -309,19 +361,19 @@ export default function ContentManagementPage() {
                       key={announcement.id}
                       className="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition-colors"
                     >
-                      <div className="flex items-start justify-between">
+                      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between space-y-3 sm:space-y-0">
                         <div className="flex-1">
-                          <div className="flex items-center space-x-2 mb-2">
-                            <h3 className="font-semibold text-lg">{announcement.title}</h3>
-                            <Badge variant={announcement.priority === 'high' ? 'destructive' : 'secondary'}>
+                          <div className="flex flex-wrap items-center gap-1 sm:gap-2 mb-2">
+                            <h3 className="font-semibold text-base sm:text-lg">{announcement.title}</h3>
+                            <Badge variant={announcement.priority === 'high' ? 'destructive' : 'secondary'} className="text-xs">
                               {announcement.priority}
                             </Badge>
-                            <Badge variant="outline">
+                            <Badge variant="outline" className="text-xs">
                               {announcement.category}
                             </Badge>
                           </div>
-                          <p className="text-gray-600 mb-2">{announcement.content}</p>
-                          <div className="flex items-center space-x-4 text-sm text-gray-500">
+                          <p className="text-gray-600 mb-2 text-sm">{announcement.content}</p>
+                          <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4 text-xs sm:text-sm text-gray-500 space-y-1 sm:space-y-0">
                             <span>Created: {announcement.createdAt.toLocaleDateString()}</span>
                             {announcement.expiresAt && (
                               <span>Expires: {announcement.expiresAt.toLocaleDateString()}</span>
@@ -368,13 +420,13 @@ export default function ContentManagementPage() {
            <TabsContent value="news" className="mt-6">
              <Card>
                <CardHeader>
-                 <div className="flex items-center justify-between">
-                   <CardTitle>Manage News & Updates</CardTitle>
-                   <Button className="flex items-center space-x-2" onClick={() => {
+                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-2 sm:space-y-0">
+                   <CardTitle className="text-lg sm:text-xl">Manage News & Updates</CardTitle>
+                   <Button className="flex items-center space-x-1 sm:space-x-2 text-xs sm:text-sm" onClick={() => {
                      setEditingNews(undefined);
                      setShowNewsForm(true);
                    }}>
-                     <Plus className="h-4 w-4" />
+                     <Plus className="h-3 w-3 sm:h-4 sm:w-4" />
                      <span>Add News Item</span>
                    </Button>
                  </div>
@@ -397,24 +449,24 @@ export default function ContentManagementPage() {
                          key={newsItem.id}
                          className="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition-colors"
                        >
-                         <div className="flex items-start justify-between">
+                         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between space-y-3 sm:space-y-0">
                            <div className="flex-1">
-                             <div className="flex items-center space-x-2 mb-2">
-                               <h3 className="font-semibold text-lg">{newsItem.title}</h3>
-                               <Badge variant={newsItem.priority === 'high' ? 'destructive' : 'secondary'}>
+                             <div className="flex flex-wrap items-center gap-1 sm:gap-2 mb-2">
+                               <h3 className="font-semibold text-base sm:text-lg">{newsItem.title}</h3>
+                               <Badge variant={newsItem.priority === 'high' ? 'destructive' : 'secondary'} className="text-xs">
                                  {newsItem.priority}
                                </Badge>
-                               <Badge variant="outline">
+                               <Badge variant="outline" className="text-xs">
                                  {newsItem.category}
                                </Badge>
                                {newsItem.isFeatured && (
-                                 <Badge variant="default" className="bg-yellow-500">
+                                 <Badge variant="default" className="bg-yellow-500 text-xs">
                                    Featured
                                  </Badge>
                                )}
                              </div>
-                             <p className="text-gray-600 mb-2">{newsItem.content}</p>
-                             <div className="flex items-center space-x-4 text-sm text-gray-500">
+                             <p className="text-gray-600 mb-2 text-sm">{newsItem.content}</p>
+                             <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4 text-xs sm:text-sm text-gray-500 space-y-1 sm:space-y-0">
                                <span>Published: {newsItem.publishedAt?.toLocaleDateString()}</span>
                                <span>Read Time: {newsItem.readTime}</span>
                                {newsItem.image && (
@@ -456,13 +508,13 @@ export default function ContentManagementPage() {
            <TabsContent value="courses" className="mt-6">
              <Card>
                <CardHeader>
-                 <div className="flex items-center justify-between">
-                   <CardTitle>Manage Courses</CardTitle>
-                   <Button className="flex items-center space-x-2" onClick={() => {
+                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-2 sm:space-y-0">
+                   <CardTitle className="text-lg sm:text-xl">Manage Courses</CardTitle>
+                   <Button className="flex items-center space-x-1 sm:space-x-2 text-xs sm:text-sm" onClick={() => {
                      setEditingCourse(undefined);
                      setShowCourseForm(true);
                    }}>
-                     <Plus className="h-4 w-4" />
+                     <Plus className="h-3 w-3 sm:h-4 sm:w-4" />
                      <span>Add Course</span>
                    </Button>
                  </div>
@@ -485,21 +537,21 @@ export default function ContentManagementPage() {
                          key={course.id}
                          className="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition-colors"
                        >
-                         <div className="flex items-start justify-between">
+                         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between space-y-3 sm:space-y-0">
                            <div className="flex-1">
-                             <div className="flex items-center space-x-2 mb-2">
-                               <h3 className="font-semibold text-lg">{course.title}</h3>
-                               <Badge variant="outline">
+                             <div className="flex flex-wrap items-center gap-1 sm:gap-2 mb-2">
+                               <h3 className="font-semibold text-base sm:text-lg">{course.title}</h3>
+                               <Badge variant="outline" className="text-xs">
                                  {course.category}
                                </Badge>
                                {course.isSpecialOffer && (
-                                 <Badge variant="default" className="bg-red-500">
+                                 <Badge variant="default" className="bg-red-500 text-xs">
                                    Special Offer
                                  </Badge>
                                )}
                              </div>
-                             <p className="text-gray-600 mb-2">{course.description}</p>
-                             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm text-gray-500">
+                             <p className="text-gray-600 mb-2 text-sm">{course.description}</p>
+                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4 text-xs sm:text-sm text-gray-500">
                                <div>
                                  <span className="font-medium">Duration:</span> {course.duration}
                                </div>
@@ -513,7 +565,7 @@ export default function ContentManagementPage() {
                                  <span className="font-medium">Success Rate:</span> {course.successRate}%
                                </div>
                              </div>
-                             <div className="mt-2 text-sm text-gray-500">
+                             <div className="mt-2 text-xs sm:text-sm text-gray-500">
                                <span className="font-medium">Start Date:</span> {course.batchStartDate?.toLocaleDateString()}
                              </div>
                            </div>
@@ -551,13 +603,13 @@ export default function ContentManagementPage() {
            <TabsContent value="calendar" className="mt-6">
              <Card>
                <CardHeader>
-                 <div className="flex items-center justify-between">
-                   <CardTitle>Manage Calendar Events</CardTitle>
-                   <Button className="flex items-center space-x-2" onClick={() => {
+                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-2 sm:space-y-0">
+                   <CardTitle className="text-lg sm:text-xl">Manage Calendar Events</CardTitle>
+                   <Button className="flex items-center space-x-1 sm:space-x-2 text-xs sm:text-sm" onClick={() => {
                      setEditingEvent(undefined);
                      setShowCalendarForm(true);
                    }}>
-                     <Plus className="h-4 w-4" />
+                     <Plus className="h-3 w-3 sm:h-4 sm:w-4" />
                      <span>Add Event</span>
                    </Button>
                  </div>
@@ -580,24 +632,24 @@ export default function ContentManagementPage() {
                          key={event.id}
                          className="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition-colors"
                        >
-                         <div className="flex items-start justify-between">
+                         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between space-y-3 sm:space-y-0">
                            <div className="flex-1">
-                             <div className="flex items-center space-x-2 mb-2">
-                               <h3 className="font-semibold text-lg">{event.title}</h3>
-                               <Badge variant={event.priority === 'high' ? 'destructive' : 'secondary'}>
+                             <div className="flex flex-wrap items-center gap-1 sm:gap-2 mb-2">
+                               <h3 className="font-semibold text-base sm:text-lg">{event.title}</h3>
+                               <Badge variant={event.priority === 'high' ? 'destructive' : 'secondary'} className="text-xs">
                                  {event.priority}
                                </Badge>
-                               <Badge variant="outline">
+                               <Badge variant="outline" className="text-xs">
                                  {event.type}
                                </Badge>
                                {event.isRecurring && (
-                                 <Badge variant="default" className="bg-blue-500">
+                                 <Badge variant="default" className="bg-blue-500 text-xs">
                                    Recurring
                                  </Badge>
                                )}
                              </div>
-                             <p className="text-gray-600 mb-2">{event.description}</p>
-                             <div className="flex items-center space-x-4 text-sm text-gray-500">
+                             <p className="text-gray-600 mb-2 text-sm">{event.description}</p>
+                             <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4 text-xs sm:text-sm text-gray-500 space-y-1 sm:space-y-0">
                                <span>Date: {event.date?.toLocaleDateString()}</span>
                                {event.isRecurring && event.recurringPattern && (
                                  <span>Pattern: {event.recurringPattern}</span>

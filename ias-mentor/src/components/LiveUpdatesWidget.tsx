@@ -92,33 +92,34 @@ export default function LiveUpdatesWidget({ updates, onMarkAsRead, onDismiss }: 
   }
 
   return (
-    <div className="fixed bottom-4 right-4 z-50 max-w-sm w-full">
+    <div className="fixed bottom-2 sm:bottom-4 right-2 sm:right-4 z-50 w-[calc(100vw-1rem)] sm:w-auto sm:max-w-sm">
       {/* Live Updates Toggle Button */}
       <div className="flex justify-end mb-2">
         <Button
           onClick={() => setIsExpanded(!isExpanded)}
-          className="bg-primary hover:bg-primary/90 text-white rounded-full shadow-lg"
+          className="bg-primary hover:bg-primary/90 text-white rounded-full shadow-lg text-xs sm:text-sm px-3 sm:px-4"
           size="sm"
         >
-          <Bell className="h-4 w-4 mr-2" />
-          Live Updates
+          <Bell className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
+          <span className="hidden sm:inline">Live Updates</span>
+          <span className="sm:hidden">Updates</span>
           {unreadCount > 0 && (
-            <Badge className="ml-2 bg-red-600 text-white text-xs">
+            <Badge className="ml-1 sm:ml-2 bg-red-600 text-white text-xs">
               {unreadCount}
             </Badge>
           )}
-          {isExpanded ? <ChevronDown className="h-4 w-4 ml-2" /> : <ChevronUp className="h-4 w-4 ml-2" />}
+          {isExpanded ? <ChevronDown className="h-3 w-3 sm:h-4 sm:w-4 ml-1 sm:ml-2" /> : <ChevronUp className="h-3 w-3 sm:h-4 sm:w-4 ml-1 sm:ml-2" />}
         </Button>
       </div>
 
       {/* Updates Panel */}
       {isExpanded && (
-        <div className="bg-white rounded-lg shadow-xl border border-gray-200 max-h-96 overflow-hidden">
+        <div className="bg-white rounded-lg shadow-xl border border-gray-200 max-h-80 sm:max-h-96 overflow-hidden">
           {/* Header */}
-          <div className="bg-primary text-white px-4 py-3 flex items-center justify-between">
-            <div className="flex items-center space-x-2">
-              <Bell className="h-4 w-4" />
-              <span className="font-semibold">Live Updates</span>
+          <div className="bg-primary text-white px-3 sm:px-4 py-2 sm:py-3 flex items-center justify-between">
+            <div className="flex items-center space-x-1 sm:space-x-2">
+              <Bell className="h-3 w-3 sm:h-4 sm:w-4" />
+              <span className="font-semibold text-sm sm:text-base">Live Updates</span>
               {unreadCount > 0 && (
                 <Badge className="bg-red-600 text-white text-xs">
                   {unreadCount} new
@@ -129,16 +130,16 @@ export default function LiveUpdatesWidget({ updates, onMarkAsRead, onDismiss }: 
               variant="ghost"
               size="sm"
               onClick={() => setIsVisible(false)}
-              className="text-white hover:bg-white/20 h-6 w-6 p-0"
+              className="text-white hover:bg-white/20 h-5 w-5 sm:h-6 sm:w-6 p-0"
             >
-              <X className="h-3 w-3" />
+              <X className="h-2 w-2 sm:h-3 sm:w-3" />
             </Button>
           </div>
 
           {/* Updates List */}
-          <div className="max-h-80 overflow-y-auto">
+          <div className="max-h-60 sm:max-h-80 overflow-y-auto">
             {activeUpdates.length === 0 ? (
-              <div className="p-4 text-center text-gray-500">
+              <div className="p-3 sm:p-4 text-center text-gray-500 text-sm">
                 No updates at the moment
               </div>
             ) : (
@@ -148,16 +149,16 @@ export default function LiveUpdatesWidget({ updates, onMarkAsRead, onDismiss }: 
                   return (
                     <div
                       key={update.id}
-                      className={`p-4 hover:bg-gray-50 transition-colors ${
+                      className={`p-3 sm:p-4 hover:bg-gray-50 transition-colors ${
                         !update.isRead ? 'bg-blue-50' : ''
                       }`}
                     >
-                      <div className="flex items-start space-x-3">
-                        <Icon className={`h-5 w-5 mt-0.5 flex-shrink-0 ${
+                      <div className="flex items-start space-x-2 sm:space-x-3">
+                        <Icon className={`h-4 w-4 sm:h-5 sm:w-5 mt-0.5 flex-shrink-0 ${
                           update.type === 'urgent' ? 'text-red-600' : 'text-gray-600'
                         }`} />
                         <div className="flex-1 min-w-0">
-                          <div className="flex items-center justify-between mb-1">
+                          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-1 space-y-1 sm:space-y-0">
                             <Badge className={updateColors[update.type]}>
                               {updateLabels[update.type]}
                             </Badge>
@@ -180,7 +181,7 @@ export default function LiveUpdatesWidget({ updates, onMarkAsRead, onDismiss }: 
                           <p className="text-sm text-gray-600 line-clamp-2 mb-2">
                             {update.content}
                           </p>
-                          <div className="flex items-center justify-between">
+                          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-1 sm:space-y-0">
                             <div className="flex space-x-2">
                               {!update.isRead && (
                                 <Button
@@ -212,8 +213,8 @@ export default function LiveUpdatesWidget({ updates, onMarkAsRead, onDismiss }: 
           </div>
 
           {/* Footer */}
-          <div className="bg-gray-50 px-4 py-2 border-t border-gray-200">
-            <div className="flex items-center justify-between text-xs text-gray-500">
+          <div className="bg-gray-50 px-3 sm:px-4 py-2 border-t border-gray-200">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between text-xs text-gray-500 space-y-1 sm:space-y-0">
               <span>Auto-refresh every 30s</span>
               <span>{activeUpdates.length} updates</span>
             </div>

@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -35,6 +36,8 @@ const courses = [
 ];
 
 export default function CoursesSection() {
+  const router = useRouter();
+  
   return (
     <section className="py-16 bg-white">
       <div className="max-w-7xl mx-auto px-4 md:px-8">
@@ -54,8 +57,13 @@ export default function CoursesSection() {
                 <Button
                   variant="link"
                   className="p-0 text-primary hover:text-primary/80 font-semibold"
+                  onClick={() => {
+                    // Redirect to courses page
+                    router.push('/courses');
+                  }}
                 >
                   Read More
+                  
                 </Button>
               </CardFooter>
             </Card>

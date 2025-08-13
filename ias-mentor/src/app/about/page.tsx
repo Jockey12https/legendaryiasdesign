@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { useEffect, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const mentors = [
   {
@@ -57,6 +58,7 @@ const mentors = [
 ];
 
 export default function AboutPage() {
+  const router = useRouter();
   const [currentSlide, setCurrentSlide] = useState(0);
   const carouselRef = useRef<HTMLDivElement>(null);
 
@@ -79,6 +81,10 @@ export default function AboutPage() {
 
     return () => clearInterval(interval);
   }, [currentSlide]);
+
+  const handleEnrollClick = () => {
+    router.push('/courses');
+  };
 
   return (
     <div>
@@ -115,6 +121,7 @@ export default function AboutPage() {
               </p>
               <Button
                 className="bg-black text-white hover:bg-gray-800"
+                onClick={handleEnrollClick}
               >
                 Enroll Now
               </Button>

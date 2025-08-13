@@ -260,6 +260,7 @@ export default function AdminPaymentsPage() {
           isOpen={showLoginModal}
           onClose={() => setShowLoginModal(false)}
           onSuccess={login}
+          login={login}
         />
       </div>
     );

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import HeroSection from "@/components/sections/HeroSection";
 import CoursesSection from "@/components/sections/CoursesSection";
 import CommunitySection from "@/components/sections/CommunitySection";
@@ -233,6 +234,7 @@ const mockCalendarEvents = [
 ];
 
 export default function Home() {
+  const router = useRouter();
   const { state } = useContentManagement();
   const [firebaseNewsItems, setFirebaseNewsItems] = useState<NewsItem[]>([]);
   const [firebaseCourses, setFirebaseCourses] = useState<Course[]>([]);
@@ -263,7 +265,7 @@ export default function Home() {
   }, [state.newsSectionEnabled, state.courseShowcaseEnabled, state.calendarEnabled]);
 
   return (
-    <>
+    <div className="overflow-x-hidden">
       <HeroSection />
       {state.newsSectionEnabled && (
         <ClientOnly>
@@ -272,7 +274,13 @@ export default function Home() {
       )}
       {state.courseShowcaseEnabled && (
         <ClientOnly>
-          <CourseShowcaseCarousel courses={firebaseCourses.length > 0 ? firebaseCourses : mockCourses} />
+          <CourseShowcaseCarousel 
+            courses={firebaseCourses.length > 0 ? firebaseCourses : mockCourses} 
+            onEnroll={(courseId) => {
+              // Redirect to courses page
+              router.push('/courses');
+            }}
+          />
         </ClientOnly>
       )}
       {state.calendarEnabled && (
@@ -285,6 +293,6 @@ export default function Home() {
       <VisionSection />
       <TestimonialsSection />
       <ContactSection />
-    </>
+    </div>
   );
 }

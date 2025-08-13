@@ -1,17 +1,25 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useAdminAuth } from '@/hooks/useAdminAuth';
+import AdminLoginModal from '@/components/auth/AdminLoginModal';
+import { Button } from '@/components/ui/button';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '@/utils/firebase';
+import { Shield, LogOut } from 'lucide-react';
 
 export default function TestAnalyticsPage() {
+  const { isAdminAuthenticated, logout, login } = useAdminAuth();
+  const [isAdminModalOpen, setIsAdminModalOpen] = useState(false);
   const [usersData, setUsersData] = useState<any[]>([]);
   const [paymentsData, setPaymentsData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    loadData();
-  }, []);
+    if (isAdminAuthenticated) {
+      loadData();
+    }
+  }, [isAdminAuthenticated]);
 
   const loadData = async () => {
     try {
@@ -66,6 +74,34 @@ export default function TestAnalyticsPage() {
     }, 0);
   };
 
+  // Show login modal if not authenticated
+  if (!isAdminAuthenticated) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="max-w-md w-full mx-auto p-6">
+          <div className="text-center mb-8">
+            <Shield className="h-16 w-16 text-gray-400 mx-auto mb-4" />
+            <h1 className="text-2xl font-bold text-gray-900 mb-2">Admin Access Required</h1>
+            <p className="text-gray-600">Please log in to access the test analytics.</p>
+          </div>
+          <Button 
+            onClick={() => setIsAdminModalOpen(true)}
+            className="w-full bg-primary hover:bg-primary/90 text-secondary"
+          >
+            Admin Login
+          </Button>
+        </div>
+        
+        <AdminLoginModal
+          isOpen={isAdminModalOpen}
+          onClose={() => setIsAdminModalOpen(false)}
+          onSuccess={login}
+          login={login}
+        />
+      </div>
+    );
+  }
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -74,7 +110,17 @@ export default function TestAnalyticsPage() {
 
   return (
     <div className="p-8">
-      <h1 className="text-2xl font-bold mb-6">Analytics Test Page</h1>
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="text-2xl font-bold">Analytics Test Page</h1>
+        <Button
+          onClick={logout}
+          variant="outline"
+          className="flex items-center space-x-2"
+        >
+          <LogOut className="h-4 w-4" />
+          <span>Logout</span>
+        </Button>
+      </div>
       
       <div className="grid grid-cols-2 gap-4 mb-6">
         <div className="border p-4 rounded">

@@ -101,22 +101,22 @@ export default function HeroSection() {
       {/* Overlay gradient */}
       <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-transparent z-0"></div>
 
-      <div className="relative z-10 py-12 md:py-16 lg:py-24 max-w-7xl mx-auto px-4 md:px-8">
+      <div className="relative z-10 py-8 sm:py-12 md:py-16 lg:py-24 max-w-7xl mx-auto px-3 sm:px-4 md:px-8">
         <motion.div
-          className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center"
+          className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 items-center"
           initial="hidden"
           animate="visible"
           variants={containerVariants}
         >
           <div>
             <motion.h1
-              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6 font-['Oswald'] uppercase tracking-wide text-primary"
+              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-3 sm:mb-4 md:mb-6 font-['Oswald'] uppercase tracking-wide text-primary leading-tight"
               variants={itemVariants}
             >
               Legendary IAS Mentor
             </motion.h1>
             <motion.p
-              className="text-base md:text-lg mb-6 md:mb-8 max-w-xl"
+              className="text-sm sm:text-base md:text-lg mb-4 sm:mb-6 md:mb-8 max-w-xl"
               variants={itemVariants}
             >
               Legendary IAS Mentor is a leading online academy for individuals aspiring to excel in
@@ -124,7 +124,7 @@ export default function HeroSection() {
               guidance to help students achieve success in the IAS examinations.
             </motion.p>
             <motion.p
-              className="text-base md:text-lg mb-6 md:mb-8 max-w-xl"
+              className="text-sm sm:text-base md:text-lg mb-4 sm:mb-6 md:mb-8 max-w-xl"
               variants={itemVariants}
             >
               Join us to embark on a transformative learning journey and unlock your true potential.
@@ -149,11 +149,11 @@ export default function HeroSection() {
             animate={{ x: 0, opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.4 }}
           >
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
               {features.map((feature, index) => (
                 <motion.div
                   key={index}
-                  className="bg-black/60 p-4 rounded-lg border border-gray-700 hover:border-primary/50 transition-all duration-300 hover:bg-black/80 group cursor-pointer"
+                  className="bg-black/60 p-3 sm:p-4 rounded-lg border border-gray-700 hover:border-primary/50 transition-all duration-300 hover:bg-black/80 group cursor-pointer"
                   variants={itemVariants}
                   initial={{ y: 20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
@@ -161,12 +161,12 @@ export default function HeroSection() {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
-                  <div className="flex items-start space-x-3">
+                  <div className="flex items-start space-x-2 sm:space-x-3">
                     <div className="text-primary group-hover:text-primary/80 transition-colors duration-300 flex-shrink-0">
                       {feature.icon}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <h3 className="font-semibold text-white mb-1 group-hover:text-primary transition-colors duration-300 text-sm">
+                      <h3 className="font-semibold text-white mb-1 group-hover:text-primary transition-colors duration-300 text-xs sm:text-sm">
                         {feature.title}
                       </h3>
                       <p className="text-xs text-gray-300 leading-relaxed">
@@ -202,16 +202,16 @@ export default function HeroSection() {
         </motion.div>
       </div>
       
-      <div className="bg-primary text-primary w-full py-3 overflow-hidden">
+      <div className="bg-primary text-primary w-full py-2 sm:py-3 overflow-hidden">
         <div className="flex animate-marquee whitespace-nowrap">
-          <div className="mx-16 text-sm font-semibold uppercase">New Admission Open</div>
-          <div className="mx-16 text-sm font-semibold uppercase">New Admission Open</div>
-          <div className="mx-16 text-sm font-semibold uppercase">New Admission Open</div>
-          <div className="mx-16 text-sm font-semibold uppercase">New Admission Open</div>
-          <div className="mx-16 text-sm font-semibold uppercase">New Admission Open</div>
-          <div className="mx-16 text-sm font-semibold uppercase">New Admission Open</div>
-          <div className="mx-16 text-sm font-semibold uppercase">New Admission Open</div>
-          <div className="mx-16 text-sm font-semibold uppercase">New Admission Open</div>
+          <div className="mx-8 sm:mx-16 text-xs sm:text-sm font-semibold uppercase">New Admission Open</div>
+          <div className="mx-8 sm:mx-16 text-xs sm:text-sm font-semibold uppercase">New Admission Open</div>
+          <div className="mx-8 sm:mx-16 text-xs sm:text-sm font-semibold uppercase">New Admission Open</div>
+          <div className="mx-8 sm:mx-16 text-xs sm:text-sm font-semibold uppercase">New Admission Open</div>
+          <div className="mx-8 sm:mx-16 text-xs sm:text-sm font-semibold uppercase">New Admission Open</div>
+          <div className="mx-8 sm:mx-16 text-xs sm:text-sm font-semibold uppercase">New Admission Open</div>
+          <div className="mx-8 sm:mx-16 text-xs sm:text-sm font-semibold uppercase">New Admission Open</div>
+          <div className="mx-8 sm:mx-16 text-xs sm:text-sm font-semibold uppercase">New Admission Open</div>
         </div>
       </div>
 

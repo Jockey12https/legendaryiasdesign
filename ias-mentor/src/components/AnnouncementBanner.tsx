@@ -95,30 +95,30 @@ export default function AnnouncementBanner({ announcements, isEnabled, onToggleA
   return (
     <div className="relative">
       {/* Main Announcement Banner */}
-      <div className={`${categoryColors[currentAnnouncement.category]} text-white py-3 px-4 transition-all duration-300`}>
+      <div className={`${categoryColors[currentAnnouncement.category]} text-white py-2 sm:py-3 px-3 sm:px-4 transition-all duration-300`}>
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center space-x-3 flex-1">
-            <CategoryIcon className="h-5 w-5 flex-shrink-0" />
+          <div className="flex items-center space-x-2 sm:space-x-3 flex-1 min-w-0">
+            <CategoryIcon className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
             <div className="flex-1 min-w-0">
-              <div className="flex items-center space-x-2">
-                <Badge variant="secondary" className="text-xs">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-2 space-y-1 sm:space-y-0">
+                <Badge variant="secondary" className="text-xs w-fit">
                   {categoryLabels[currentAnnouncement.category]}
                 </Badge>
-                <span className="font-semibold text-sm truncate">
+                <span className="font-semibold text-xs sm:text-sm truncate">
                   {currentAnnouncement.title}
                 </span>
               </div>
               {isExpanded && (
-                <p className="text-sm mt-1 opacity-90">
+                <p className="text-xs sm:text-sm mt-1 opacity-90">
                   {currentAnnouncement.content}
                 </p>
               )}
             </div>
           </div>
           
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-1 sm:space-x-2 flex-shrink-0">
             {activeAnnouncements.length > 1 && (
-              <div className="flex space-x-1">
+              <div className="hidden sm:flex space-x-1">
                 {activeAnnouncements.map((_, index) => (
                   <button
                     key={index}
@@ -135,18 +135,18 @@ export default function AnnouncementBanner({ announcements, isEnabled, onToggleA
               variant="ghost"
               size="sm"
               onClick={() => setIsExpanded(!isExpanded)}
-              className="text-white hover:bg-white/20 h-8 w-8 p-0"
+              className="text-white hover:bg-white/20 h-7 w-7 sm:h-8 sm:w-8 p-0"
             >
-              {isExpanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+              {isExpanded ? <ChevronUp className="h-3 w-3 sm:h-4 sm:w-4" /> : <ChevronDown className="h-3 w-3 sm:h-4 sm:w-4" />}
             </Button>
             
             <Button
               variant="ghost"
               size="sm"
               onClick={() => setIsVisible(false)}
-              className="text-white hover:bg-white/20 h-8 w-8 p-0"
+              className="text-white hover:bg-white/20 h-7 w-7 sm:h-8 sm:w-8 p-0"
             >
-              <X className="h-4 w-4" />
+              <X className="h-3 w-3 sm:h-4 sm:w-4" />
             </Button>
           </div>
         </div>
@@ -155,20 +155,20 @@ export default function AnnouncementBanner({ announcements, isEnabled, onToggleA
       {/* Expanded Announcements Panel */}
       {isExpanded && (
         <div className="bg-white border-b border-gray-200 shadow-lg">
-          <div className="max-w-7xl mx-auto px-4 py-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="max-w-7xl mx-auto px-3 sm:px-4 py-4 sm:py-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
               {activeAnnouncements.map((announcement, index) => {
                 const Icon = categoryIcons[announcement.category];
                 return (
                   <div
                     key={announcement.id}
-                    className={`p-4 rounded-lg border-l-4 ${categoryColors[announcement.category]} border-l-4 bg-gray-50 hover:bg-gray-100 transition-colors cursor-pointer`}
+                    className={`p-3 sm:p-4 rounded-lg border-l-4 ${categoryColors[announcement.category]} border-l-4 bg-gray-50 hover:bg-gray-100 transition-colors cursor-pointer`}
                     onClick={() => setCurrentAnnouncementIndex(index)}
                   >
-                    <div className="flex items-start space-x-3">
-                      <Icon className="h-5 w-5 text-gray-600 mt-0.5 flex-shrink-0" />
+                    <div className="flex items-start space-x-2 sm:space-x-3">
+                      <Icon className="h-4 w-4 sm:h-5 sm:w-5 text-gray-600 mt-0.5 flex-shrink-0" />
                       <div className="flex-1 min-w-0">
-                        <div className="flex items-center space-x-2 mb-2">
+                        <div className="flex flex-wrap items-center gap-1 sm:gap-2 mb-2">
                           <Badge variant="outline" className="text-xs">
                             {categoryLabels[announcement.category]}
                           </Badge>
