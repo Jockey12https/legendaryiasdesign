@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   description: "Discover why Legendary IAS Mentor is recognized as the #1 IAS Academy in Kerala. Expert faculty, proven success rates, comprehensive study material, and personalized guidance for UPSC preparation.",
   keywords: [
     "Best IAS Academy in Kerala",
-    "IAS Academy Ernakulam", 
+    "IAS Academy Trivandrum", 
     "UPSC Coaching Kerala",
     "Best UPSC Institute India",
     "Civil Services Coaching Kerala",
@@ -78,7 +78,7 @@ export default function BlogPost() {
           <p className="mb-6">
             Our success rate speaks volumes about our commitment to excellence. With hundreds of students clearing UPSC examinations 
             and securing top ranks, including the remarkable achievement of <strong>AIR 45 in CSE 2024</strong>, we have established 
-            ourselves as the <strong>best IAS academy in Ernakulam</strong> and beyond.
+            ourselves as the <strong>best IAS academy in Trivandrum</strong> and beyond.
           </p>
 
           <div className="bg-primary/10 p-6 rounded-lg mb-8">
@@ -121,7 +121,7 @@ export default function BlogPost() {
           <h2 className="text-2xl font-bold mb-6 text-primary">🎯 Personalized Guidance: One-on-One Mentoring</h2>
           
           <p className="mb-6">
-            Unlike other coaching institutes, we believe in personalized attention. Our <strong>IAS academy in Ernakulam</strong> 
+            Unlike other coaching institutes, we believe in personalized attention. Our <strong>IAS academy in Trivandrum</strong> 
             offers individual mentoring, custom study plans, regular assessments, and 24/7 doubt clearing support.
           </p>
 
@@ -132,10 +132,10 @@ export default function BlogPost() {
             with live online classes, recorded lectures, mobile app access, regular mock tests, and interactive discussion forums.
           </p>
 
-          <h2 className="text-2xl font-bold mb-6 text-primary">📍 Strategic Location: Best IAS Academy in Ernakulam</h2>
+          <h2 className="text-2xl font-bold mb-6 text-primary">📍 Strategic Location: Best IAS Academy in Trivandrum</h2>
           
           <p className="mb-6">
-            Located in the heart of <strong>Ernakulam</strong>, our academy is easily accessible from all parts of Kerala. 
+            Located in the heart of <strong>Trivandrum</strong>, our academy is easily accessible from all parts of Kerala. 
             Our central location makes us the <strong>best IAS academy near me</strong> for students from Kochi, Trivandrum, 
             Calicut, and other major cities in Kerala.
           </p>

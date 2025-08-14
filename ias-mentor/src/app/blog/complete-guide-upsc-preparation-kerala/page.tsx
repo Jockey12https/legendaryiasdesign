@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     "Best IAS Academy Kerala",
     "Civil Services Preparation Kerala",
     "UPSC Study Plan Kerala",
-    "IAS Academy Ernakulam"
+    "IAS Academy Trivandrum"
   ],
   openGraph: {
     title: "Legendary IAS Mentor - Complete Guide to UPSC Preparation in Kerala | 2025 Strategy",
