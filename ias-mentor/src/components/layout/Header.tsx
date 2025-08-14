@@ -61,13 +61,39 @@ export default function Header() {
   // Prevent scroll when mobile menu is open
   useEffect(() => {
     if (isMenuOpen) {
+      // Store current scroll position
+      const scrollY = window.scrollY;
+      
+      // Prevent scrolling on body and html
       document.body.style.overflow = "hidden";
+      document.body.style.position = "fixed";
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.width = "100%";
+      
+      // Also prevent scrolling on html element
+      document.documentElement.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = "auto";
+      // Restore scrolling
+      const scrollY = document.body.style.top;
+      document.body.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.width = "";
+      document.documentElement.style.overflow = "";
+      
+      // Restore scroll position
+      if (scrollY) {
+        window.scrollTo(0, parseInt(scrollY || "0") * -1);
+      }
     }
 
     return () => {
-      document.body.style.overflow = "auto";
+      // Cleanup function to ensure scrolling is restored
+      document.body.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.width = "";
+      document.documentElement.style.overflow = "";
     };
   }, [isMenuOpen]);
 
@@ -325,9 +351,9 @@ export default function Header() {
         } md:hidden`}
         style={{ top: "60px" }}
       >
-        <div className="flex flex-col h-full">
+        <div className="flex flex-col h-full overflow-hidden">
           {/* Scrollable container */}
-          <div className="overflow-y-auto h-full p-6">
+          <div className="overflow-y-auto h-full p-6 overscroll-contain">
             <nav className="flex flex-col space-y-6 py-6">
               {navigation.map((item) => (
                 <Link
@@ -384,6 +410,23 @@ export default function Header() {
                       <User className="mr-2 h-4 w-4 flex-shrink-0" />
                       <span>Dashboard</span>
                     </Link>
+                  </Button>
+                  <Button asChild className="w-full h-11 text-sm sm:text-base">
+                    <Link href="/dashboard/profile" className="flex items-center justify-center">
+                      <User className="mr-2 h-4 w-4 flex-shrink-0" />
+                      <span>Profile</span>
+                    </Link>
+                  </Button>
+                  <Button asChild className="w-full h-11 text-sm sm:text-base">
+                    <a 
+                      href="https://legendaryiasmentor.ezexam.in/login" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center"
+                    >
+                      <FileText className="mr-2 h-4 w-4 flex-shrink-0" />
+                      <span>Exam</span>
+                    </a>
                   </Button>
                   <Button
                     variant="outline"
