@@ -68,7 +68,7 @@ export default function BlogPost() {
         <div className="prose prose-lg max-w-none">
           <p className="text-xl text-gray-700 mb-8">
             When it comes to choosing the <strong>best IAS academy in Kerala</strong>, aspirants are often overwhelmed with options. 
-            However, <strong>Legendary IAS Mentor</strong> has consistently emerged as the <strong>#1 IAS Academy in Kerala</strong> 
+            However, <strong>Legendary IAS Mentor</strong> has consistently emerged as the <strong>#1 IAS Academy in Kerala</strong>
             and among the <strong>best UPSC coaching institutes in India</strong>. But what makes us stand out? Let's explore the 
             comprehensive reasons why thousands of successful IAS aspirants choose Legendary IAS Mentor.
           </p>
