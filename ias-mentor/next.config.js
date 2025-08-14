@@ -32,6 +32,14 @@ const nextConfig = {
         pathname: "/**",
       },
     ],
+    formats: ['image/webp', 'image/avif'],
+  },
+  compress: true,
+  poweredByHeader: false,
+  generateEtags: false,
+  experimental: {
+    optimizeCss: true,
+    optimizePackageImports: ['lucide-react', 'framer-motion'],
   },
   typescript: {
     ignoreBuildErrors: true,

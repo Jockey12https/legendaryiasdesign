@@ -12,6 +12,34 @@ import { Search } from "lucide-react";
 const blogPosts = [
   {
     id: "blog-1",
+    title: "Why Legendary IAS Mentor is the Best IAS Academy in Kerala",
+    slug: "why-legendary-ias-mentor-best-ias-academy-kerala",
+    excerpt: "Discover why Legendary IAS Mentor is recognized as the #1 IAS Academy in Kerala. Expert faculty, proven success rates, and comprehensive study material for UPSC preparation.",
+    content: "When it comes to choosing the best IAS academy in Kerala, aspirants are often overwhelmed with options. However, Legendary IAS Mentor has consistently emerged as the #1 IAS Academy in Kerala...",
+    author: "Legendary IAS Mentor",
+    authorRole: "Leading IAS Academy",
+    date: "January 15, 2025",
+    category: "IAS Academy",
+    readTime: "15 min read",
+    image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1200&h=600&fit=crop",
+    featured: true
+  },
+  {
+    id: "blog-2",
+    title: "Complete Guide to UPSC Preparation in Kerala",
+    slug: "complete-guide-upsc-preparation-kerala",
+    excerpt: "Master UPSC preparation in Kerala with our comprehensive guide. Expert tips, study strategies, and resources for IAS aspirants in Kerala.",
+    content: "Kerala has emerged as a hub for UPSC preparation with its excellent educational infrastructure and dedicated aspirants. This comprehensive guide will help you navigate your IAS preparation journey...",
+    author: "Legendary IAS Mentor",
+    authorRole: "Leading IAS Academy",
+    date: "January 16, 2025",
+    category: "UPSC Preparation",
+    readTime: "12 min read",
+    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1200&h=600&fit=crop",
+    featured: true
+  },
+  {
+    id: "blog-3",
     title: "How to Prepare for UPSC Prelims in 3 Months",
     slug: "prepare-upsc-prelims-3-months",
     excerpt: "A focused strategy to maximize your preparation in the crucial last 3 months before the UPSC Preliminary examination.",
@@ -22,10 +50,10 @@ const blogPosts = [
     category: "Exam Strategy",
     readTime: "8 min read",
     image: "https://images.unsplash.com/photo-1456406644174-8ddd4cd52a06?q=80&w=1548&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    featured: true
+    featured: false
   },
   {
-    id: "blog-2",
+    id: "blog-4",
     title: "Mastering Optional Subjects: Economics & Public Administration",
     slug: "mastering-optionals-economics-public-admin",
     excerpt: "A comprehensive guide to scoring high in two popular optional subjects that can boost your overall UPSC CSE score.",
@@ -39,7 +67,7 @@ const blogPosts = [
     featured: false
   },
   {
-    id: "blog-3",
+    id: "blog-5",
     title: "Current Affairs: How to Stay Updated Without Getting Overwhelmed",
     slug: "current-affairs-stay-updated",
     excerpt: "Practical tips to efficiently track and remember important current events for your UPSC preparation.",
@@ -53,7 +81,7 @@ const blogPosts = [
     featured: false
   },
   {
-    id: "blog-4",
+    id: "blog-6",
     title: "Effective Answer Writing Techniques for UPSC Mains",
     slug: "effective-answer-writing-upsc-mains",
     excerpt: "Learn the art of crafting compelling answers that impress UPSC examiners and boost your Mains score.",
@@ -67,7 +95,7 @@ const blogPosts = [
     featured: true
   },
   {
-    id: "blog-5",
+    id: "blog-7",
     title: "Mental Health During UPSC Preparation: Self-Care Strategies",
     slug: "mental-health-upsc-preparation",
     excerpt: "Crucial advice on maintaining mental well-being during the challenging journey of UPSC preparation.",
@@ -81,7 +109,7 @@ const blogPosts = [
     featured: false
   },
   {
-    id: "blog-6",
+    id: "blog-8",
     title: "Geography for UPSC: Maps, Diagrams, and Conceptual Understanding",
     slug: "geography-upsc-maps-diagrams",
     excerpt: "A visual approach to mastering Geography for both Prelims and Mains examinations.",
@@ -99,6 +127,8 @@ const blogPosts = [
 // Categories for filtering
 const categories = [
   "All",
+  "IAS Academy",
+  "UPSC Preparation",
   "Exam Strategy",
   "Optional Subjects",
   "Current Affairs",

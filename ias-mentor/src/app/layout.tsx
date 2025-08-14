@@ -10,6 +10,8 @@ import ClientOnly from "@/components/ClientOnly";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { ContentManagementProvider } from "@/contexts/ContentManagementContext";
 import SessionManager from "@/components/auth/SessionManager";
+import SEOStructuredData from "@/components/SEOStructuredData";
+import Script from "next/script";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -22,8 +24,105 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Legendary IAS Mentor",
-  description: "Leading online academy for individuals aspiring to excel in civil services.",
+  title: {
+    default: "Legendary IAS Mentor - Best IAS Academy in Kerala & India | UPSC Coaching",
+    template: "%s | Legendary IAS Mentor"
+  },
+  description: "Legendary IAS Mentor is the #1 IAS Academy in Kerala and among the best UPSC coaching institutes in India. Expert faculty, proven success rate, comprehensive study material, and personalized guidance for UPSC Civil Services Exam preparation. Join thousands of successful IAS aspirants.",
+  keywords: [
+    "IAS Academy Kerala",
+    "Best IAS Academy India", 
+    "UPSC Coaching Kerala",
+    "Civil Services Coaching",
+    "IAS Academy Ernakulam",
+    "UPSC Preparation Kerala",
+    "Best UPSC Institute India",
+    "IAS Coaching Center",
+    "Civil Services Academy",
+    "UPSC Exam Preparation",
+    "IAS Academy Near Me",
+    "UPSC Coaching Institute",
+    "Civil Services Training",
+    "IAS Academy Trivandrum",
+    "UPSC Academy Kerala",
+    "Best IAS Coaching India",
+    "Civil Services Institute",
+    "UPSC Preparation Institute",
+    "IAS Academy Kochi",
+    "UPSC Coaching Center Kerala"
+  ],
+  authors: [{ name: "Legendary IAS Mentor" }],
+  creator: "Legendary IAS Mentor",
+  publisher: "Legendary IAS Mentor",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  metadataBase: new URL('https://legendaryiasmentor.com'),
+  alternates: {
+    canonical: '/',
+  },
+  openGraph: {
+    type: 'website',
+    locale: 'en_IN',
+    url: 'https://legendaryiasmentor.com',
+    title: 'Legendary IAS Mentor - Best IAS Academy in Kerala & India',
+    description: 'Legendary IAS Mentor is the #1 IAS Academy in Kerala and among the best UPSC coaching institutes in India. Expert faculty, proven success rate, comprehensive study material, and personalized guidance for UPSC Civil Services Exam preparation.',
+    siteName: 'Legendary IAS Mentor',
+    images: [
+      {
+        url: 'https://ext.same-assets.com/2651817114/1248459215.png',
+        width: 1200,
+        height: 630,
+        alt: 'Legendary IAS Mentor - Best IAS Academy in Kerala',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Legendary IAS Mentor - Best IAS Academy in Kerala & India',
+    description: 'Legendary IAS Mentor is the #1 IAS Academy in Kerala and among the best UPSC coaching institutes in India. Expert faculty, proven success rate, comprehensive study material.',
+    images: ['https://ext.same-assets.com/2651817114/1248459215.png'],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  verification: {
+    google: 'your-google-verification-code-here',
+    yandex: 'your-yandex-verification-code-here',
+    yahoo: 'your-yahoo-verification-code-here',
+  },
+  icons: {
+    icon: [
+      {
+        url: 'https://ext.same-assets.com/2651817114/1248459215.png',
+        sizes: '32x32',
+        type: 'image/png',
+      },
+      {
+        url: 'https://ext.same-assets.com/2651817114/1248459215.png',
+        sizes: '16x16',
+        type: 'image/png',
+      },
+    ],
+    apple: [
+      {
+        url: 'https://ext.same-assets.com/2651817114/1248459215.png',
+        sizes: '180x180',
+        type: 'image/png',
+      },
+    ],
+    shortcut: 'https://ext.same-assets.com/2651817114/1248459215.png',
+  },
 };
 
 export const viewport = {
@@ -85,6 +184,23 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
+      <head>
+        <SEOStructuredData type="organization" />
+        <SEOStructuredData type="faq" />
+        {/* Google Analytics */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'GA_MEASUREMENT_ID');
+          `}
+        </Script>
+      </head>
       <ClientBody>
         <AuthProvider>
           <ContentManagementProvider>

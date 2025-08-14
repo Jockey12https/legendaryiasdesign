@@ -113,21 +113,25 @@ export default function HeroSection() {
               className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-3 sm:mb-4 md:mb-6 font-['Oswald'] uppercase tracking-wide text-primary leading-tight"
               variants={itemVariants}
             >
-              Legendary IAS Mentor
+             Legendary IAS Mentor
             </motion.h1>
+            <motion.h2
+              className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold mb-3 sm:mb-4 text-white"
+              variants={itemVariants}
+            >
+              #1 Best IAS Academy in Kerala
+            </motion.h2>
             <motion.p
               className="text-sm sm:text-base md:text-lg mb-4 sm:mb-6 md:mb-8 max-w-xl"
               variants={itemVariants}
             >
-              Legendary IAS Mentor is a leading online academy for individuals aspiring to excel in
-              the field of civil services. Our platform provides comprehensive courses and expert
-              guidance to help students achieve success in the IAS examinations.
+              Legendary IAS Mentor is the <strong>#1 IAS Academy in Kerala</strong> and among the <strong>best UPSC coaching institutes in India</strong>. With expert faculty, proven success rates, and comprehensive study material, we help aspirants achieve their IAS dreams.
             </motion.p>
             <motion.p
               className="text-sm sm:text-base md:text-lg mb-4 sm:mb-6 md:mb-8 max-w-xl"
               variants={itemVariants}
             >
-              Join us to embark on a transformative learning journey and unlock your true potential.
+              Join us with successful IAS aspirants who chose the <strong>best IAS academy in Trivandrum</strong> for their UPSC preparation journey.
             </motion.p>
             <motion.div variants={itemVariants}>
               <Button
