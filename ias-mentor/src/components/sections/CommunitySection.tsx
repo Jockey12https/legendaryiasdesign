@@ -8,34 +8,69 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 const youtubeVideos = [
   {
     id: 1,
+    title: "Paulson Sir - Expert Guidance",
+    videoId: "aBaYt_uA2a0",
+    thumbnail: "https://img.youtube.com/vi/aBaYt_uA2a0/maxresdefault.jpg",
+    description: "Learn from Paulson Sir's expert guidance and teaching methodology"
+  },
+  {
+    id: 2,
+    title: "Paulson Sir - Advanced Strategies",
+    videoId: "YETVg2K_rvk",
+    thumbnail: "https://img.youtube.com/vi/YETVg2K_rvk/maxresdefault.jpg",
+    description: "Advanced UPSC preparation strategies by Paulson Sir"
+  },
+  {
+    id: 3,
+    title: "Nitin Chakravarthy Sir - Success Insights",
+    videoId: "egZ3vsu0CWw",
+    thumbnail: "https://img.youtube.com/vi/egZ3vsu0CWw/maxresdefault.jpg",
+    description: "Success insights and preparation tips from Nitin Chakravarthy Sir"
+  },
+  {
+    id: 4,
+    title: "Dr. Vineeth AIR 169 - Success Story",
+    videoId: "b8c4p33fxZM",
+    thumbnail: "https://img.youtube.com/vi/b8c4p33fxZM/hqdefault.jpg",
+    description: "Inspiring success story of Dr. Vineeth who achieved AIR 169"
+  },
+  {
+    id: 5,
+    title: "MEERA IPS AIR 160 - Journey to Success",
+    videoId: "nBMigOLHePM",
+    thumbnail: "https://img.youtube.com/vi/nBMigOLHePM/sddefault.jpg",
+    description: "MEERA's incredible journey to becoming IPS with AIR 160"
+  },
+  {
+    id: 6,
     title: "IAS Success Story - From Preparation to Selection",
     videoId: "0M-NmVcpqyc",
     thumbnail: "https://img.youtube.com/vi/0M-NmVcpqyc/maxresdefault.jpg",
     description: "Watch how our student achieved their IAS dream through dedicated preparation"
   },
   {
-    id: 2,
+    id: 7,
     title: "UPSC Preparation Strategy - Complete Guide",
     videoId: "D_tg_0NSzN0",
     thumbnail: "https://img.youtube.com/vi/D_tg_0NSzN0/maxresdefault.jpg",
     description: "Comprehensive strategy for UPSC Civil Services examination"
   },
   {
-    id: 3,
+    id: 8,
     title: "Current Affairs Analysis - Latest Updates",
     videoId: "6WxwvoW68Ec",
     thumbnail: "https://img.youtube.com/vi/6WxwvoW68Ec/maxresdefault.jpg",
     description: "Stay updated with the latest current affairs for UPSC"
   },
   {
-    id: 4,
+    id: 9,
     title: "Interview Preparation Tips - Expert Guidance",
     videoId: "bbjxqN4Uo9w",
     thumbnail: "https://img.youtube.com/vi/bbjxqN4Uo9w/maxresdefault.jpg",
     description: "Expert tips for UPSC interview preparation and success"
   },
   {
-    id: 5,
+    id: 10,
     title: "Optional Subject Selection - Strategic Approach",
     videoId: "fpnRYrFJn1E",
     thumbnail: "https://img.youtube.com/vi/fpnRYrFJn1E/maxresdefault.jpg",
@@ -48,6 +83,8 @@ export default function CommunitySection() {
   const [isPlaying, setIsPlaying] = useState(true);
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const [currentVideoId, setCurrentVideoId] = useState<string | null>(null);
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
 
   // Auto-slide functionality
   useEffect(() => {
@@ -100,6 +137,44 @@ export default function CommunitySection() {
     setIsPlaying(true); // Resume auto-slide when video is closed
   };
 
+  // Touch handlers for mobile swipe
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > 50;
+    const isRightSwipe = distance < -50;
+
+    if (isLeftSwipe) {
+      goToNext();
+    } else if (isRightSwipe) {
+      goToPrevious();
+    }
+  };
+
+  // Click handlers for desktop navigation
+  const handleClick = (e: React.MouseEvent) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const clickX = e.clientX - rect.left;
+    const width = rect.width;
+    
+    // If click is in left half, go to previous; right half, go to next
+    if (clickX < width / 2) {
+      goToPrevious();
+    } else {
+      goToNext();
+    }
+  };
+
   return (
     <section className="py-12 bg-primary">
       <div className="max-w-7xl mx-auto px-4 md:px-8">
@@ -112,7 +187,13 @@ export default function CommunitySection() {
 
         <div className="relative mx-auto max-w-4xl bg-white rounded-lg overflow-hidden shadow-xl">
           {/* Main Slider */}
-          <div className="relative overflow-hidden">
+          <div 
+            className="relative overflow-hidden cursor-pointer"
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+            onClick={handleClick}
+          >
             <div 
               className="flex transition-transform duration-700 ease-in-out"
               style={{ transform: `translateX(-${currentIndex * 100}%)` }}
@@ -131,7 +212,10 @@ export default function CommunitySection() {
                     {/* Play Button */}
                     <div className="absolute inset-0 flex items-center justify-center">
                       <button
-                        onClick={() => handleVideoPlay(video.videoId)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleVideoPlay(video.videoId);
+                        }}
                         className="group p-6 bg-red-600 hover:bg-red-700 rounded-full transition-all duration-300 transform hover:scale-110"
                       >
                         <svg
@@ -176,7 +260,10 @@ export default function CommunitySection() {
             {youtubeVideos.map((_, index) => (
               <button
                 key={`video-dot-${index}`}
-                onClick={() => goToSlide(index)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  goToSlide(index);
+                }}
                 className={`h-3 w-3 rounded-full transition-all duration-300 ${
                   currentIndex === index 
                     ? 'bg-white scale-125' 
@@ -189,7 +276,10 @@ export default function CommunitySection() {
           {/* Auto-play Indicator */}
           <div className="absolute top-4 right-4 z-10">
             <button
-              onClick={handlePlayPause}
+              onClick={(e) => {
+                e.stopPropagation();
+                handlePlayPause();
+              }}
               className="p-2 bg-black/50 hover:bg-black/70 rounded-full transition-all duration-300"
             >
               <svg

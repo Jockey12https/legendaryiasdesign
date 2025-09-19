@@ -96,11 +96,7 @@ export default function AboutPage() {
           </h1>
           <div className="max-w-3xl mx-auto">
             <p className="text-lg mb-8 text-center">
-              Legendary IAS Mentor is dedicated to providing high-quality education and training in
-              the field of civil services examination preparation. Our academy is committed to nurturing
-              future leaders with the skills and knowledge required to excel in the highly competitive
-              IAS exams. We take pride in offering comprehensive study materials, expert guidance, and
-              personalized mentorship to help our students achieve their career goals.
+            Legendary IAS mentor is an initiative of nationally reputed civil service faculties and mentors having high success rate in civil service examinations. Our team consists of Renowned Faculties, IAS Rank Holders, Subject Experts, Alumni from Premium Institutions like IITs and renowned faculties from Delhi and Calcutta providing wide exposure of experience. 
             </p>
           </div>
         </div>
@@ -115,9 +111,7 @@ export default function AboutPage() {
                 Join Us
               </h2>
               <p className="text-secondary mb-8">
-                Ready to embark on your journey towards becoming an IAS officer?
-                Enroll now to gain access to our top-notch study programs and start your
-                preparation with the guidance of seasoned mentors who are dedicated to your success.
+              We believe that individual attention, strategic UPSC preparation, and structured study plans are the keys to cracking the IAS, IPS, and IFS exams. With proven methodologies, in-depth subject expertise, and continuous motivation, we ensure that every aspirant is equipped with the right tools to excel in UPSC Prelims, Mains, and Interview.
               </p>
               <Button
                 className="bg-black text-white hover:bg-gray-800"

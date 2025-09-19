@@ -60,33 +60,33 @@ export default function HeroSection() {
   const features = [
     {
       icon: <Users className="h-6 w-6" />,
-      title: "Expert Mentors",
-      description: "Learn from experienced IAS officers and subject matter experts"
-    },
-    {
-      icon: <BookOpen className="h-6 w-6" />,
-      title: "Comprehensive Curriculum",
-      description: "Structured learning path covering all UPSC subjects"
+      title: "Personal Mentorship",
+      description: "Personal mentorship by UPSC toppers, IAS mentors & expert faculty"
     },
     {
       icon: <Target className="h-6 w-6" />,
-      title: "Personalized Guidance",
-      description: "One-on-one mentoring tailored to your learning style"
+      title: "Strategic Preparation",
+      description: "Strategic UPSC preparation tailored to individual strengths"
+    },
+    {
+      icon: <BookOpen className="h-6 w-6" />,
+      title: "Comprehensive Coaching",
+      description: "Comprehensive IAS coaching for Prelims, Mains & Interview"
+    },
+    {
+      icon: <Award className="h-6 w-6" />,
+      title: "Focus Areas",
+      description: "Focus on answer writing, current affairs, and conceptual clarity"
+    },
+    {
+      icon: <CheckCircle className="h-6 w-6" />,
+      title: "Proven Success",
+      description: "Proven success in producing IAS, IPS, and IFS officers in a short time"
     },
     {
       icon: <Clock className="h-6 w-6" />,
       title: "Flexible Learning",
       description: "Study at your own pace with 24/7 access to materials"
-    },
-    {
-      icon: <Award className="h-6 w-6" />,
-      title: "Proven Results",
-      description: "Track record of successful IAS candidates"
-    },
-    {
-      icon: <CheckCircle className="h-6 w-6" />,
-      title: "Mock Tests",
-      description: "Regular assessments to evaluate your progress"
     }
   ];
 
@@ -125,7 +125,7 @@ export default function HeroSection() {
               className="text-sm sm:text-base md:text-lg mb-4 sm:mb-6 md:mb-8 max-w-xl"
               variants={itemVariants}
             >
-              Legendary IAS Mentor is the <strong>#1 IAS Academy in Kerala</strong> and among the <strong>best UPSC coaching institutes in India</strong>. With expert faculty, proven success rates, and comprehensive study material, we help aspirants achieve their IAS dreams.
+              Legendary IAS Mentor is the <strong>#1 IAS Academy in Kerala</strong> and among the <strong>Best UPSC coaching institutes in India</strong>. With expert faculty, proven success rates, and comprehensive study material, we help aspirants achieve their IAS dreams.
             </motion.p>
             <motion.p
               className="text-sm sm:text-base md:text-lg mb-4 sm:mb-6 md:mb-8 max-w-xl"
