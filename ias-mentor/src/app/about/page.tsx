@@ -23,7 +23,7 @@ const mentors = [
     id: 3,
     name: "Paulson Baby",
     position: "Expert Mentor",
-    image: "https://ik.imagekit.io/8vvkoi3dt/mentor-5.jpg?updatedAt=1755003315739"
+    image: "https://ik.imagekit.io/8vvkoi3dt/PAULSON%20.JPG?updatedAt=1758474931488"
   },
   {
     id: 4,
@@ -54,6 +54,36 @@ const mentors = [
     name: "Akhil V K",
     position: "Senior Mentor",
     image: "https://ik.imagekit.io/8vvkoi3dt/mentor-11.jpg?updatedAt=1755003315865"
+  },
+  {
+    id: 9,
+    name: "Gowrisankar B",
+    position: "CUET Faculty",
+    image: "https://ik.imagekit.io/8vvkoi3dt/GOWRISANKAR%20B%20%20CUET%20FACULTY.JPG?updatedAt=1758474933317"
+  },
+  {
+    id: 10,
+    name: "Parvathy",
+    position: "Indian Polity Faculty",
+    image: "https://ik.imagekit.io/8vvkoi3dt/Parvathy%20Indian%20polity%20faculty.JPG?updatedAt=1758474933196"
+  },
+  {
+    id: 11,
+    name: "Taniya Elizabeth",
+    position: "CUET Faculty",
+    image: "https://ik.imagekit.io/8vvkoi3dt/TANIYA%20ELIZABETH%20CUET%20FACULTY.JPG?updatedAt=1758474796113"
+  },
+  {
+    id: 12,
+    name: "Sreekuttan",
+    position: "CUET Faculty",
+    image: "https://ik.imagekit.io/8vvkoi3dt/SREEKUTTAN%20CUET%20FACULTY.JPG?updatedAt=1758474684946"
+  },
+  {
+    id: 13,
+    name: "Amritha Nair",
+    position: "CUET Faculty",
+    image: "https://ik.imagekit.io/8vvkoi3dt/AMRITHA%20NAIR%20CUET%20FACULTY.JPG?updatedAt=1758474683115"
   }
 ];
 
@@ -61,6 +91,8 @@ export default function AboutPage() {
   const router = useRouter();
   const [currentSlide, setCurrentSlide] = useState(0);
   const carouselRef = useRef<HTMLDivElement>(null);
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
 
   const totalSlides = Math.ceil(mentors.length / 4);
   const maxSlide = totalSlides - 1;
@@ -71,6 +103,48 @@ export default function AboutPage() {
 
   const prevSlide = () => {
     setCurrentSlide(prev => prev === 0 ? maxSlide : prev - 1);
+  };
+
+  // Touch handlers for mobile swipe
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > 50;
+    const isRightSwipe = distance < -50;
+
+    if (isLeftSwipe) {
+      nextSlide();
+    }
+    if (isRightSwipe) {
+      prevSlide();
+    }
+  };
+
+  // Click handlers for desktop navigation
+  const handleCarouselClick = (e: React.MouseEvent) => {
+    if (!carouselRef.current) return;
+    
+    const rect = carouselRef.current.getBoundingClientRect();
+    const clickX = e.clientX - rect.left;
+    const carouselWidth = rect.width;
+    const clickPosition = clickX / carouselWidth;
+    
+    // Click on left half = previous slide, right half = next slide
+    if (clickPosition < 0.5) {
+      prevSlide();
+    } else {
+      nextSlide();
+    }
   };
 
   // Auto-slide every 5 seconds
@@ -143,7 +217,11 @@ export default function AboutPage() {
             {/* Carousel Container */}
             <div 
               ref={carouselRef}
-              className="overflow-hidden"
+              className="overflow-hidden cursor-pointer select-none"
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
+              onClick={handleCarouselClick}
             >
               <div 
                 className="flex transition-transform duration-700 ease-in-out"
@@ -196,6 +274,58 @@ export default function AboutPage() {
                         <p className="text-gray-600">{mentor.position}</p>
                       </div>
                     ))}
+                  </div>
+                </div>
+
+                {/* Third Slide - Mentors 9-12 */}
+                <div className="w-full flex-shrink-0">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    {mentors.slice(8, 12).map((mentor) => (
+                      <div 
+                        key={mentor.id} 
+                        className="text-center group"
+                      >
+                        <div className="relative h-80 w-full mb-4 overflow-hidden rounded-lg shadow-lg">
+                          <Image
+                            src={mentor.image}
+                            alt={mentor.name}
+                            fill
+                            className="object-cover transition-transform duration-500 group-hover:scale-110"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        </div>
+                        <h3 className="text-xl font-bold mb-1 text-gray-800">{mentor.name}</h3>
+                        <p className="text-gray-600">{mentor.position}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Fourth Slide - Mentor 13 */}
+                <div className="w-full flex-shrink-0">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    {mentors.slice(12, 13).map((mentor) => (
+                      <div 
+                        key={mentor.id} 
+                        className="text-center group"
+                      >
+                        <div className="relative h-80 w-full mb-4 overflow-hidden rounded-lg shadow-lg">
+                          <Image
+                            src={mentor.image}
+                            alt={mentor.name}
+                            fill
+                            className="object-cover transition-transform duration-500 group-hover:scale-110"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        </div>
+                        <h3 className="text-xl font-bold mb-1 text-gray-800">{mentor.name}</h3>
+                        <p className="text-gray-600">{mentor.position}</p>
+                      </div>
+                    ))}
+                    {/* Empty divs to maintain grid layout */}
+                    <div className="hidden lg:block"></div>
+                    <div className="hidden lg:block"></div>
+                    <div className="hidden lg:block"></div>
                   </div>
                 </div>
               </div>

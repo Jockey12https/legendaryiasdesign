@@ -7,31 +7,31 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 const courses = [
   {
     id: 1,
-    title: "HSC",
-    description: "Comprehensive Preparation for Civil Services",
-    details: "Explore our specialized IAS Foundation Course designed to equip aspirants with the necessary knowledge and skills to excel in the UPSC examinations.",
-    link: "#",
+    title: "Regular PCM Batch",
+    description: "Your one-year transformation starts here!",
+    details: "A UPSC dream needs more than hard work - it needs the right mentorship, the right plan, and the right push. With 800+ hours of live classes, expert-curated study materials, and daily personalized mentorship, this is where your success begins!",
+    link: "/courses",
   },
   {
     id: 2,
-    title: "GED",
-    description: "Personalized Guidance for Optional Subjects",
-    details: "Discover our tailored coaching for optional subjects, delivered by experienced mentors to enhance your preparation and performance.",
-    link: "#",
+    title: "Hardcore PCM",
+    description: "How far will you go for your UPSC dream?",
+    details: "This is not just a course - it's a commitment to success, with unlimited access until you clear. Get in-depth Prelims, Mains, and Interview training with extended class hours, extra mentorship, language training, and continuous test series support.",
+    link: "/courses",
   },
   {
     id: 3,
-    title: "ESL",
-    description: "Effective Test Series for Preliminary and Mains Exams",
-    details: "Access our meticulously designed test series to evaluate your readiness and improve your exam-taking strategies for both preliminary and mains examinations.",
-    link: "#",
+    title: "Mains Combat",
+    description: "Write like a topper!",
+    details: "Mains is not about knowing, it's about expressing! This program transforms your writing, strengthens your articulation, and builds your confidence with structured answer writing workshops, Mains test series, value addition modules, and expert feedback!",
+    link: "/courses",
   },
   {
     id: 4,
-    title: "GRC",
-    description: "Guidance for Successful Interview Process",
-    details: "Prepare for the crucial interview stage with our comprehensive guidance and mock interview sessions conducted by seasoned professionals.",
-    link: "#",
+    title: "Essay Mentorship",
+    description: "Write like a topper!",
+    details: "Complete essay writing mentorship with strategy orientation, step-by-step training on topic selection and structuring, and personalized one-to-one guidance. Focus on coherence, logical flow, and impactful conclusions.",
+    link: "/book-online",
   },
 ];
 
@@ -58,12 +58,11 @@ export default function CoursesSection() {
                   variant="link"
                   className="p-0 text-primary hover:text-primary/80 font-semibold"
                   onClick={() => {
-                    // Redirect to courses page
-                    router.push('/courses');
+                    // Redirect to specific course page
+                    router.push(course.link);
                   }}
                 >
                   Read More
-                  
                 </Button>
               </CardFooter>
             </Card>

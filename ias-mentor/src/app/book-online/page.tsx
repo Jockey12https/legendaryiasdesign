@@ -27,64 +27,44 @@ interface CourseProps {
 
 const courses: CourseProps[] = [
   {
-    id: 'ias-foundation',
-    title: 'IAS Foundation Program',
-    description: 'Comprehensive preparation course for Civil Services with focus on prelims and mains.',
+    id: 'csat',
+    title: 'CSAT',
+    description: 'Comprehensive CSAT preparation covering Quantitative Aptitude, Logical Reasoning, Reading Comprehension, and Decision-Making with structured learning from basics to advanced levels.',
     image: 'https://ext.same-assets.com/1137026266/2875867135.jpeg',
-    price: 15000,
-    status: 'Available',
-    duration: '12 months',
-    category: 'foundation'
-  },
-  {
-    id: 'optional-subject',
-    title: 'Optional Subject Coaching',
-    description: 'Specialized coaching for optional subjects with experienced faculty members.',
-    image: 'https://ext.same-assets.com/1137026266/1169935981.jpeg',
     price: 8000,
     status: 'Available',
-    duration: '6 months',
-    category: 'optional'
-  },
-  {
-    id: 'interview-prep',
-    title: 'Interview Preparation',
-    description: 'Comprehensive interview preparation with mock interviews and personalized feedback.',
-    image: 'https://ext.same-assets.com/1137026266/853365983.jpeg',
-    price: 5000,
-    status: 'Available',
-    duration: '2 months',
-    category: 'interview'
-  },
-  {
-    id: 'test-series',
-    title: 'Test Series',
-    description: 'Comprehensive test series for prelims and mains with detailed analysis and feedback.',
-    image: 'https://ext.same-assets.com/1137026266/1195490810.jpeg',
-    price: 3000,
-    status: 'Available',
-    duration: '4 months',
-    category: 'test-series'
-  },
-  {
-    id: 'current-affairs',
-    title: 'Current Affairs Program',
-    description: 'Stay updated with daily current affairs analysis and monthly compilations.',
-    image: 'https://ext.same-assets.com/1137026266/853365983.jpeg',
-    price: 2000,
-    status: 'Available',
-    duration: '1 year',
-    category: 'current-affairs'
-  },
-  {
-    id: 'csat-prep',
-    title: 'CSAT Preparation',
-    description: 'Focused preparation for CSAT with practice tests and problem-solving techniques.',
-    image: 'https://ext.same-assets.com/1137026266/2875867135.jpeg',
-    price: 4000,
-    status: 'Coming Soon',
     duration: '3 months',
     category: 'csat'
+  },
+  {
+    id: 'essay-mentorship',
+    title: 'Essay Mentorship',
+    description: 'Complete essay writing mentorship with strategy orientation, step-by-step training on topic selection and structuring, and personalized one-to-one guidance.',
+    image: 'https://ext.same-assets.com/1137026266/1169935981.jpeg',
+    price: 7000,
+    status: 'Available',
+    duration: '4 months',
+    category: 'essay'
+  },
+  {
+    id: 'ethics',
+    title: 'Ethics',
+    description: 'Comprehensive Ethics preparation with regular classes, case study workshops, sectional tests, and personalized mentorship for high-value answers.',
+    image: 'https://ext.same-assets.com/1137026266/853365983.jpeg',
+    price: 9000,
+    status: 'Available',
+    duration: '5 months',
+    category: 'ethics'
+  },
+  {
+    id: 'sociology-optional',
+    title: 'Sociology Optional',
+    description: 'Complete Sociology optional preparation covering both Paper I and Paper II with exam-focused approach, answer writing practice, and personalized mentorship.',
+    image: 'https://ext.same-assets.com/1137026266/1195490810.jpeg',
+    price: 22000,
+    status: 'Available',
+    duration: '8 months',
+    category: 'optional'
   }
 ];
 
@@ -268,6 +248,65 @@ const BookOnlinePage = () => {
                   <div className="flex items-center text-sm text-gray-600">
                     <Clock className="h-4 w-4 mr-2" />
                     Duration: {course.duration}
+                  </div>
+                  
+                  {/* Course Features */}
+                  <div className="space-y-2">
+                    {course.id === 'csat' && (
+                      <div className="text-sm">
+                        <p className="font-medium text-gray-700 mb-1">Course Coverage:</p>
+                        <ul className="text-xs text-gray-600 space-y-1">
+                          <li>✔ Quantitative Aptitude (Numeracy, Arithmetic, Data Interpretation)</li>
+                          <li>✔ Logical Reasoning & Analytical Ability</li>
+                          <li>✔ Reading Comprehension & Decision-Making</li>
+                          <li>✔ Structured Coverage – Step-by-step learning</li>
+                          <li>✔ Mock Tests with Detailed Analysis</li>
+                          <li>✔ Individual Mentorship for Non-Maths Students</li>
+                        </ul>
+                      </div>
+                    )}
+                    
+                    {course.id === 'essay-mentorship' && (
+                      <div className="text-sm">
+                        <p className="font-medium text-gray-700 mb-1">Course Features:</p>
+                        <ul className="text-xs text-gray-600 space-y-1">
+                          <li>✔ Orientation on Essay Strategy & UPSC Trends</li>
+                          <li>✔ Step-by-step training on Topic Selection & Structuring</li>
+                          <li>✔ Skill Development – Focus on coherence & logical flow</li>
+                          <li>✔ Model Essays for reference</li>
+                          <li>✔ Writing Practice & Evaluation with detailed feedback</li>
+                          <li>✔ One-to-One Mentorship for personalized guidance</li>
+                        </ul>
+                      </div>
+                    )}
+                    
+                    {course.id === 'ethics' && (
+                      <div className="text-sm">
+                        <p className="font-medium text-gray-700 mb-1">Course Features:</p>
+                        <ul className="text-xs text-gray-600 space-y-1">
+                          <li>✔ Regular classes (Online & Offline)</li>
+                          <li>✔ Comprehensive notes & answer writing practice</li>
+                          <li>✔ Dedicated Case Study workshops</li>
+                          <li>✔ Sectional and comprehensive tests with evaluation</li>
+                          <li>✔ Special sessions on thinkers, quotes, and examples</li>
+                          <li>✔ Personalized Mentorship & Content Enrichment</li>
+                        </ul>
+                      </div>
+                    )}
+                    
+                    {course.id === 'sociology-optional' && (
+                      <div className="text-sm">
+                        <p className="font-medium text-gray-700 mb-1">Course Features:</p>
+                        <ul className="text-xs text-gray-600 space-y-1">
+                          <li>✔ Comprehensive Coverage – Paper I & Paper II</li>
+                          <li>✔ Exam-Focused Approach aligned with UPSC trends</li>
+                          <li>✔ Answer Writing Practice with structuring</li>
+                          <li>✔ Enriched Content with current affairs integration</li>
+                          <li>✔ Personalized Mentorship for writing improvement</li>
+                          <li>✔ Notes with case studies and reports</li>
+                        </ul>
+                      </div>
+                    )}
                   </div>
                 </CardContent>
                 <CardFooter>

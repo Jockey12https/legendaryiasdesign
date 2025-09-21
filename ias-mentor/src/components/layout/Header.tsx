@@ -24,12 +24,13 @@ const navigation = [
   { name: "Home", href: "/" },
   { name: "About", href: "/about" },
   { name: "Courses", href: "/courses" },
+  { name: "CUET", href: "/cuet" },
   { name: "Book Online", href: "/book-online" },
   { name: "Gallery", href: "/gallery" },
   { name: "FAQ", href: "/faq" },
   { name: "Contact", href: "/contact" },
   { name: "Blog", href: "/blog" },
-];
+] as const;
 
 export default function Header() {
   const pathname = usePathname();
@@ -142,7 +143,7 @@ export default function Header() {
   return (
     <header className={`sticky top-0 z-50 w-full transition-all duration-300 ${scrolled ? "bg-white shadow-md py-2" : "bg-white py-4"}`}>
   <div className="max-w-7xl mx-auto px-4 md:px-8">
-    <div className="flex items-center justify-between h-12 lg:h-12"> {/* Increased mobile height */}
+    <div className="flex items-center justify-between h-12 lg:h-12 min-w-0"> {/* Added min-w-0 for proper flex behavior */}
       {/* Logo - responsive sizing */}
       <Link href="/" className="flex items-center h-full translate-x-[-15px] sm:translate-x-[-20px] md:translate-x-[-25px] lg:translate-x-[-30px]">
         <div className="relative h-[4rem] w-[4rem] sm:h-[4rem] sm:w-[4rem] md:h-[4.5rem] md:w-[4.5rem] lg:h-[5rem] lg:w-[5rem]"> {/* Larger mobile logo */}
@@ -168,10 +169,10 @@ export default function Header() {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-4 lg:space-x-5">
-            {navigation.map((item) => (
+          <nav className="hidden md:flex items-center space-x-3 lg:space-x-4 xl:space-x-5 flex-shrink-0">
+            {navigation.map((item, index) => (
               <Link
-                key={item.name}
+                key={`${item.name}-${item.href}-${index}`}
                 href={item.href}
                 className={`text-sm font-medium transition-colors hover:text-primary relative group whitespace-nowrap ${
                   pathname === item.href ? "text-primary" : "text-secondary"
@@ -188,8 +189,8 @@ export default function Header() {
           </nav>
 
           {/* Desktop Right Section */}
-          <div className="hidden md:flex items-center space-x-3 lg:space-x-4">
-            <span className="text-secondary text-sm hidden lg:inline">+91 8129313575</span>
+          <div className="hidden md:flex items-center space-x-2 lg:space-x-3 xl:space-x-4 flex-shrink-0">
+            <span className="text-secondary text-sm hidden xl:inline whitespace-nowrap">+91 8129313575</span>
             <div className="flex space-x-1">
               <Link href="https://www.instagram.com/legendaryiasmentor/" target="_blank" rel="noreferrer">
                 <Button variant="ghost" size="icon" className="h-7 w-7 hover:bg-primary hover:text-secondary">
@@ -355,9 +356,9 @@ export default function Header() {
           {/* Scrollable container */}
           <div className="overflow-y-auto h-full p-6 overscroll-contain">
             <nav className="flex flex-col space-y-6 py-6">
-              {navigation.map((item) => (
+              {navigation.map((item, index) => (
                 <Link
-                  key={item.name}
+                  key={`mobile-${item.name}-${item.href}-${index}`}
                   href={item.href}
                   className={`text-lg font-medium transition-colors hover:text-primary ${
                     pathname === item.href ? "text-primary font-bold" : "text-secondary"

@@ -19,15 +19,15 @@ import { db } from '@/utils/firebase';
 const latestCourses = [
   {
     id: 1,
-    title: "HSC",
-    description: "Comprehensive Preparation for Civil Services",
-    details: "Explore our specialized IAS Foundation Course designed to equip aspirants with the necessary knowledge and skills to excel in the UPSC examinations.",
+    title: "Regular PCM Batch",
+    description: "Your one-year transformation starts here!",
+    details: "A UPSC dream needs more than hard work - it needs the right mentorship, the right plan, and the right push. With 800+ hours of live classes, expert-curated study materials, and daily personalized mentorship, this is where your success begins!",
     features: [
-      "Comprehensive study material covering all subjects",
-      "Regular mock tests and performance evaluation",
-      "One-on-one mentoring sessions",
-      "Access to video lectures and recorded sessions",
-      "Special focus on current affairs and GK",
+      "800+ hours of live classes",
+      "Expert-curated study materials",
+      "Daily personalized mentorship",
+      "Comprehensive coverage of all UPSC subjects",
+      "Regular assessments and performance tracking",
     ],
     duration: "12 months",
     fee: "₹95,000",
@@ -35,91 +35,127 @@ const latestCourses = [
   },
   {
     id: 2,
-    title: "GED",
-    description: "Personalized Guidance for Optional Subjects",
-    details: "Discover our tailored coaching for optional subjects, delivered by experienced mentors to enhance your preparation and performance.",
+    title: "Hardcore PCM",
+    description: "How far will you go for your UPSC dream?",
+    details: "This is not just a course - it's a commitment to success, with unlimited access until you clear. Get in-depth Prelims, Mains, and Interview training with extended class hours, extra mentorship, language training, and continuous test series support.",
     features: [
-      "Subject-specific in-depth study material",
-      "Specialized mentors for each optional subject",
-      "Regular doubt-clearing sessions",
-      "Topic-wise tests and evaluations",
-      "Previous years' question analysis and practice",
+      "Unlimited access until you clear",
+      "In-depth Prelims, Mains & Interview training",
+      "Extended class hours",
+      "Extra mentorship sessions",
+      "Language training and continuous test series",
     ],
-    duration: "6 months",
-    fee: "₹65,000",
-    category: "optional"
+    duration: "Until Clear",
+    fee: "₹1,50,000",
+    category: "comprehensive"
   },
   {
     id: 3,
-    title: "ESL",
-    description: "Effective Test Series for Preliminary and Mains Exams",
-    details: "Access our meticulously designed test series to evaluate your readiness and improve your exam-taking strategies for both preliminary and mains examinations.",
+    title: "Repeaters Batch",
+    description: "We will never let you fail again!",
+    details: "Your past attempts don't define you - your next one does! This program identifies your weaknesses, corrects past mistakes, and helps you sharpen your Prelims & Mains strategy with weekly test series, answer writing sessions, and much more!",
     features: [
-      "Comprehensive coverage of all UPSC topics",
-      "Weekly tests with detailed solutions",
-      "Performance analytics and improvement strategies",
-      "Answer writing practice for mains examination",
-      "Personalized feedback on test performance",
+      "Weakness identification and correction",
+      "Past mistakes analysis",
+      "Sharpened Prelims & Mains strategy",
+      "Weekly test series",
+      "Answer writing practice sessions",
     ],
-    duration: "4 months",
-    fee: "₹45,000",
-    category: "test-series"
+    duration: "8 months",
+    fee: "₹75,000",
+    category: "repeaters"
   },
   {
     id: 4,
-    title: "GRC",
-    description: "Guidance for Successful Interview Process",
-    details: "Prepare for the crucial interview stage with our comprehensive guidance and mock interview sessions conducted by seasoned professionals.",
+    title: "Prelims Combat",
+    description: "Crack Prelims with confidence!",
+    details: "The real battle for Prelims is won with concept clarity, logical thinking & strategic MCQ solving. This program offers PYQ-based logic training, detailed concept sessions, full Prelims Test Series & personalized mentorship to help you dominate Prelims!",
     features: [
-      "Personality development sessions",
-      "Multiple mock interviews with feedback",
-      "Current affairs discussions for interview preparation",
-      "Body language and communication skills training",
-      "One-on-one mentoring for personal improvement areas",
+      "PYQ-based logic training",
+      "Detailed concept sessions",
+      "Full Prelims Test Series",
+      "Personalized mentorship",
+      "Strategic MCQ solving techniques",
     ],
-    duration: "2 months",
-    fee: "₹35,000",
-    category: "interview"
+    duration: "6 months",
+    fee: "₹45,000",
+    category: "prelims"
   },
 ];
 
 // All programs from second code set
 const allPrograms = [
   {
-    id: 'foundation-program',
-    title: 'Foundation Program',
-    description: 'Comprehensive preparation for IAS with focus on prelims and mains.',
-    duration: '12 months',
+    id: 'sociology-mentorship',
+    title: 'Sociology Mentorship',
+    description: 'Score high in Sociology! A great answer isn\'t just about facts—it\'s about depth, clarity & structure. This program fine-tunes your Sociology writing skills with expert reviews & model answers!',
+    duration: '6 months',
     fees: '₹35,000',
     image: 'https://ext.same-assets.com/1137026266/2875867135.jpeg',
-    category: 'foundation'
+    category: 'optional'
   },
   {
-    id: 'prelims-intensive',
-    title: 'Prelims Intensive',
-    description: 'Focused preparation for UPSC Preliminary exam with extensive practice tests.',
-    duration: '6 months',
-    fees: '₹20,000',
-    image: 'https://ext.same-assets.com/1137026266/1169935981.jpeg',
-    category: 'prelims'
-  },
-  {
-    id: 'mains-advanced',
-    title: 'Mains Advanced',
-    description: 'In-depth guidance for UPSC Mains with answer writing practice and evaluation.',
+    id: 'mains-combat',
+    title: 'Mains Combat',
+    description: 'Write like a topper! Mains is not about knowing, it\'s about expressing! This program transforms your writing, strengthens your articulation, and builds your confidence with structured answer writing workshops, Mains test series, value addition modules, and expert feedback!',
     duration: '8 months',
-    fees: '₹25,000',
+    fees: '₹55,000',
     image: 'https://ext.same-assets.com/1137026266/853365983.jpeg',
     category: 'mains'
   },
   {
-    id: 'interview-mastery',
-    title: 'Interview Mastery',
-    description: 'Comprehensive preparation for UPSC Interview with mock sessions and expert feedback.',
+    id: 'mentorship-batch',
+    title: 'Mentorship Batch',
+    description: 'Your personal UPSC guide for 1 year! UPSC is a lonely journey - but not with a mentor by your side! Get weekly one-on-one mentorship sessions, personal study plans, performance tracking, and targeted improvement strategies to stay ahead in the race!',
+    duration: '12 months',
+    fees: '₹65,000',
+    image: 'https://ext.same-assets.com/1137026266/1195490810.jpeg',
+    category: 'mentorship'
+  },
+  {
+    id: 'module-courses',
+    title: 'Module Courses',
+    description: 'Master key UPSC modules! Short, high-impact modules to master UPSC\'s toughest sections! Targeted training, expert guidance & crisp study materials to simplify complex topics!',
+    duration: '3 months',
+    fees: '₹25,000',
+    image: 'https://ext.same-assets.com/1137026266/2875867135.jpeg',
+    category: 'modules'
+  },
+  {
+    id: 'optional-subjects',
+    title: 'Optional Subjects',
+    description: 'Make your optional your scoring weapon! Your optional can be your strength—if trained right! Learn from expert faculty, get structured notes, concept clarity & personalized answer reviews, and maximize your optional score!',
+    duration: '6 months',
+    fees: '₹45,000',
+    image: 'https://ext.same-assets.com/1137026266/1169935981.jpeg',
+    category: 'optional'
+  },
+  {
+    id: 'prelims-test-series',
+    title: 'Prelims Test Series',
+    description: 'Practice. Improve. Conquer. UPSC Prelims isn\'t about luck—it\'s about strategy, precision & confidence. Our weekly full-length & sectional tests, detailed test discussions, and real-exam simulations make you battle-ready!',
+    duration: '4 months',
+    fees: '₹18,000',
+    image: 'https://ext.same-assets.com/1137026266/853365983.jpeg',
+    category: 'prelims'
+  },
+  {
+    id: 'mains-test-series',
+    title: 'Mains Test Series',
+    description: 'Write like a topper! Your answers should not just be right, they should be brilliant! With weekly GS & Essay tests, expert evaluation, and topper-model answers, refine your structure, clarity, and argument-building skills!',
+    duration: '5 months',
+    fees: '₹22,000',
+    image: 'https://ext.same-assets.com/1137026266/1195490810.jpeg',
+    category: 'mains'
+  },
+  {
+    id: 'mains-answer-writing',
+    title: 'Mains Answer Writing',
+    description: 'Write your way to success! A well-structured answer is the difference between average and excellence! Learn step-by-step answer writing, develop analytical skills & get expert feedback!',
     duration: '3 months',
     fees: '₹15,000',
-    image: 'https://ext.same-assets.com/1137026266/1195490810.jpeg',
-    category: 'interview'
+    image: 'https://ext.same-assets.com/1137026266/2875867135.jpeg',
+    category: 'mains'
   },
 ];
 
@@ -175,9 +211,9 @@ const studyMaterials = [
 const latestProgramCategories = [
   { value: 'all', label: 'All Latest Programs' },
   { value: 'foundation', label: 'Foundation Courses' },
-  { value: 'optional', label: 'Optional Subjects' },
-  { value: 'test-series', label: 'Test Series' },
-  { value: 'interview', label: 'Interview Preparation' },
+  { value: 'comprehensive', label: 'Comprehensive Programs' },
+  { value: 'repeaters', label: 'Repeaters Batch' },
+  { value: 'prelims', label: 'Prelims Courses' },
 ];
 
 const allProgramCategories = [
@@ -185,7 +221,9 @@ const allProgramCategories = [
   { value: 'foundation', label: 'Foundation Courses' },
   { value: 'prelims', label: 'Prelims Courses' },
   { value: 'mains', label: 'Mains Courses' },
-  { value: 'interview', label: 'Interview Courses' },
+  { value: 'mentorship', label: 'Mentorship Programs' },
+  { value: 'modules', label: 'Module Courses' },
+  { value: 'optional', label: 'Optional Subjects' },
 ];
 
 const materialCategories = [

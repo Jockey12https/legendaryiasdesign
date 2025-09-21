@@ -239,6 +239,8 @@ export default function Home() {
   const [firebaseNewsItems, setFirebaseNewsItems] = useState<NewsItem[]>([]);
   const [firebaseCourses, setFirebaseCourses] = useState<Course[]>([]);
   const [firebaseCalendarEvents, setFirebaseCalendarEvents] = useState<CalendarEvent[]>([]);
+  const [showLaunchPopup, setShowLaunchPopup] = useState(false);
+  const [isScrolling, setIsScrolling] = useState(false);
 
   // Load data from Firebase when features are enabled
   useEffect(() => {
@@ -264,9 +266,142 @@ export default function Home() {
     loadData();
   }, [state.newsSectionEnabled, state.courseShowcaseEnabled, state.calendarEnabled]);
 
+  // Show launch popup after page loads
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowLaunchPopup(true);
+    }, 2000); // Show popup after 2 seconds
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Handle rocket scroll to CUET section
+  const handleRocketScroll = () => {
+    setIsScrolling(true);
+    setShowLaunchPopup(false);
+    
+    // Add rocket animation class to body
+    document.body.classList.add('rocket-scroll');
+    
+    setTimeout(() => {
+      const cuetSection = document.getElementById('cuet-section');
+      if (cuetSection) {
+        cuetSection.scrollIntoView({ 
+          behavior: 'smooth',
+          block: 'center'
+        });
+      }
+      
+      // Remove rocket class after animation
+      setTimeout(() => {
+        document.body.classList.remove('rocket-scroll');
+        setIsScrolling(false);
+      }, 1500);
+    }, 500);
+  };
+
   return (
     <div className="overflow-x-hidden">
       <HeroSection />
+      
+      {/* CUET Launch Section */}
+      <section id="cuet-section" className="relative py-16 bg-gradient-to-r from-yellow-400 via-yellow-500 to-orange-500 overflow-hidden">
+        <div className="absolute inset-0">
+          <div className="absolute top-10 left-10 w-32 h-32 bg-white/20 rounded-full blur-2xl"></div>
+          <div className="absolute bottom-10 right-10 w-40 h-40 bg-white/15 rounded-full blur-2xl"></div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-60 h-60 bg-white/10 rounded-full blur-3xl"></div>
+        </div>
+        
+        <div className="relative max-w-7xl mx-auto px-4 md:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <div className="inline-flex items-center space-x-2 bg-secondary text-white px-4 py-2 rounded-full font-bold text-sm mb-6">
+                <span>🎓</span>
+                <span>NEW COURSE LAUNCH</span>
+              </div>
+              
+              <h2 className="text-4xl md:text-5xl font-bold mb-6 font-['Oswald'] text-secondary">
+                CUET <span className="text-white">Preparation</span>
+              </h2>
+              
+              <p className="text-xl mb-8 text-secondary leading-relaxed">
+                The gateway to admissions in top Central, State, and Private Universities across India. 
+                Join our comprehensive CUET preparation program designed by experts.
+              </p>
+              
+              <div className="flex flex-wrap items-center gap-4 mb-8">
+                <div className="flex items-center space-x-2">
+                  <div className="w-2 h-2 bg-secondary rounded-full"></div>
+                  <span className="text-sm text-secondary font-medium">Expert Faculty</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <div className="w-2 h-2 bg-secondary rounded-full"></div>
+                  <span className="text-sm text-secondary font-medium">Personalized Mentorship</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <div className="w-2 h-2 bg-secondary rounded-full"></div>
+                  <span className="text-sm text-secondary font-medium">Mock Tests & Analysis</span>
+                </div>
+              </div>
+              
+              <div className="flex items-center space-x-6">
+                <div className="text-center">
+                  <div className="text-3xl font-black text-secondary">₹9,500</div>
+                  <div className="text-sm text-secondary/80">Special Launch Price</div>
+                </div>
+                <button 
+                  onClick={() => router.push('/cuet')}
+                  className="bg-secondary text-white hover:bg-secondary/90 font-bold px-8 py-3 rounded-full shadow-xl transform hover:scale-105 transition-all duration-300"
+                >
+                  Explore CUET Program →
+                </button>
+              </div>
+            </div>
+            
+            <div className="relative">
+              <div className="bg-white rounded-2xl p-8 shadow-xl border border-gray-200">
+                <h3 className="text-2xl font-bold mb-6 text-center text-secondary font-['Oswald']">Program Highlights</h3>
+                
+                <div className="space-y-4">
+                  <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+                    <div className="w-8 h-8 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center">
+                      <span className="text-white font-bold text-sm">1</span>
+                    </div>
+                    <span className="text-secondary font-medium">Language, Domain & General Test Coverage</span>
+                  </div>
+                  
+                  <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+                    <div className="w-8 h-8 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center">
+                      <span className="text-white font-bold text-sm">2</span>
+                    </div>
+                    <span className="text-secondary font-medium">Daily Interactive Classes</span>
+                  </div>
+                  
+                  <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+                    <div className="w-8 h-8 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center">
+                      <span className="text-white font-bold text-sm">3</span>
+                    </div>
+                    <span className="text-secondary font-medium">Weekly All-India Mock Tests</span>
+                  </div>
+                  
+                  <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+                    <div className="w-8 h-8 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center">
+                      <span className="text-white font-bold text-sm">4</span>
+                    </div>
+                    <span className="text-secondary font-medium">One-to-One Mentorship</span>
+                  </div>
+                </div>
+                
+                <div className="mt-6 text-center">
+                  <p className="text-secondary/80 text-sm mb-2">Perfect for Class 11 & 12 students</p>
+                  <p className="text-secondary font-bold">Limited Seats Available!</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      
       {state.newsSectionEnabled && (
         <ClientOnly>
           <NewsUpdatesSection newsItems={firebaseNewsItems.length > 0 ? firebaseNewsItems : mockNewsItems} />
@@ -293,6 +428,84 @@ export default function Home() {
       <VisionSection />
       <TestimonialsSection />
       <ContactSection />
+
+      {/* Launch Popup */}
+      {showLaunchPopup && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+          <div className="relative bg-gradient-to-br from-yellow-50 via-yellow-100 to-orange-50 rounded-2xl p-8 mx-4 max-w-md w-full shadow-2xl animate-in zoom-in-95 duration-500 border border-yellow-200">
+            {/* Close button */}
+            <button
+              onClick={() => setShowLaunchPopup(false)}
+              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+
+            {/* Content */}
+            <div className="text-center">
+              <div className="w-20 h-20 mx-auto mb-4 bg-gradient-to-r from-yellow-300 to-red-200 rounded-full flex items-center justify-center shadow-lg">
+                <span className="text-4xl">🚀</span>
+              </div>
+              
+              <h3 className="text-2xl font-bold text-secondary mb-2 font-['Oswald']">
+                New Course Launched!
+              </h3>
+              
+              <p className="text-gray-600 mb-6">
+                Exciting news! We've launched our new <span className="font-bold text-secondary">CUET Preparation Program</span> designed specifically for university entrance exams.
+              </p>
+              
+              <div className="space-y-3">
+                <button
+                  onClick={handleRocketScroll}
+                  disabled={isScrolling}
+                  className={`w-full py-3 px-6 rounded-full font-bold text-white transition-all duration-300 transform ${
+                    isScrolling 
+                      ? 'bg-gray-400 cursor-not-allowed' 
+                      : 'bg-gradient-to-r from-yellow-300 to-red-200 hover:from-yellow-400 hover:to-red-300 hover:scale-105 shadow-lg'
+                  }`}
+                >
+                  {isScrolling ? '🚀 Flying to CUET...' : '🚀 Explore CUET Program'}
+                </button>
+                
+                <button
+                  onClick={() => setShowLaunchPopup(false)}
+                  className="w-full py-2 px-6 rounded-full font-medium text-gray-600 hover:text-gray-800 transition-colors"
+                >
+                  Maybe Later
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Rocket Animation Styles */}
+      <style jsx global>{`
+        .rocket-scroll {
+          animation: rocketFly 2s ease-in-out;
+        }
+        
+        @keyframes rocketFly {
+          0% {
+            transform: translateY(0) rotate(0deg);
+          }
+          25% {
+            transform: translateY(-20px) rotate(-5deg);
+          }
+          50% {
+            transform: translateY(-40px) rotate(0deg);
+          }
+          75% {
+            transform: translateY(-20px) rotate(5deg);
+          }
+          100% {
+            transform: translateY(0) rotate(0deg);
+          }
+        }
+      `}</style>
     </div>
   );
 }
