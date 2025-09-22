@@ -121,7 +121,7 @@ export async function POST(request: Request) {
     }
 
     const paymentId = generatePaymentId();
-    const upiId = process.env.UPI_ID || 'jithinsj123@oksbi'; // Default UPI ID
+    const upiId = process.env.UPI_ID || 'theiasmentor-1@oksbi'; // Default UPI ID
 
     const paymentData: PaymentData = {
       id: paymentId,

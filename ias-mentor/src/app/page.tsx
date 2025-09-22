@@ -325,7 +325,7 @@ export default function Home() {
               </h2>
               
               <p className="text-xl mb-8 text-secondary leading-relaxed">
-                The gateway to admissions in top Central, State, and Private Universities across India. 
+                The gateway to admissions in top Central Universities across India. 
                 Join our comprehensive CUET preparation program designed by experts.
               </p>
               
@@ -374,7 +374,7 @@ export default function Home() {
                     <div className="w-8 h-8 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center">
                       <span className="text-white font-bold text-sm">2</span>
                     </div>
-                    <span className="text-secondary font-medium">Daily Interactive Classes</span>
+                    <span className="text-secondary font-medium">Offline and Online Classes</span>
                   </div>
                   
                   <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">

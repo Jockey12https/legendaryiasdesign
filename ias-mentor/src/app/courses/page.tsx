@@ -30,7 +30,7 @@ const latestCourses = [
       "Regular assessments and performance tracking",
     ],
     duration: "12 months",
-    fee: "₹95,000",
+    fee: "Contact Admin",
     category: "foundation"
   },
   {
@@ -46,7 +46,7 @@ const latestCourses = [
       "Language training and continuous test series",
     ],
     duration: "Until Clear",
-    fee: "₹1,50,000",
+    fee: "Contact Admin",
     category: "comprehensive"
   },
   {
@@ -61,8 +61,8 @@ const latestCourses = [
       "Weekly test series",
       "Answer writing practice sessions",
     ],
-    duration: "8 months",
-    fee: "₹75,000",
+    duration: "12 months",
+    fee: "Contact Admin",
     category: "repeaters"
   },
   {
@@ -77,8 +77,8 @@ const latestCourses = [
       "Personalized mentorship",
       "Strategic MCQ solving techniques",
     ],
-    duration: "6 months",
-    fee: "₹45,000",
+    duration: "5 months",
+    fee: "Contact Admin",
     category: "prelims"
   },
 ];
@@ -373,6 +373,18 @@ export default function UnifiedCoursesPage() {
       let price = 0;
       if (course) {
         if ('fee' in course) {
+          // Check if fee is "Contact Admin" - open WhatsApp modal without payment
+          if (course.fee === "Contact Admin") {
+            setSelectedProduct({
+              id: courseId,
+              title: courseTitle,
+              type: 'course',
+              price: 0, // Set price to 0 for contact admin courses
+              description: course?.description
+            });
+            setPaymentModalOpen(true);
+            return;
+          }
           price = parseInt(course.fee.replace(/[^\d]/g, '') || '0');
         } else if ('fees' in course) {
           price = parseInt(course.fees.replace(/[^\d]/g, '') || '0');
@@ -568,7 +580,7 @@ export default function UnifiedCoursesPage() {
                         <CardContent className="pt-4">
                           <div className="mb-4">
                             <p className="text-secondary font-bold">Duration: {course.duration}</p>
-                            <p className="text-secondary font-bold">Fee: {course.fee}</p>
+                            <p className="text-secondary font-bold">For Fee Details</p>
                           </div>
                           {user && (enrolledCourses.has(course.id) || enrolledCourses.has(course.id.toString())) ? (
                             <Button 
@@ -583,7 +595,7 @@ export default function UnifiedCoursesPage() {
                               className="bg-secondary text-white hover:bg-secondary/90"
                               onClick={() => handleEnrollment(course.id.toString(), course.title)}
                             >
-                              {user ? 'Enroll Now' : 'Sign In to Enroll'}
+                              {course.fee === "Contact Admin" ? "Contact Admin" : (user ? 'Enroll Now' : 'Sign In to Enroll')}
                             </Button>
                           )}
                         </CardContent>
@@ -594,7 +606,7 @@ export default function UnifiedCoursesPage() {
 
                         <h4 className="text-xl font-bold mb-4">Key Features</h4>
                         <ul className="list-disc pl-5 space-y-2">
-                          {(course.features || []).map((feature, index) => (
+                          {(course.features || []).map((feature: string | number | bigint | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<React.AwaitedReactNode> | null | undefined, index: any) => (
                             <li key={`${course.id}-feature-${index}`} className="text-gray-600">{feature}</li>
                           ))}
                         </ul>

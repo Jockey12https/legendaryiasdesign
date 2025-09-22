@@ -1,11 +1,11 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { CheckCircle, Star, Users, BookOpen, Target, Award, Clock, TrendingUp, Zap, Shield, Crown } from 'lucide-react';
+import { CheckCircle, Star, Users, BookOpen, Target, Award, Clock, TrendingUp, Zap, Shield, Crown, Play } from 'lucide-react';
 import MainLayout from '@/components/layout/MainLayout';
 import { useAuth } from '@/contexts/AuthContext';
 import AuthModal from '@/components/auth/AuthModal';
@@ -15,6 +15,20 @@ export default function CUETPage() {
   const { user } = useAuth();
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [paymentModalOpen, setPaymentModalOpen] = useState(false);
+  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
+  const [showMobileHint, setShowMobileHint] = useState(false);
+
+  // Show mobile hint when video starts playing
+  useEffect(() => {
+    if (isVideoPlaying) {
+      setShowMobileHint(true);
+      // Hide hint after 4 seconds
+      const timer = setTimeout(() => {
+        setShowMobileHint(false);
+      }, 4000);
+      return () => clearTimeout(timer);
+    }
+  }, [isVideoPlaying]);
 
   const handleEnrollClick = () => {
     if (!user) {
@@ -22,6 +36,11 @@ export default function CUETPage() {
       return;
     }
     setPaymentModalOpen(true);
+  };
+
+  const handleCloseVideo = () => {
+    setIsVideoPlaying(false);
+    setShowMobileHint(false);
   };
 
   const features = [
@@ -59,7 +78,7 @@ export default function CUETPage() {
 
   const programIncludes = [
     "Coverage of Language, Domain Subjects & General Test",
-    "Daily classes with interactive sessions",
+    "Offline and Online classes with interactive sessions",
     "Doubt-clearing support and practice worksheets",
     "Weekly All-India Mock Tests with performance analysis",
     "Exam-specific strategies and time management techniques"
@@ -113,6 +132,121 @@ export default function CUETPage() {
                 <Zap className="h-6 w-6 mr-3" />
                 Join CUET Program Now
               </Button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Video Section */}
+      <section className="py-12 md:py-20 bg-gradient-to-br from-gray-50 to-blue-50">
+        <div className="max-w-6xl mx-auto px-4 md:px-8">
+          <div className="text-center mb-8 md:mb-12">
+            <Badge className="mb-4 bg-gradient-to-r from-red-500 to-pink-500 text-white font-bold px-4 md:px-6 py-2 text-sm md:text-lg">
+              🎥 WATCH & LEARN
+            </Badge>
+            <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-6 font-['Oswald'] text-gray-900 px-2">
+              Discover Our <span className="text-blue-600">CUET Strategy</span>
+            </h2>
+            <p className="text-base md:text-xl text-gray-600 max-w-3xl mx-auto px-4">
+              Watch our expert faculty explain the CUET preparation approach and get insights into our teaching methodology
+            </p>
+          </div>
+
+          <div className="relative max-w-4xl mx-auto px-2 md:px-0">
+            {!isVideoPlaying ? (
+              /* Video Thumbnail - Show before playing */
+              <div className="relative group cursor-pointer rounded-xl md:rounded-2xl overflow-hidden shadow-2xl hover:shadow-3xl transition-all duration-500 transform hover:scale-[1.02] active:scale-[0.98] touch-manipulation">
+                <div className="relative aspect-video bg-black">
+                  <Image
+                    src="https://ik.imagekit.io/8vvkoi3dt/PODCAST%20THUMBNAIL.png?updatedAt=1758560835184"
+                    alt="CUET Preparation Strategy Video"
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  
+                  {/* Play Button Overlay */}
+                  <div className="absolute inset-0 bg-black/30 flex items-center justify-center group-hover:bg-black/20 transition-colors duration-300">
+                    <div className="w-16 h-16 md:w-20 md:h-20 bg-red-600 hover:bg-red-700 active:bg-red-800 rounded-full flex items-center justify-center shadow-2xl transform group-hover:scale-110 group-active:scale-95 transition-all duration-300">
+                      <Play className="h-6 w-6 md:h-8 md:w-8 text-white ml-0.5 md:ml-1" fill="currentColor" />
+                    </div>
+                  </div>
+
+                </div>
+
+                {/* Touch Handler */}
+                <div 
+                  className="absolute inset-0 z-10 touch-manipulation"
+                  onClick={() => setIsVideoPlaying(true)}
+                  onTouchEnd={(e) => {
+                    e.preventDefault();
+                    setIsVideoPlaying(true);
+                  }}
+                  title="Tap to play video"
+                ></div>
+              </div>
+            ) : (
+              /* Embedded YouTube Video */
+              <div className="relative aspect-video rounded-xl md:rounded-2xl overflow-hidden shadow-2xl">
+                <iframe
+                  src="https://www.youtube.com/embed/i20MlKiWzqQ?autoplay=1&rel=0&modestbranding=1&playsinline=1&controls=1&showinfo=0&cc_load_policy=0&iv_load_policy=3&fs=1&disablekb=0"
+                  title="CUET Preparation Strategy Video"
+                  className="w-full h-full"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                ></iframe>
+                
+                {/* Close Button - Positioned to not interfere with video controls */}
+                <button
+                  onClick={handleCloseVideo}
+                  className="absolute top-2 md:top-3 right-2 md:right-3 w-7 h-7 md:w-8 md:h-8 bg-black/70 hover:bg-black/90 active:bg-black text-white rounded-full flex items-center justify-center transition-colors duration-200 touch-manipulation text-base md:text-lg font-bold z-10"
+                  title="Close video"
+                  style={{ 
+                    // Ensure close button doesn't overlap with YouTube controls
+                    top: '8px',
+                    right: '8px'
+                  }}
+                >
+                  ×
+                </button>
+                
+                {/* Mobile Controls Hint - Auto-hide after 4 seconds */}
+                {showMobileHint && (
+                  <div className="absolute bottom-2 left-2 md:hidden animate-in fade-in-0 slide-in-from-bottom-2 duration-300">
+                    <div className="bg-black/90 text-white text-xs px-3 py-2 rounded-lg backdrop-blur-sm border border-white/20">
+                      <div className="flex items-center space-x-2">
+                        <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                        <span>Tap video for pause/controls</span>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Video Description */}
+            <div className="mt-6 md:mt-8 text-center px-4">
+              <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-3 md:mb-4">
+                CUET Preparation Masterclass
+              </h3>
+              <p className="text-base md:text-lg text-gray-600 max-w-2xl mx-auto mb-4 md:mb-6 leading-relaxed">
+                Learn from our experienced faculty about effective CUET preparation strategies, 
+                time management techniques, and proven methods to excel in all sections of the exam.
+              </p>
+              
+              <div className="flex flex-col sm:flex-row sm:flex-wrap justify-center gap-3 md:gap-4 text-xs md:text-sm text-gray-500">
+                <div className="flex items-center justify-center">
+                  <CheckCircle className="h-4 w-4 mr-2 text-green-500 flex-shrink-0" />
+                  Expert Tips & Strategies
+                </div>
+                <div className="flex items-center justify-center">
+                  <CheckCircle className="h-4 w-4 mr-2 text-green-500 flex-shrink-0" />
+                  Section-wise Guidance
+                </div>
+                <div className="flex items-center justify-center">
+                  <CheckCircle className="h-4 w-4 mr-2 text-green-500 flex-shrink-0" />
+                  Real Exam Insights
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -308,7 +442,7 @@ export default function CUETPage() {
           type: 'course',
           description: 'Comprehensive CUET preparation with expert faculty, personalized mentorship, and regular mock tests'
         }}
-        onSuccess={() => setPaymentModalOpen(false)}
+        onPaymentSuccess={() => setPaymentModalOpen(false)}
       />
     </MainLayout>
   );

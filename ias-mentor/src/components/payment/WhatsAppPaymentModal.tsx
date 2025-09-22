@@ -98,6 +98,27 @@ export default function WhatsAppPaymentModal({ isOpen, onClose, product, onPayme
       console.log('WhatsAppPaymentModal: User data:', { uid: user.uid, email: user.email, displayName: user.displayName });
       console.log('WhatsAppPaymentModal: Product data:', product);
 
+      // For zero-price courses (Contact Admin), skip payment initialization
+      if (product.price === 0) {
+        console.log('WhatsAppPaymentModal: Zero price course detected, skipping payment initialization');
+        const contactId = `CONTACT_${Date.now()}`;
+        const adminNumber = '918547698407';
+        const message = `Hi! I'm interested in the ${product.title} course.\n\nName: ${user?.displayName || user?.email}\nPhone: ${(user as any)?.phoneNumber || 'Not provided'}\n\nPlease provide fee details and enrollment information.\n\nThank you!`;
+        const whatsappUrl = `https://wa.me/${adminNumber}?text=${encodeURIComponent(message)}`;
+        
+        setPaymentId(contactId);
+        setWhatsappUrl(whatsappUrl);
+        setPaymentData({
+          id: contactId,
+          status: 'pending',
+          upiId: '',
+          amount: 0,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString()
+        });
+        return;
+      }
+
       // Check if a pending payment already exists for this user and product
       const checkResponse = await fetch(`/api/payment/check?userId=${user.uid}&productId=${product.id}&productType=${product.type}`);
       const checkData = await checkResponse.json();
@@ -174,6 +195,12 @@ export default function WhatsAppPaymentModal({ isOpen, onClose, product, onPayme
   const checkPaymentStatus = async () => {
     if (!paymentId) return;
 
+    // Skip payment status checking for contact admin payments (they start with CONTACT_)
+    if (paymentId.startsWith('CONTACT_')) {
+      console.log('Skipping payment status check for contact admin payment:', paymentId);
+      return;
+    }
+
     try {
       console.log('Checking payment status for:', paymentId);
       const response = await fetch(`/api/payment?paymentId=${paymentId}&userId=${user?.uid}`);
@@ -235,7 +262,7 @@ export default function WhatsAppPaymentModal({ isOpen, onClose, product, onPayme
         '918547698407'
       ];
       
-      const message = `Hi! I want to purchase ${product.title} for ₹${product.price}.\nName: ${user.displayName || user.email}\nPhone: ${(user as any).phoneNumber || 'Not provided'}\n\nPlease provide payment instructions.\nPayment ID: ${paymentData?.id}`;
+      const message = `Hi! I want to purchase ${product.title} for ${product.price === 0 ? 'Nil' : `₹${product.price}`}.\nName: ${user.displayName || user.email}\nPhone: ${(user as any).phoneNumber || 'Not provided'}\n\nPlease provide payment instructions.\nPayment ID: ${paymentData?.id}`;
       
       // Send WhatsApp messages to multiple numbers
       const response = await fetch('/api/send-whatsapp-multiple', {
@@ -287,7 +314,14 @@ export default function WhatsAppPaymentModal({ isOpen, onClose, product, onPayme
 
   const informAdmin = () => {
     const adminNumber = '918547698407'; // Second manual number
-    const message = `Hi! I want to purchase ${product.title} for ₹${product.price}.\nName: ${user?.displayName || user?.email}\nPhone: ${(user as any)?.phoneNumber || 'Not provided'}\n\nPlease provide payment instructions.\nPayment ID: ${paymentData?.id}`;
+    let message: string;
+    
+    if (product.price === 0) {
+      message = `Hi! I'm interested in the ${product.title} course.\n\nName: ${user?.displayName || user?.email}\nPhone: ${(user as any)?.phoneNumber || 'Not provided'}\n\nPlease provide fee details and enrollment information.\n\nThank you!`;
+    } else {
+      message = `Hi! I want to purchase ${product.title} for ${product.price === 0 ? 'Nil' : `₹${product.price}`}.\nName: ${user?.displayName || user?.email}\nPhone: ${(user as any)?.phoneNumber || 'Not provided'}\n\nPlease provide payment instructions.\nPayment ID: ${paymentData?.id}`;
+    }
+    
     const whatsappUrl = `https://wa.me/${adminNumber}?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
   };
@@ -381,7 +415,7 @@ export default function WhatsAppPaymentModal({ isOpen, onClose, product, onPayme
               <CardContent className="space-y-3">
                 <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
                   <span className="text-gray-600 text-sm sm:text-base">Amount:</span>
-                  <span className="font-bold text-lg sm:text-xl">₹{product.price}</span>
+                  <span className="font-bold text-lg sm:text-xl">{product.price === 0 ? 'Nil' : `₹${product.price}`}</span>
                 </div>
                 <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
                   <span className="text-gray-600 text-sm sm:text-base">Payment ID:</span>
@@ -409,56 +443,82 @@ export default function WhatsAppPaymentModal({ isOpen, onClose, product, onPayme
                   
                   {paymentData.status === 'pending' && (
                     <div className="space-y-3">
-                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-                        <span className="text-sm sm:text-base">UPI ID:</span>
-                        <div className="flex items-center gap-2">
-                          <span className="font-mono text-xs sm:text-sm break-all">{paymentData.upiId}</span>
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            onClick={copyUpiId}
-                            className="h-6 w-6 p-0 flex-shrink-0"
-                          >
-                            <Copy className="h-3 w-3" />
-                          </Button>
-                        </div>
-                      </div>
-                      
-                      {/* UPI QR Code */}
-                      <div className="mt-4">
-                        <UPIQRCode 
-                          upiId={paymentData.upiId}
-                          amount={product.price}
-                          merchantName="Legendary IAS Mentor"
-                          transactionNote={`${product.title} - Payment ID: ${paymentData.id}`}
-                        />
-                      </div>
-                      
-                      <div className="bg-gray-50 p-3 rounded-lg">
-                        <p className="text-sm text-gray-600 mb-2 font-medium">Instructions:</p>
-                        <ol className="text-xs sm:text-sm space-y-1.5">
-                          <li className="flex items-start gap-2">
-                            <span className="flex-shrink-0">1.</span>
-                            <span>Send ₹{product.price} to <span className="font-mono break-all">{paymentData.upiId}</span></span>
-                          </li>
-                          <li className="flex items-start gap-2">
-                            <span className="flex-shrink-0">2.</span>
-                            <span>Click "Contact WhatsApp" below</span>
-                          </li>
-                          <li className="flex items-start gap-2">
-                            <span className="flex-shrink-0">3.</span>
-                            <span>Send payment screenshot</span>
-                          </li>
-                          <li className="flex items-start gap-2">
-                            <span className="flex-shrink-0">3.</span>
-                            <span>Inform Admin about the payment</span>
-                          </li>
-                          <li className="flex items-start gap-2">
-                            <span className="flex-shrink-0">4.</span>
-                            <span>Wait for confirmation (2-3 hours)</span>
-                          </li>
-                        </ol>
-                      </div>
+                      {product.price > 0 ? (
+                        <>
+                          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                            <span className="text-sm sm:text-base">UPI ID:</span>
+                            <div className="flex items-center gap-2">
+                              <span className="font-mono text-xs sm:text-sm break-all">{paymentData.upiId}</span>
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={copyUpiId}
+                                className="h-6 w-6 p-0 flex-shrink-0"
+                              >
+                                <Copy className="h-3 w-3" />
+                              </Button>
+                            </div>
+                          </div>
+                          
+                          {/* UPI QR Code */}
+                          <div className="mt-4">
+                            <UPIQRCode 
+                              upiId={paymentData.upiId}
+                              amount={product.price}
+                              merchantName="Legendary IAS Mentor"
+                              transactionNote={`${product.title} - Payment ID: ${paymentData.id}`}
+                            />
+                          </div>
+                          
+                          <div className="bg-gray-50 p-3 rounded-lg">
+                            <p className="text-sm text-gray-600 mb-2 font-medium">Instructions:</p>
+                            <ol className="text-xs sm:text-sm space-y-1.5">
+                              <li className="flex items-start gap-2">
+                                <span className="flex-shrink-0">1.</span>
+                                <span>Send ₹{product.price} to <span className="font-mono break-all">{paymentData.upiId}</span></span>
+                              </li>
+                              <li className="flex items-start gap-2">
+                                <span className="flex-shrink-0">2.</span>
+                                <span>Click "Contact WhatsApp" below</span>
+                              </li>
+                              <li className="flex items-start gap-2">
+                                <span className="flex-shrink-0">3.</span>
+                                <span>Send payment screenshot</span>
+                              </li>
+                              <li className="flex items-start gap-2">
+                                <span className="flex-shrink-0">4.</span>
+                                <span>Inform Admin about the payment</span>
+                              </li>
+                              <li className="flex items-start gap-2">
+                                <span className="flex-shrink-0">5.</span>
+                                <span>Wait for confirmation (2-3 hours)</span>
+                              </li>
+                            </ol>
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          {/* Contact Admin Section */}
+                          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                            <div className="flex items-center gap-2 mb-3">
+                              <MessageCircle className="h-5 w-5 text-blue-600" />
+                              <h3 className="text-lg font-semibold text-blue-900">Contact Admin for Details</h3>
+                            </div>
+                            <p className="text-blue-800 text-sm mb-3">
+                              For fee details and enrollment information for <strong>{product.title}</strong>, please contact our admin team directly.
+                            </p>
+                            <div className="bg-blue-100 p-3 rounded-lg">
+                              <p className="text-blue-900 text-sm font-medium mb-2">What to include in your message:</p>
+                              <ul className="text-blue-800 text-xs space-y-1">
+                                <li>• Course name: {product.title}</li>
+                                <li>• Your enrollment interest</li>
+                                <li>• Any specific questions about the course</li>
+                                <li>• Your contact information</li>
+                              </ul>
+                            </div>
+                          </div>
+                        </>
+                      )}
                     </div>
                   )}
 
