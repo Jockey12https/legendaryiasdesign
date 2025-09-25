@@ -19,7 +19,7 @@ export default function robots(): MetadataRoute.Robots {
         '/test-payment/',
       ],
     },
-    sitemap: 'https://legendaryiasmentor.com/sitemap.xml',
-    host: 'https://legendaryiasmentor.com',
+    sitemap: 'https://www.legendaryiasmentor.com/sitemap.xml',
+    host: 'https://www.legendaryiasmentor.com',
   }
 }

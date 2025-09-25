@@ -25,10 +25,10 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "Legendary IAS Mentor - Best IAS Academy in Kerala & India | UPSC Coaching",
+    default: "Legendary IAS Mentor - Best IAS Academy in Kerala & India",
     template: "%s | Legendary IAS Mentor"
   },
-  description: "Legendary IAS Mentor is the #1 IAS Academy in Kerala and among the best UPSC coaching institutes in India. Expert faculty, proven success rate, comprehensive study material, and personalized guidance for UPSC Civil Services Exam preparation. Join thousands of successful IAS aspirants.",
+  description: "Legendary IAS Mentor is the #1 IAS Academy in Kerala and among the best UPSC coaching institutes in India. Expert faculty, proven success rate, comprehensive study material, and personalized guidance for UPSC Civil Services Exam preparation.",
   keywords: [
     "IAS Academy Kerala",
     "Best IAS Academy India", 
@@ -59,22 +59,22 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL('https://legendaryiasmentor.com'),
+  metadataBase: new URL('https://www.legendaryiasmentor.com'),
   alternates: {
     canonical: '/',
   },
   openGraph: {
     type: 'website',
     locale: 'en_IN',
-    url: 'https://legendaryiasmentor.com',
+    url: 'https://www.legendaryiasmentor.com/',
     title: 'Legendary IAS Mentor - Best IAS Academy in Kerala & India',
     description: 'Legendary IAS Mentor is the #1 IAS Academy in Kerala and among the best UPSC coaching institutes in India. Expert faculty, proven success rate, comprehensive study material, and personalized guidance for UPSC Civil Services Exam preparation.',
     siteName: 'Legendary IAS Mentor',
     images: [
       {
-        url: 'https://ext.same-assets.com/2651817114/1248459215.png',
+        url: 'https://opengraph.b-cdn.net/production/images/fd3a6304-0966-4902-ae3d-57b64f2523ac.jpg?token=U0Z5td14r7OSMANDaehi51sETPXfL5x4qY5hnynizVE&height=1200&width=1200&expires=33294819526',
         width: 1200,
-        height: 630,
+        height: 1200,
         alt: 'Legendary IAS Mentor - Best IAS Academy in Kerala',
       },
     ],
@@ -82,8 +82,8 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Legendary IAS Mentor - Best IAS Academy in Kerala & India',
-    description: 'Legendary IAS Mentor is the #1 IAS Academy in Kerala and among the best UPSC coaching institutes in India. Expert faculty, proven success rate, comprehensive study material.',
-    images: ['https://ext.same-assets.com/2651817114/1248459215.png'],
+    description: 'Legendary IAS Mentor is the #1 IAS Academy in Kerala and among the best UPSC coaching institutes in India. Expert faculty, proven success rate, comprehensive study material, and personalized guidance for UPSC Civil Services Exam preparation.',
+    images: ['https://opengraph.b-cdn.net/production/images/fd3a6304-0966-4902-ae3d-57b64f2523ac.jpg?token=U0Z5td14r7OSMANDaehi51sETPXfL5x4qY5hnynizVE&height=1200&width=1200&expires=33294819526'],
   },
   robots: {
     index: true,
@@ -97,9 +97,7 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    google: 'your-google-verification-code-here',
-    yandex: 'your-yandex-verification-code-here',
-    yahoo: 'your-yahoo-verification-code-here',
+    google: 'google-site-verification=mUGq0Y0JAM-bsQwk527YIT14I3-JXb5NH44UOBs-2vc', // Replace with actual Google Search Console verification code
   },
   icons: {
     icon: [
