@@ -117,9 +117,12 @@ export default function HeroSection() {
         <AnimatePresence mode="wait">
           <motion.div
             key={currentBackgroundIndex}
-            className="absolute inset-0 bg-cover bg-center"
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style={{
               backgroundImage: `url(${heroBackgrounds[currentBackgroundIndex]})`,
+              backgroundPosition: 'center center',
+              backgroundSize: 'cover',
+              backgroundAttachment: 'scroll'
             }}
             initial={{ opacity: 0, scale: 1.1 }}
             animate={{ opacity: 0.6, scale: 1 }}
@@ -135,20 +138,6 @@ export default function HeroSection() {
       {/* Overlay gradient */}
       <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-transparent z-0"></div>
       
-      {/* Background Navigation Dots */}
-      <div className="absolute bottom-4 right-4 z-20 flex space-x-2">
-        {heroBackgrounds.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => setCurrentBackgroundIndex(index)}
-            className={`w-2 h-2 rounded-full transition-all duration-300 ${
-              index === currentBackgroundIndex 
-                ? 'bg-primary scale-125' 
-                : 'bg-white/50 hover:bg-white/70'
-            }`}
-          />
-        ))}
-      </div>
 
       <div className="relative z-10 py-8 sm:py-12 md:py-16 lg:py-24 max-w-7xl mx-auto px-3 sm:px-4 md:px-8">
         <motion.div

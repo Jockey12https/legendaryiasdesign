@@ -146,21 +146,21 @@ export default function Header() {
     <div className="flex items-center justify-between h-12 lg:h-12 min-w-0"> {/* Added min-w-0 for proper flex behavior */}
       {/* Logo - responsive sizing */}
       <Link href="/" className="flex items-center h-full translate-x-[-15px] sm:translate-x-[-20px] md:translate-x-[-25px] lg:translate-x-[-30px]">
-        <div className="relative h-[4rem] w-[4rem] sm:h-[4rem] sm:w-[4rem] md:h-[4.5rem] md:w-[4.5rem] lg:h-[5rem] lg:w-[5rem]"> {/* Larger mobile logo */}
+         <div className="relative h-[4rem] w-[4rem] sm:h-[4rem] sm:w-[4rem] md:h-[4.5rem] md:w-[4.5rem] lg:h-[5rem] lg:w-[5rem] bg-white/10 backdrop-blur-sm rounded-lg p-1"> {/* Larger logo container */}
           <Image
-            src="https://ext.same-assets.com/2651817114/1248459215.png"
+            src="https://ik.imagekit.io/8vvkoi3dt/Legendary/legendary%20%20(2).jpg"
             alt="Legendary IAS Mentor"
             width={250}
             height={250}
-            className="object-contain"
+            className="object-contain rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105"
             style={{
-              transform: 'scale(1.1) sm:scale(1.08) md:scale(1.1)', // Larger mobile scaling
+              transform: 'scale(1.1) sm:scale(1.1) md:scale(1.1) lg:scale(1.1)', // Larger logo scaling
               transformOrigin: 'left center'
             }}
           />
         </div>
 
-            <span className="text-secondary font-bold text-lg sm:text-base md:text-lg lg:text-2xl uppercase tracking-wider font-['Oswald'] hidden sm:inline-block translate-x-[15px] sm:translate-x-[20px] md:translate-x-[25px] lg:translate-x-[30px]">
+            <span className="text-secondary font-bold text-sm sm:text-sm md:text-base lg:text-lg xl:text-xl uppercase tracking-wide font-['Oswald'] hidden sm:inline-block translate-x-[10px] sm:translate-x-[15px] md:translate-x-[20px] lg:translate-x-[25px]">
               Legendary IAS Mentor
             </span>
             <span className="text-secondary font-bold text-lg uppercase tracking-wider font-['Oswald'] sm:hidden">
