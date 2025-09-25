@@ -10,19 +10,19 @@ const mentors = [
   {
     id: 1,
     name: "Nitin Chakravarthy",
-    position: "Lead Mentor & Founder",
+    position: "Chief Mentor & Faculty",
     image: "https://ik.imagekit.io/8vvkoi3dt/nitin%20sir_new1.jpg?updatedAt=1755003315847"
   },
   {
     id: 2,
     name: "Elsa Baby",
     position: "Senior Mentor",
-    image: "https://ik.imagekit.io/8vvkoi3dt/mentor-9.jpg?updatedAt=1755003316192"
+    image:"https://ik.imagekit.io/8vvkoi3dt/ELSA%20BABY%20UPSC%20Faculty.jpg?updatedAt=1758805693395"
   },
   {
     id: 3,
     name: "Paulson Baby",
-    position: "Expert Mentor",
+    position: "Expert UPSC Mentor & Faculty",
     image: "https://ik.imagekit.io/8vvkoi3dt/PAULSON%20.JPG?updatedAt=1758474931488"
   },
   {
@@ -94,7 +94,20 @@ export default function AboutPage() {
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
 
-  const totalSlides = Math.ceil(mentors.length / 4);
+  // Responsive slide calculation
+  const [isMobile, setIsMobile] = useState(false);
+  
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+  
+  const totalSlides = isMobile ? mentors.length : Math.ceil(mentors.length / 4);
   const maxSlide = totalSlides - 1;
 
   const nextSlide = () => {
@@ -227,107 +240,139 @@ export default function AboutPage() {
                 className="flex transition-transform duration-700 ease-in-out"
                 style={{ transform: `translateX(-${currentSlide * 100}%)` }}
               >
-                {/* First Slide - Mentors 1-4 */}
-                <div className="w-full flex-shrink-0">
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                                         {mentors.slice(0, 4).map((mentor) => (
-                       <div 
-                         key={mentor.id} 
-                         className="text-center group"
-                       >
-                         <div className="relative h-80 w-full mb-4 overflow-hidden rounded-lg shadow-lg">
-                           <Image
-                             src={mentor.image}
-                             alt={mentor.name}
-                             fill
-                             className={`object-cover transition-transform duration-500 group-hover:scale-110 ${
-                               mentor.id === 1 ? 'object-top' : ''
-                             }`}
-                           />
-                           <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                         </div>
-                         <h3 className="text-xl font-bold mb-1 text-gray-800">{mentor.name}</h3>
-                         <p className="text-gray-600">{mentor.position}</p>
-                       </div>
-                     ))}
-                  </div>
-                </div>
-
-                {/* Second Slide - Mentors 5-8 */}
-                <div className="w-full flex-shrink-0">
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                    {mentors.slice(4, 8).map((mentor) => (
-                      <div 
-                        key={mentor.id} 
-                        className="text-center group"
-                      >
-                        <div className="relative h-80 w-full mb-4 overflow-hidden rounded-lg shadow-lg">
+                {isMobile ? (
+                  // Mobile: Show one mentor at a time with full width
+                  mentors.map((mentor) => (
+                    <div key={mentor.id} className="w-full flex-shrink-0">
+                      <div className="text-center group px-4">
+                        <div className="relative h-96 w-full mb-4 overflow-hidden rounded-lg shadow-lg">
                           <Image
                             src={mentor.image}
                             alt={mentor.name}
                             fill
-                            className="object-cover transition-transform duration-500 group-hover:scale-110"
+                            className={`object-cover transition-transform duration-500 group-hover:scale-110 ${
+                              mentor.id === 1 ? 'object-top' : mentor.id === 2 ? 'object-[center_20%]' : ''
+                            }`}
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                         </div>
                         <h3 className="text-xl font-bold mb-1 text-gray-800">{mentor.name}</h3>
                         <p className="text-gray-600">{mentor.position}</p>
                       </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Third Slide - Mentors 9-12 */}
-                <div className="w-full flex-shrink-0">
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                    {mentors.slice(8, 12).map((mentor) => (
-                      <div 
-                        key={mentor.id} 
-                        className="text-center group"
-                      >
-                        <div className="relative h-80 w-full mb-4 overflow-hidden rounded-lg shadow-lg">
-                          <Image
-                            src={mentor.image}
-                            alt={mentor.name}
-                            fill
-                            className="object-cover transition-transform duration-500 group-hover:scale-110"
-                          />
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                        </div>
-                        <h3 className="text-xl font-bold mb-1 text-gray-800">{mentor.name}</h3>
-                        <p className="text-gray-600">{mentor.position}</p>
+                    </div>
+                  ))
+                ) : (
+                  // Desktop: Show 4 mentors per slide (original behavior)
+                  <>
+                    {/* First Slide - Mentors 1-4 */}
+                    <div className="w-full flex-shrink-0">
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                        {mentors.slice(0, 4).map((mentor) => (
+                          <div 
+                            key={mentor.id} 
+                            className="text-center group"
+                          >
+                            <div className="relative h-80 w-full mb-4 overflow-hidden rounded-lg shadow-lg">
+                            <Image
+                              src={mentor.image}
+                              alt={mentor.name}
+                              fill
+                              className={`object-cover transition-transform duration-500 group-hover:scale-110 ${
+                                mentor.id === 1 ? 'object-top' : mentor.id === 2 ? 'object-[center_25%]' : ''
+                              }`}
+                            />
+                              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                            </div>
+                            <h3 className="text-xl font-bold mb-1 text-gray-800">{mentor.name}</h3>
+                            <p className="text-gray-600">{mentor.position}</p>
+                          </div>
+                        ))}
                       </div>
-                    ))}
-                  </div>
-                </div>
+                    </div>
 
-                {/* Fourth Slide - Mentor 13 */}
-                <div className="w-full flex-shrink-0">
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                    {mentors.slice(12, 13).map((mentor) => (
-                      <div 
-                        key={mentor.id} 
-                        className="text-center group"
-                      >
-                        <div className="relative h-80 w-full mb-4 overflow-hidden rounded-lg shadow-lg">
-                          <Image
-                            src={mentor.image}
-                            alt={mentor.name}
-                            fill
-                            className="object-cover transition-transform duration-500 group-hover:scale-110"
-                          />
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                        </div>
-                        <h3 className="text-xl font-bold mb-1 text-gray-800">{mentor.name}</h3>
-                        <p className="text-gray-600">{mentor.position}</p>
+                    {/* Second Slide - Mentors 5-8 */}
+                    <div className="w-full flex-shrink-0">
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                        {mentors.slice(4, 8).map((mentor) => (
+                          <div 
+                            key={mentor.id} 
+                            className="text-center group"
+                          >
+                            <div className="relative h-80 w-full mb-4 overflow-hidden rounded-lg shadow-lg">
+                              <Image
+                                src={mentor.image}
+                                alt={mentor.name}
+                                fill
+                                className={`object-cover transition-transform duration-500 group-hover:scale-110 ${
+                                  mentor.id === 1 ? 'object-top' : mentor.id === 2 ? 'object-top' : ''
+                                }`}
+                              />
+                              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                            </div>
+                            <h3 className="text-xl font-bold mb-1 text-gray-800">{mentor.name}</h3>
+                            <p className="text-gray-600">{mentor.position}</p>
+                          </div>
+                        ))}
                       </div>
-                    ))}
-                    {/* Empty divs to maintain grid layout */}
-                    <div className="hidden lg:block"></div>
-                    <div className="hidden lg:block"></div>
-                    <div className="hidden lg:block"></div>
-                  </div>
-                </div>
+                    </div>
+
+                    {/* Third Slide - Mentors 9-12 */}
+                    <div className="w-full flex-shrink-0">
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                        {mentors.slice(8, 12).map((mentor) => (
+                          <div 
+                            key={mentor.id} 
+                            className="text-center group"
+                          >
+                            <div className="relative h-80 w-full mb-4 overflow-hidden rounded-lg shadow-lg">
+                              <Image
+                                src={mentor.image}
+                                alt={mentor.name}
+                                fill
+                                className={`object-cover transition-transform duration-500 group-hover:scale-110 ${
+                                  mentor.id === 1 ? 'object-top' : mentor.id === 2 ? 'object-top' : ''
+                                }`}
+                              />
+                              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                            </div>
+                            <h3 className="text-xl font-bold mb-1 text-gray-800">{mentor.name}</h3>
+                            <p className="text-gray-600">{mentor.position}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Fourth Slide - Mentor 13 */}
+                    <div className="w-full flex-shrink-0">
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                        {mentors.slice(12, 13).map((mentor) => (
+                          <div 
+                            key={mentor.id} 
+                            className="text-center group"
+                          >
+                            <div className="relative h-80 w-full mb-4 overflow-hidden rounded-lg shadow-lg">
+                              <Image
+                                src={mentor.image}
+                                alt={mentor.name}
+                                fill
+                                className={`object-cover transition-transform duration-500 group-hover:scale-110 ${
+                                  mentor.id === 1 ? 'object-top' : mentor.id === 2 ? 'object-top' : ''
+                                }`}
+                              />
+                              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                            </div>
+                            <h3 className="text-xl font-bold mb-1 text-gray-800">{mentor.name}</h3>
+                            <p className="text-gray-600">{mentor.position}</p>
+                          </div>
+                        ))}
+                        {/* Empty divs to maintain grid layout */}
+                        <div className="hidden lg:block"></div>
+                        <div className="hidden lg:block"></div>
+                        <div className="hidden lg:block"></div>
+                      </div>
+                    </div>
+                  </>
+                )}
               </div>
             </div>
 

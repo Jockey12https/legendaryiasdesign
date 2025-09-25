@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "@/contexts/AuthContext";
 import AuthModal from "@/components/auth/AuthModal";
 import { useRouter } from "next/navigation";
@@ -12,8 +12,19 @@ export default function HeroSection() {
   const { user } = useAuth();
   const router = useRouter();
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-  
   const [animationComplete, setAnimationComplete] = useState(false);
+  const [currentBackgroundIndex, setCurrentBackgroundIndex] = useState(0);
+
+  // Hero background images from gallery
+  const heroBackgrounds = [
+    "https://ik.imagekit.io/8vvkoi3dt/Legendary/Screenshot%202025-09-25%20194331.png?updatedAt=1758809650757",
+    "https://ik.imagekit.io/8vvkoi3dt/Legendary/pics2/prelims%20success%20celebration.JPG?updatedAt=1758808336753",
+    "https://ik.imagekit.io/8vvkoi3dt/Legendary/pics2/DSC04701.jpg?updatedAt=1758807359686",
+    "https://ik.imagekit.io/8vvkoi3dt/Legendary/DSC04886.jpg?updatedAt=1758807130762",
+    "https://ik.imagekit.io/8vvkoi3dt/Legendary/pics2/prelims2024%20.jpg?updatedAt=1758808312982",
+    "https://ik.imagekit.io/8vvkoi3dt/Legendary/DSC_3606.JPG?updatedAt=1758807209431",
+    "https://ik.imagekit.io/8vvkoi3dt/Legendary/pics2/DSC05642.jpg?updatedAt=1758807366990"
+  ];
 
   useEffect(() => {
     // Set animation complete after initial animations
@@ -23,6 +34,15 @@ export default function HeroSection() {
 
     return () => clearTimeout(timer);
   }, []);
+
+  // Auto-rotate background images
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentBackgroundIndex((prev) => (prev + 1) % heroBackgrounds.length);
+    }, 5000); // Change image every 5 seconds
+
+    return () => clearInterval(interval);
+  }, [heroBackgrounds.length]);
 
   const handleEnrollNow = () => {
     if (user) {
@@ -92,14 +112,43 @@ export default function HeroSection() {
 
   return (
     <section className="relative bg-black text-white overflow-hidden">
-      <div
-        className="absolute inset-0 bg-cover bg-center opacity-60 z-0"
-        style={{
-          backgroundImage: "url(https://ext.same-assets.com/2651817114/1408891149.jpeg)",
-        }}
-      />
+      {/* Animated Background Images */}
+      <div className="absolute inset-0 z-0">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentBackgroundIndex}
+            className="absolute inset-0 bg-cover bg-center"
+            style={{
+              backgroundImage: `url(${heroBackgrounds[currentBackgroundIndex]})`,
+            }}
+            initial={{ opacity: 0, scale: 1.1 }}
+            animate={{ opacity: 0.6, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            transition={{
+              duration: 1.5,
+              ease: "easeInOut"
+            }}
+          />
+        </AnimatePresence>
+      </div>
+      
       {/* Overlay gradient */}
       <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-transparent z-0"></div>
+      
+      {/* Background Navigation Dots */}
+      <div className="absolute bottom-4 right-4 z-20 flex space-x-2">
+        {heroBackgrounds.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => setCurrentBackgroundIndex(index)}
+            className={`w-2 h-2 rounded-full transition-all duration-300 ${
+              index === currentBackgroundIndex 
+                ? 'bg-primary scale-125' 
+                : 'bg-white/50 hover:bg-white/70'
+            }`}
+          />
+        ))}
+      </div>
 
       <div className="relative z-10 py-8 sm:py-12 md:py-16 lg:py-24 max-w-7xl mx-auto px-3 sm:px-4 md:px-8">
         <motion.div

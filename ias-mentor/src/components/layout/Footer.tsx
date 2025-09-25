@@ -10,7 +10,7 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row justify-between mb-8">
           <div className="mb-6 md:mb-0">
             <h3 className="text-secondary font-bold text-xl mb-4">Contact Information</h3>
-            <p className="text-secondary mb-2"> Legendary IAS Mentor Civil Service Academy, 2nd Floor, Mudumbil,<br />Tower Plamood signal, Plamoodu, Road, Pattom,Thiruvananthapuram, Kerala 695004</p>
+            <p className="text-secondary mb-2"> Legendary IAS Mentor Civil Service Academy, 2nd Floor, Mudumbil Towers<br />Plamoodu,Pattom,Thiruvananthapuram, Kerala 695004</p>
             <p className="text-secondary mb-2">
               <a href="tel:+918129313575" className="hover:text-primary">
                 +91-8129313575

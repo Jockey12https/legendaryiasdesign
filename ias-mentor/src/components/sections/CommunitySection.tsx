@@ -49,13 +49,6 @@ const youtubeVideos = [
     description: "Watch how our student achieved their IAS dream through dedicated preparation"
   },
   {
-    id: 7,
-    title: "UPSC Preparation Strategy - Complete Guide",
-    videoId: "D_tg_0NSzN0",
-    thumbnail: "https://img.youtube.com/vi/D_tg_0NSzN0/maxresdefault.jpg",
-    description: "Comprehensive strategy for UPSC Civil Services examination"
-  },
-  {
     id: 8,
     title: "Current Affairs Analysis - Latest Updates",
     videoId: "6WxwvoW68Ec",
@@ -69,13 +62,6 @@ const youtubeVideos = [
     thumbnail: "https://img.youtube.com/vi/bbjxqN4Uo9w/maxresdefault.jpg",
     description: "Expert tips for UPSC interview preparation and success"
   },
-  {
-    id: 10,
-    title: "Optional Subject Selection - Strategic Approach",
-    videoId: "fpnRYrFJn1E",
-    thumbnail: "https://img.youtube.com/vi/fpnRYrFJn1E/maxresdefault.jpg",
-    description: "How to choose the right optional subject for UPSC mains"
-  }
 ];
 
 export default function CommunitySection() {
