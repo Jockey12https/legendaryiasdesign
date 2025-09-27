@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { useAuth } from "@/contexts/AuthContext";
 import AuthModal from "@/components/auth/AuthModal";
 import { useRouter } from "next/navigation";
@@ -13,18 +13,9 @@ export default function HeroSection() {
   const router = useRouter();
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [animationComplete, setAnimationComplete] = useState(false);
-  const [currentBackgroundIndex, setCurrentBackgroundIndex] = useState(0);
 
-  // Hero background images from gallery
-  const heroBackgrounds = [
-    "https://ik.imagekit.io/8vvkoi3dt/Legendary/Screenshot%202025-09-25%20194331.png?updatedAt=1758809650757",
-    "https://ik.imagekit.io/8vvkoi3dt/Legendary/pics2/prelims%20success%20celebration.JPG?updatedAt=1758808336753",
-    "https://ik.imagekit.io/8vvkoi3dt/Legendary/pics2/DSC04701.jpg?updatedAt=1758807359686",
-    "https://ik.imagekit.io/8vvkoi3dt/Legendary/DSC04886.jpg?updatedAt=1758807130762",
-    "https://ik.imagekit.io/8vvkoi3dt/Legendary/pics2/prelims2024%20.jpg?updatedAt=1758808312982",
-    "https://ik.imagekit.io/8vvkoi3dt/Legendary/DSC_3606.JPG?updatedAt=1758807209431",
-    "https://ik.imagekit.io/8vvkoi3dt/Legendary/pics2/DSC05642.jpg?updatedAt=1758807366990"
-  ];
+  // Hero background video
+  const heroVideoUrl = "https://ik.imagekit.io/8vvkoi3dt/Legendary/legendary%20intro%20video%20%20(1).mp4";
 
   useEffect(() => {
     // Set animation complete after initial animations
@@ -34,15 +25,6 @@ export default function HeroSection() {
 
     return () => clearTimeout(timer);
   }, []);
-
-  // Auto-rotate background images
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentBackgroundIndex((prev) => (prev + 1) % heroBackgrounds.length);
-    }, 5000); // Change image every 5 seconds
-
-    return () => clearInterval(interval);
-  }, [heroBackgrounds.length]);
 
   const handleEnrollNow = () => {
     if (user) {
@@ -112,27 +94,21 @@ export default function HeroSection() {
 
   return (
     <section className="relative bg-black text-white overflow-hidden">
-      {/* Animated Background Images */}
+      {/* Background Video */}
       <div className="absolute inset-0 z-0">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={currentBackgroundIndex}
-            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-            style={{
-              backgroundImage: `url(${heroBackgrounds[currentBackgroundIndex]})`,
-              backgroundPosition: 'center center',
-              backgroundSize: 'cover',
-              backgroundAttachment: 'scroll'
-            }}
-            initial={{ opacity: 0, scale: 1.1 }}
-            animate={{ opacity: 0.6, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.9 }}
-            transition={{
-              duration: 1.5,
-              ease: "easeInOut"
-            }}
-          />
-        </AnimatePresence>
+        <video
+          className="absolute inset-0 w-full h-full object-cover"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+        >
+          <source src={heroVideoUrl} type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+        {/* Video overlay for better text readability */}
+        <div className="absolute inset-0 bg-black/40"></div>
       </div>
       
       {/* Overlay gradient */}
