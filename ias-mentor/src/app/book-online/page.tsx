@@ -33,7 +33,7 @@ const courses: CourseProps[] = [
     image: 'https://ext.same-assets.com/1137026266/2875867135.jpeg',
     price: 8000,
     status: 'Available',
-    duration: '3 months',
+    duration: '5 months',
     category: 'csat'
   },
   {
@@ -61,9 +61,9 @@ const courses: CourseProps[] = [
     title: 'Sociology Optional',
     description: 'Complete Sociology optional preparation covering both Paper I and Paper II with exam-focused approach, answer writing practice, and personalized mentorship.',
     image: 'https://ext.same-assets.com/1137026266/1195490810.jpeg',
-    price: 22000,
+    price: 20000,
     status: 'Available',
-    duration: '8 months',
+    duration: '6 months',
     category: 'optional'
   }
 ];

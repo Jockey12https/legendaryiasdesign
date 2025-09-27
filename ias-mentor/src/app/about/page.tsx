@@ -16,7 +16,7 @@ const mentors = [
   {
     id: 2,
     name: "Elsa Baby",
-    position: "Senior Mentor",
+    position: "UPSC Mentor & Faculty",
     image:"https://ik.imagekit.io/8vvkoi3dt/ELSA%20BABY%20UPSC%20Faculty.jpg?updatedAt=1758805693395"
   },
   {
@@ -34,25 +34,25 @@ const mentors = [
   {
     id: 5,
     name: "Antony John",
-    position: "Expert Mentor",
+    position: "CSAT Faculty",
     image: "https://ik.imagekit.io/8vvkoi3dt/mentor-10.jpg?updatedAt=1755003315793"
   },
   {
     id: 6,
     name: "Adithya G Mohan",
-    position: "Senior Mentor",
+    position: "Economics Faculty",
     image: "https://ik.imagekit.io/8vvkoi3dt/mentor-4.jpg?updatedAt=1755003315787"
   },
   {
     id: 7,
     name: "Azeem Akram",
-    position: "Expert Mentor",
+    position: "UPSC Faculty",
     image: "https://ik.imagekit.io/8vvkoi3dt/mentor-1.jpg?updatedAt=1755003315843"
   },
   {
     id: 8,
     name: "Akhil V K",
-    position: "Senior Mentor",
+    position: "UPSC Faculty",
     image: "https://ik.imagekit.io/8vvkoi3dt/mentor-11.jpg?updatedAt=1755003315865"
   },
   {

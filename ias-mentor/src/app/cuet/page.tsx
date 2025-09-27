@@ -110,7 +110,7 @@ export default function CUETPage() {
               CUET PREPARATION
             </h1>
             <p className="text-xl md:text-2xl mb-8 text-blue-100 max-w-4xl mx-auto leading-relaxed">
-              The Common University Entrance Test (CUET) is the gateway to admissions in top Central, State, and Private Universities across India.
+              The Common University Entrance Test (CUET) is the gateway to admissions in top Central, State Universities across India.
             </p>
             <p className="text-lg text-gray-300 max-w-3xl mx-auto mb-10">
               With lakhs of students competing every year, a focused strategy and expert guidance are essential to secure admission in your dream college.

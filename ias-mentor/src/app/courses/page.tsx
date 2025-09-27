@@ -89,8 +89,8 @@ const allPrograms = [
     id: 'sociology-mentorship',
     title: 'Sociology Mentorship',
     description: 'Score high in Sociology! A great answer isn\'t just about facts—it\'s about depth, clarity & structure. This program fine-tunes your Sociology writing skills with expert reviews & model answers!',
-    duration: '6 months',
-    fees: '₹35,000',
+    duration: '4 months',
+    fees: '₹10,000',
     image: 'https://ext.same-assets.com/1137026266/2875867135.jpeg',
     category: 'optional'
   },
@@ -108,7 +108,7 @@ const allPrograms = [
     title: 'Mentorship Batch',
     description: 'Your personal UPSC guide for 1 year! UPSC is a lonely journey - but not with a mentor by your side! Get weekly one-on-one mentorship sessions, personal study plans, performance tracking, and targeted improvement strategies to stay ahead in the race!',
     duration: '12 months',
-    fees: '₹65,000',
+    fees: '₹20,000',
     image: 'https://ext.same-assets.com/1137026266/1195490810.jpeg',
     category: 'mentorship'
   },
@@ -117,7 +117,7 @@ const allPrograms = [
     title: 'Module Courses',
     description: 'Master key UPSC modules! Short, high-impact modules to master UPSC\'s toughest sections! Targeted training, expert guidance & crisp study materials to simplify complex topics!',
     duration: '3 months',
-    fees: '₹25,000',
+    fees: 'Nil',
     image: 'https://ext.same-assets.com/1137026266/2875867135.jpeg',
     category: 'modules'
   },
@@ -135,7 +135,7 @@ const allPrograms = [
     title: 'Prelims Test Series',
     description: 'Practice. Improve. Conquer. UPSC Prelims isn\'t about luck—it\'s about strategy, precision & confidence. Our weekly full-length & sectional tests, detailed test discussions, and real-exam simulations make you battle-ready!',
     duration: '4 months',
-    fees: '₹18,000',
+    fees: '₹7,000',
     image: 'https://ext.same-assets.com/1137026266/853365983.jpeg',
     category: 'prelims'
   },
@@ -143,8 +143,8 @@ const allPrograms = [
     id: 'mains-test-series',
     title: 'Mains Test Series',
     description: 'Write like a topper! Your answers should not just be right, they should be brilliant! With weekly GS & Essay tests, expert evaluation, and topper-model answers, refine your structure, clarity, and argument-building skills!',
-    duration: '5 months',
-    fees: '₹22,000',
+    duration: '7 months',
+    fees: '₹12,000',
     image: 'https://ext.same-assets.com/1137026266/1195490810.jpeg',
     category: 'mains'
   },

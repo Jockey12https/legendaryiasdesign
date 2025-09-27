@@ -103,8 +103,8 @@ export default function ContactPage() {
                   <h3 className="text-xl font-bold mb-2 text-secondary">Address</h3>
                   <p className="text-secondary">
                     Legendary IAS Mentor Civil Service Academy<br />
-                    2nd Floor, Mudumbil, Tower Plamood signal<br />
-                    Plamoodu, Road, Pattom, Thiruvananthapuram<br />
+                    2nd Floor, Mudumbil Towers<br />
+                    Plamoodu Junction, Pattom, Thiruvananthapuram<br />
                     Kerala 695004, India
                   </p>
                 </div>
@@ -129,7 +129,7 @@ export default function ContactPage() {
                   <h3 className="text-xl font-bold mb-2 text-secondary">Office Hours</h3>
                   <p className="text-secondary">
                     Monday - Friday: 9:00 AM - 6:00 PM<br />
-                    Saturday: 10:00 AM - 2:00 PM<br />
+                    Saturday: 9:00 AM - 6:00 PM<br />
                     Sunday: Closed
                   </p>
                 </div>
