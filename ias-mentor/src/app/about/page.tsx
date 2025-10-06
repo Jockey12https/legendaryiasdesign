@@ -14,21 +14,21 @@ const mentors = [
     image: "https://ik.imagekit.io/8vvkoi3dt/nitin%20sir_new1.jpg?updatedAt=1755003315847"
   },
   {
-    id: 2,
-    name: "Elsa Baby",
-    position: "UPSC Mentor & Faculty",
-    image:"https://ik.imagekit.io/8vvkoi3dt/ELSA%20BABY%20UPSC%20Faculty.jpg?updatedAt=1758805693395"
-  },
-  {
     id: 3,
     name: "Paulson Baby",
     position: "Expert UPSC Mentor & Faculty",
     image: "https://ik.imagekit.io/8vvkoi3dt/PAULSON%20.JPG?updatedAt=1758474931488"
   },
   {
+    id: 2,
+    name: "Elsa Baby",
+    position: "UPSC Mentor & Faculty",
+    image:"https://ik.imagekit.io/8vvkoi3dt/ELSA%20BABY%20UPSC%20Faculty.jpg?updatedAt=1758805693395"
+  },
+  {
     id: 4,
     name: "Rose Binoy",
-    position: "Senior Mentor",
+    position: "UPSC Faculty",
     image: "https://ik.imagekit.io/8vvkoi3dt/mentor-2.jpg?updatedAt=1755003315782"
   },
   {
@@ -56,6 +56,24 @@ const mentors = [
     image: "https://ik.imagekit.io/8vvkoi3dt/mentor-11.jpg?updatedAt=1755003315865"
   },
   {
+    id: 14,
+    name: "RITU SANTH",
+    position: "UPSC FACULTY",
+    image: "https://ik.imagekit.io/8vvkoi3dt/IMG-20251006-WA0019.jpg?updatedAt=1759776939438"
+  },
+  {
+    id: 15,
+    name: "Abhishek R Pillai",
+    position: "UPSC Faculty",
+    image: "https://ik.imagekit.io/8vvkoi3dt/IMG_20251006_201203.jpg?updatedAt=1759776946616"
+  },
+  {
+    id: 12,
+    name: "Sreekuttan",
+    position: "CUET Faculty",
+    image: "https://ik.imagekit.io/8vvkoi3dt/SREEKUTTAN%20CUET%20FACULTY.JPG?updatedAt=1758474684946"
+  },
+  {
     id: 9,
     name: "Gowrisankar B",
     position: "CUET Faculty",
@@ -72,12 +90,6 @@ const mentors = [
     name: "Taniya Elizabeth",
     position: "CUET Faculty",
     image: "https://ik.imagekit.io/8vvkoi3dt/TANIYA%20ELIZABETH%20CUET%20FACULTY.JPG?updatedAt=1758474796113"
-  },
-  {
-    id: 12,
-    name: "Sreekuttan",
-    position: "CUET Faculty",
-    image: "https://ik.imagekit.io/8vvkoi3dt/SREEKUTTAN%20CUET%20FACULTY.JPG?updatedAt=1758474684946"
   },
   {
     id: 13,
@@ -251,7 +263,13 @@ export default function AboutPage() {
                             alt={mentor.name}
                             fill
                             className={`object-cover transition-transform duration-500 group-hover:scale-110 ${
-                              mentor.id === 1 ? 'object-top' : mentor.id === 2 ? 'object-[center_20%]' : ''
+                              mentor.id === 1 
+                                ? 'object-top' 
+                                : mentor.id === 2 
+                                  ? 'object-[center_20%]'
+                                  : mentor.id === 14 
+                                    ? 'object-[center_0%]'
+                                    : ''
                             }`}
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -278,7 +296,13 @@ export default function AboutPage() {
                               alt={mentor.name}
                               fill
                               className={`object-cover transition-transform duration-500 group-hover:scale-110 ${
-                                mentor.id === 1 ? 'object-top' : mentor.id === 2 ? 'object-[center_25%]' : ''
+                                mentor.id === 1 
+                                  ? 'object-top' 
+                                  : mentor.id === 2 
+                                    ? 'object-[center_25%]'
+                                    : mentor.id === 14 
+                                      ? 'object-[center_0%]'
+                                      : ''
                               }`}
                             />
                               <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -304,7 +328,13 @@ export default function AboutPage() {
                                 alt={mentor.name}
                                 fill
                                 className={`object-cover transition-transform duration-500 group-hover:scale-110 ${
-                                  mentor.id === 1 ? 'object-top' : mentor.id === 2 ? 'object-top' : ''
+                                  mentor.id === 1 
+                                    ? 'object-top' 
+                                    : mentor.id === 2 
+                                      ? 'object-top' 
+                                      : mentor.id === 14 
+                                        ? 'object-[center_0%]'
+                                        : ''
                                 }`}
                               />
                               <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -330,7 +360,13 @@ export default function AboutPage() {
                                 alt={mentor.name}
                                 fill
                                 className={`object-cover transition-transform duration-500 group-hover:scale-110 ${
-                                  mentor.id === 1 ? 'object-top' : mentor.id === 2 ? 'object-top' : ''
+                                  mentor.id === 1 
+                                    ? 'object-top' 
+                                    : mentor.id === 2 
+                                      ? 'object-top' 
+                                      : mentor.id === 14 
+                                        ? 'object-[center_0%]'
+                                        : ''
                                 }`}
                               />
                               <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -356,7 +392,13 @@ export default function AboutPage() {
                                 alt={mentor.name}
                                 fill
                                 className={`object-cover transition-transform duration-500 group-hover:scale-110 ${
-                                  mentor.id === 1 ? 'object-top' : mentor.id === 2 ? 'object-top' : ''
+                                  mentor.id === 1 
+                                    ? 'object-top' 
+                                    : mentor.id === 2 
+                                      ? 'object-top' 
+                                      : mentor.id === 14 
+                                        ? 'object-[center_25%]'
+                                        : ''
                                 }`}
                               />
                               <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>

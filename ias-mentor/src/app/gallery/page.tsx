@@ -65,6 +65,19 @@ const galleryData = [
         id: "event-8",
         src: "https://ik.imagekit.io/8vvkoi3dt/Legendary/pics2/DSC04745.jpg?updatedAt=1758807359364"
       }
+      ,
+      {
+        id: "event-9",
+        src: "https://ik.imagekit.io/8vvkoi3dt/photo_2025-10-07_00-26-36.jpg?updatedAt=1759777043051"
+      },
+      {
+        id: "event-10",
+        src: "https://ik.imagekit.io/8vvkoi3dt/photo_2025-10-07_00-26-23.jpg?updatedAt=1759777044085"
+      },
+      {
+        id: "event-11",
+        src: "https://ik.imagekit.io/8vvkoi3dt/photo_2025-10-07_00-26-14.jpg?updatedAt=1759777044118"
+      }
     ]
   },
   {
@@ -93,6 +106,16 @@ const galleryData = [
         id: "success-5",
         src: "https://ik.imagekit.io/8vvkoi3dt/Legendary/Screenshot%202025-09-25%20194016.png?updatedAt=1758809663628",
         objectPosition: "50% 2%" // Optional: center top positioning for screenshots
+      }
+      ,
+      {
+        id: "success-6",
+        src: "https://ik.imagekit.io/8vvkoi3dt/photo_2025-10-07_00-26-32.jpg?updatedAt=1759777044057"
+      },
+      {
+        id: "success-7",
+        src: "https://ik.imagekit.io/8vvkoi3dt/photo_2025-10-07_00-26-27.jpg?updatedAt=1759777043836",
+        objectFit: 'contain'
       }
     ]
   }
@@ -263,8 +286,11 @@ export default function GalleryPage() {
                       alt="Gallery image"
                       fill
                       sizes="100vw"
-                      className="object-cover"
-                      style={{ objectPosition: activeImages[currentImageIndex]?.objectPosition || 'center' }}
+                      className=""
+                      style={{ 
+                        objectPosition: activeImages[currentImageIndex]?.objectPosition || 'center',
+                        objectFit: (activeImages[currentImageIndex] as any)?.objectFit || 'cover'
+                      }}
                     />
                   </motion.div>
                 </AnimatePresence>
@@ -326,8 +352,11 @@ export default function GalleryPage() {
                      alt="Gallery image"
                      fill
                      sizes="(max-width: 1024px) 50vw, 33vw"
-                     className="object-cover transition-transform duration-500 group-hover:scale-110"
-                     style={{ objectPosition: image.objectPosition || 'center' }}
+                     className="transition-transform duration-500 group-hover:scale-110"
+                     style={{ 
+                       objectPosition: image.objectPosition || 'center',
+                       objectFit: (image as any).objectFit || 'cover'
+                     }}
                    />
                  </div>
               </motion.div>
