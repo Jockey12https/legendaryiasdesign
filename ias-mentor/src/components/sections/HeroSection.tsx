@@ -16,6 +16,7 @@ export default function HeroSection() {
 
   // Hero background video
   const heroVideoUrl = "https://ik.imagekit.io/8vvkoi3dt/Legendary/legendary%20intro%20video%20%20(1).mp4";
+  const brochureUrl = "https://drive.google.com/uc?export=view&id=1MTg44euRtIsuFiuzDlNy61uQckMT6-ia";
 
   useEffect(() => {
     // Set animation complete after initial animations
@@ -34,6 +35,10 @@ export default function HeroSection() {
       // User is not logged in, open auth modal
       setIsAuthModalOpen(true);
     }
+  };
+
+  const handleOpenBrochure = () => {
+    window.open(brochureUrl, '_blank', 'noopener,noreferrer');
   };
 
   const containerVariants = {
@@ -148,14 +153,24 @@ export default function HeroSection() {
               Join us with successful IAS aspirants who chose the <strong>best IAS academy in Trivandrum</strong> for their UPSC preparation journey.
             </motion.p>
             <motion.div variants={itemVariants}>
-              <Button
-                variant="default"
-                size="lg"
-                className="bg-primary text-secondary hover:bg-primary/90 transform transition-transform duration-300 hover:scale-105"
-                onClick={handleEnrollNow}
-              >
-                {user ? 'View Courses' : 'Enroll Now'}
-              </Button>
+              <div className="flex items-center gap-3">
+                <Button
+                  variant="default"
+                  size="lg"
+                  className="bg-primary text-secondary hover:bg-primary/90 transform transition-transform duration-300 hover:scale-105"
+                  onClick={handleEnrollNow}
+                >
+                  {user ? 'View Courses' : 'Enroll Now'}
+                </Button>
+                <Button
+                  variant="default"
+                  size="lg"
+                  className="bg-primary text-secondary hover:bg-primary/90 transform transition-transform duration-300 hover:scale-105"
+                  onClick={handleOpenBrochure}
+                >
+                  Brochure
+                </Button>
+              </div>
             </motion.div>
           </div>
           

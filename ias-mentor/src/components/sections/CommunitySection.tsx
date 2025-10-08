@@ -7,6 +7,13 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const youtubeVideos = [
   {
+    id: 9,
+    title: "Interview Preparation Tips - Expert Guidance",
+    videoId: "bbjxqN4Uo9w",
+    thumbnail: "https://img.youtube.com/vi/bbjxqN4Uo9w/maxresdefault.jpg",
+    description: "Expert tips for UPSC interview preparation and success"
+  },
+  {
     id: 1,
     title: "Paulson Sir - Expert Guidance",
     videoId: "aBaYt_uA2a0",
@@ -54,13 +61,6 @@ const youtubeVideos = [
     videoId: "6WxwvoW68Ec",
     thumbnail: "https://img.youtube.com/vi/6WxwvoW68Ec/maxresdefault.jpg",
     description: "Stay updated with the latest current affairs for UPSC"
-  },
-  {
-    id: 9,
-    title: "Interview Preparation Tips - Expert Guidance",
-    videoId: "bbjxqN4Uo9w",
-    thumbnail: "https://img.youtube.com/vi/bbjxqN4Uo9w/maxresdefault.jpg",
-    description: "Expert tips for UPSC interview preparation and success"
   },
 ];
 

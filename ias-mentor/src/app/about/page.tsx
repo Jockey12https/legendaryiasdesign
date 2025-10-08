@@ -80,12 +80,6 @@ const mentors = [
     image: "https://ik.imagekit.io/8vvkoi3dt/GOWRISANKAR%20B%20%20CUET%20FACULTY.JPG?updatedAt=1758474933317"
   },
   {
-    id: 10,
-    name: "Parvathy",
-    position: "Indian Polity Faculty",
-    image: "https://ik.imagekit.io/8vvkoi3dt/Parvathy%20Indian%20polity%20faculty.JPG?updatedAt=1758474933196"
-  },
-  {
     id: 11,
     name: "Taniya Elizabeth",
     position: "CUET Faculty",
@@ -96,6 +90,12 @@ const mentors = [
     name: "Amritha Nair",
     position: "CUET Faculty",
     image: "https://ik.imagekit.io/8vvkoi3dt/AMRITHA%20NAIR%20CUET%20FACULTY.JPG?updatedAt=1758474683115"
+  },
+  {
+    id: 10,
+    name: "Parvathy",
+    position: "Indian Polity Faculty",
+    image: "https://ik.imagekit.io/8vvkoi3dt/Parvathy%20Indian%20polity%20faculty.JPG?updatedAt=1758474933196"
   }
 ];
 
@@ -378,10 +378,10 @@ export default function AboutPage() {
                       </div>
                     </div>
 
-                    {/* Fourth Slide - Mentor 13 */}
+                    {/* Fourth Slide - Mentors 13-16 */}
                     <div className="w-full flex-shrink-0">
                       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                        {mentors.slice(12, 13).map((mentor) => (
+                        {mentors.slice(12, 16).map((mentor) => (
                           <div 
                             key={mentor.id} 
                             className="text-center group"
