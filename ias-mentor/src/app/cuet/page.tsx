@@ -43,6 +43,11 @@ export default function CUETPage() {
     setShowMobileHint(false);
   };
 
+  const brochureDownloadUrl = "https://drive.google.com/uc?export=download&id=1gNzSHonY7JDyI0D_WBSD623hN7_tbxdo";
+  const handleDownloadBrochure = () => {
+    window.open(brochureDownloadUrl, '_blank', 'noopener,noreferrer');
+  };
+
   const features = [
     {
       icon: <Users className="h-6 w-6" />,
@@ -93,7 +98,7 @@ export default function CUETPage() {
   return (
     <MainLayout>
       {/* Hero Section */}
-      <section className="relative py-20 bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900 text-white overflow-hidden">
+      <section className="relative pt-20 pb-16 bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900 text-white overflow-hidden">
         <div className="absolute inset-0 bg-black/20"></div>
         <div className="absolute inset-0">
           <div className="absolute top-10 left-10 w-20 h-20 bg-yellow-400/20 rounded-full blur-xl"></div>
@@ -102,7 +107,7 @@ export default function CUETPage() {
         </div>
         
         <div className="relative max-w-7xl mx-auto px-4 md:px-8">
-          <div className="text-center mb-12">
+          <div className="text-center mb-6">
             <Badge className="mb-6 bg-gradient-to-r from-yellow-400 to-orange-500 text-black font-bold px-6 py-2 text-lg">
               🎓 NEW COURSE LAUNCH
             </Badge>
@@ -132,6 +137,15 @@ export default function CUETPage() {
                 <Zap className="h-6 w-6 mr-3" />
                 Join CUET Program Now
               </Button>
+              <div className="mt-8">
+                <Button 
+                  size="lg"
+                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold px-10 py-3 rounded-full shadow-xl transform hover:scale-105 transition-all duration-300"
+                  onClick={handleDownloadBrochure}
+                >
+                  Click Here for Brochure
+                </Button>
+              </div>
             </div>
           </div>
         </div>
