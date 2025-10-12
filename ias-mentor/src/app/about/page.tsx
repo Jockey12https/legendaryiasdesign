@@ -71,7 +71,7 @@ const mentors = [
     id: 12,
     name: "Sreekuttan",
     position: "CUET Faculty",
-    image: "https://ik.imagekit.io/8vvkoi3dt/SREEKUTTAN%20CUET%20FACULTY.JPG?updatedAt=1758474684946"
+    image: "https://ik.imagekit.io/8vvkoi3dt/newsree_1EPmMIE621?updatedAt=1760254430000"
   },
   {
     id: 9,
@@ -95,7 +95,7 @@ const mentors = [
     id: 10,
     name: "Parvathy",
     position: "Indian Polity Faculty",
-    image: "https://ik.imagekit.io/8vvkoi3dt/Parvathy%20Indian%20polity%20faculty.JPG?updatedAt=1758474933196"
+    image: "https://ik.imagekit.io/8vvkoi3dt/DSC_5689.JPG?updatedAt=1760253020174"
   }
 ];
 
@@ -269,6 +269,8 @@ export default function AboutPage() {
                                   ? 'object-[center_20%]'
                                   : mentor.id === 14 
                                     ? 'object-[center_0%]'
+                                    : mentor.id === 12
+                                      ? 'object-[center_100%]'
                                     : ''
                             }`}
                           />
@@ -398,7 +400,9 @@ export default function AboutPage() {
                                       ? 'object-top' 
                                       : mentor.id === 14 
                                         ? 'object-[center_25%]'
-                                        : ''
+                                        : mentor.id === 10
+                                          ? 'object-[center_63%]'
+                                          : ''
                                 }`}
                               />
                               <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
