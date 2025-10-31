@@ -87,6 +87,27 @@ const mockNewsItems = [
 
 const mockCourses = [
   {
+    id: "weekend-upsc",
+    title: "UPSC Weekend Batch",
+    description: "Designed for Degree Students and Working Professionals. Classes on Saturdays, Sundays & Public Holidays. 1-Year comprehensive program covering Prelims and Mains with Mains answer writing practice.",
+    image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=400&h=250&fit=crop",
+    batchStartDate: new Date("2025-02-15"),
+    totalSeats: 80,
+    seatsRemaining: 30,
+    successRate: 82,
+    duration: "12 months",
+    price: 0,
+    originalPrice: 0,
+    isSpecialOffer: true,
+    features: [
+      "Weekend & Holiday Classes",
+      "Prelims + Mains Coverage",
+      "Mains Answer Writing Practice",
+      "Working Professionals Friendly"
+    ],
+    category: "mains" as const,
+  },
+  {
     id: "1",
     title: "UPSC Prelims 2025 Complete Course",
     description: "Comprehensive preparation for UPSC Civil Services Prelims 2025 with expert guidance and extensive study material.",
@@ -275,7 +296,7 @@ export default function Home() {
     return () => clearTimeout(timer);
   }, []);
 
-  // Handle rocket scroll to CUET section
+  // Handle rocket scroll to UPSC Weekend section
   const handleRocketScroll = () => {
     setIsScrolling(true);
     setShowLaunchPopup(false);
@@ -284,9 +305,9 @@ export default function Home() {
     document.body.classList.add('rocket-scroll');
     
     setTimeout(() => {
-      const cuetSection = document.getElementById('cuet-section');
-      if (cuetSection) {
-        cuetSection.scrollIntoView({ 
+      const weekendSection = document.getElementById('upsc-weekend-section');
+      if (weekendSection) {
+        weekendSection.scrollIntoView({ 
           behavior: 'smooth',
           block: 'center'
         });
@@ -304,8 +325,105 @@ export default function Home() {
     <div className="overflow-x-hidden">
       <HeroSection />
       
-      {/* CUET Launch Section */}
-      <section id="cuet-section" className="relative py-16 bg-gradient-to-r from-yellow-400 via-yellow-500 to-orange-500 overflow-hidden">
+      {/* UPSC Weekend Batch Section */}
+      <section id="upsc-weekend-section" className="relative py-16 bg-gradient-to-r from-yellow-400 via-yellow-500 to-orange-500 overflow-hidden">
+        <div className="absolute inset-0">
+          <div className="absolute top-10 left-10 w-32 h-32 bg-white/20 rounded-full blur-2xl"></div>
+          <div className="absolute bottom-10 right-10 w-40 h-40 bg-white/15 rounded-full blur-2xl"></div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-60 h-60 bg-white/10 rounded-full blur-3xl"></div>
+        </div>
+        
+        <div className="relative max-w-7xl mx-auto px-4 md:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <div className="inline-flex items-center space-x-2 bg-secondary text-white px-4 py-2 rounded-full font-bold text-sm mb-6">
+                <span>🎓</span>
+                <span>NEW WEEKEND BATCH</span>
+              </div>
+              
+              <h2 className="text-4xl md:text-5xl font-bold mb-6 font-['Oswald'] text-secondary">
+                UPSC <span className="text-white">Weekend Batch</span>
+              </h2>
+              
+              <p className="text-xl mb-8 text-secondary leading-relaxed">
+                Designed for Degree Students and Working Professionals. Classes on Saturdays, Sundays & Public Holidays. 1-Year comprehensive program covering Prelims and Mains.
+              </p>
+              
+              <div className="flex flex-wrap items-center gap-4 mb-8">
+                <div className="flex items-center space-x-2">
+                  <div className="w-2 h-2 bg-secondary rounded-full"></div>
+                  <span className="text-sm text-secondary font-medium">Weekend & Holiday Classes</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <div className="w-2 h-2 bg-secondary rounded-full"></div>
+                  <span className="text-sm text-secondary font-medium">Prelims + Mains Coverage</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <div className="w-2 h-2 bg-secondary rounded-full"></div>
+                  <span className="text-sm text-secondary font-medium">Mains Answer Writing Practice</span>
+                </div>
+              </div>
+              
+              <div className="flex items-center space-x-6">
+                <div className="text-center">
+                  <div className="text-3xl font-black text-secondary">New</div>
+                  <div className="text-sm text-secondary/80">Admissions Open</div>
+                </div>
+                <button 
+                  onClick={() => router.push('/courses')}
+                  className="bg-secondary text-white hover:bg-secondary/90 font-bold px-8 py-3 rounded-full shadow-xl transform hover:scale-105 transition-all duration-300"
+                >
+                  Explore Weekend Batch →
+                </button>
+              </div>
+            </div>
+            
+            <div className="relative">
+              <div className="bg-white rounded-2xl p-8 shadow-xl border border-gray-200">
+                <h3 className="text-2xl font-bold mb-6 text-center text-secondary font-['Oswald']">Program Highlights</h3>
+                
+                <div className="space-y-4">
+                  <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+                    <div className="w-8 h-8 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center">
+                      <span className="text-white font-bold text-sm">1</span>
+                    </div>
+                    <span className="text-secondary font-medium">Classes on Saturdays, Sundays & Public Holidays</span>
+                  </div>
+                  
+                  <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+                    <div className="w-8 h-8 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center">
+                      <span className="text-white font-bold text-sm">2</span>
+                    </div>
+                    <span className="text-secondary font-medium">1-Year Comprehensive Program (Prelims + Mains)</span>
+                  </div>
+                  
+                  <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+                    <div className="w-8 h-8 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center">
+                      <span className="text-white font-bold text-sm">3</span>
+                    </div>
+                    <span className="text-secondary font-medium">Mains Answer Writing Practice</span>
+                  </div>
+                  
+                  <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+                    <div className="w-8 h-8 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center">
+                      <span className="text-white font-bold text-sm">4</span>
+                    </div>
+                    <span className="text-secondary font-medium">One-to-One Mentorship</span>
+                  </div>
+                </div>
+                
+                <div className="mt-6 text-center">
+                  <p className="text-secondary/80 text-sm mb-2">Perfect for Degree Students & Working Professionals</p>
+                  <p className="text-secondary font-bold">Limited Seats Available!</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      {/* CUET Launch Section (kept as requested) */}
+      <section id="cuet-section" className="relative py-16 bg-gradient-to-r from-orange-400 to-yellow-400 via-amber-400 overflow-hidden">
         <div className="absolute inset-0">
           <div className="absolute top-10 left-10 w-32 h-32 bg-white/20 rounded-full blur-2xl"></div>
           <div className="absolute bottom-10 right-10 w-40 h-40 bg-white/15 rounded-full blur-2xl"></div>
@@ -450,11 +568,11 @@ export default function Home() {
               </div>
               
               <h3 className="text-2xl font-bold text-secondary mb-2 font-['Oswald']">
-                New Course Launched!
+                New Weekend Batch Launched!
               </h3>
               
               <p className="text-gray-600 mb-6">
-                Exciting news! We've launched our new <span className="font-bold text-secondary">CUET Preparation Program</span> designed specifically for university entrance exams.
+                Exciting news! We've launched our new <span className="font-bold text-secondary">UPSC Weekend Batch</span> designed for Degree Students and Working Professionals.
               </p>
               
               <div className="space-y-3">
@@ -467,7 +585,7 @@ export default function Home() {
                       : 'bg-gradient-to-r from-yellow-300 to-red-200 hover:from-yellow-400 hover:to-red-300 hover:scale-105 shadow-lg'
                   }`}
                 >
-                  {isScrolling ? '🚀 Flying to CUET...' : '🚀 Explore CUET Program'}
+                  {isScrolling ? '🚀 Flying to Weekend Batch...' : '🚀 Explore Weekend Batch'}
                 </button>
                 
                 <button

@@ -18,6 +18,21 @@ import { db } from '@/utils/firebase';
 // Latest programs from first code set
 const latestCourses = [
   {
+    id: 0,
+    title: "UPSC Weekend Batch",
+    description: "Designed for Degree Students and Working Professionals",
+    details: "1-Year comprehensive program covering Prelims and Mains with classes on Saturdays, Sundays & Public Holidays. Includes dedicated Mains answer writing practice and mentorship.",
+    features: [
+      "Weekend & Public Holiday classes",
+      "Prelims + Mains comprehensive coverage",
+      "Mains answer writing practice",
+      "Mentorship support for working professionals",
+    ],
+    duration: "12 months",
+    fee: "Contact Admin",
+    category: "mains"
+  },
+  {
     id: 1,
     title: "Regular PCM Batch",
     description: "Your one-year transformation starts here!",
