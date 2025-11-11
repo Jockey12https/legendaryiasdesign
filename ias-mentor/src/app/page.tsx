@@ -261,6 +261,8 @@ export default function Home() {
   const [firebaseCourses, setFirebaseCourses] = useState<Course[]>([]);
   const [firebaseCalendarEvents, setFirebaseCalendarEvents] = useState<CalendarEvent[]>([]);
   const [showLaunchPopup, setShowLaunchPopup] = useState(false);
+  const [showPrelimsPopup, setShowPrelimsPopup] = useState(false);
+  const [isCurtainOpen, setIsCurtainOpen] = useState(false);
   const [isScrolling, setIsScrolling] = useState(false);
 
   // Load data from Firebase when features are enabled
@@ -296,6 +298,24 @@ export default function Home() {
     return () => clearTimeout(timer);
   }, []);
 
+  // Show prelims popup with curtain effect
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      setShowPrelimsPopup(true);
+    }, 3700);
+
+    return () => window.clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    if (showPrelimsPopup) {
+      const openTimer = window.setTimeout(() => setIsCurtainOpen(true), 300);
+      return () => window.clearTimeout(openTimer);
+    } else {
+      setIsCurtainOpen(false);
+    }
+  }, [showPrelimsPopup]);
+
   // Handle rocket scroll to UPSC Weekend section
   const handleRocketScroll = () => {
     setIsScrolling(true);
@@ -319,6 +339,15 @@ export default function Home() {
         setIsScrolling(false);
       }, 1500);
     }, 500);
+  };
+
+  const handlePrelimsRegister = () => {
+    setShowPrelimsPopup(false);
+    router.push('/courses#all-programs');
+  };
+
+  const handlePrelimsClose = () => {
+    setShowPrelimsPopup(false);
   };
 
   return (
@@ -600,6 +629,62 @@ export default function Home() {
         </div>
       )}
 
+      {/* Prelims Curtain Popup */}
+      {showPrelimsPopup && (
+        <div className="fixed inset-x-4 md:inset-x-auto bottom-6 md:right-6 z-[60] flex justify-center md:justify-end">
+          <div
+            className={`curtain-popup relative w-full max-w-sm overflow-hidden rounded-3xl border border-yellow-200/80 bg-gradient-to-br from-amber-50 via-yellow-100 to-orange-100 p-6 shadow-2xl transition-all duration-500 ${
+              isCurtainOpen ? 'curtain-open scale-100' : 'scale-95'
+            }`}
+          >
+            <div className="curtain-panel left bg-gradient-to-br from-amber-200 via-yellow-100 to-orange-200" />
+            <div className="curtain-panel right bg-gradient-to-br from-orange-200 via-yellow-100 to-amber-200" />
+
+            <button
+              onClick={handlePrelimsClose}
+              className="absolute right-4 top-4 z-20 text-sm font-medium text-secondary/60 transition-colors hover:text-secondary"
+              aria-label="Close Prelims Test Series popup"
+            >
+              ✕
+            </button>
+
+            <div
+              className={`relative z-10 transition-all duration-700 ${
+                isCurtainOpen ? 'translate-y-0 opacity-100' : 'translate-y-6 opacity-0'
+              }`}
+            >
+              <div className="mb-2 inline-flex items-center rounded-full bg-secondary/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.35em] text-secondary">
+                Prelims
+              </div>
+              <h3 className="text-2xl font-bold text-secondary font-['Oswald']">
+                Test Series
+              </h3>
+              <p className="mt-2 text-sm text-secondary/80">
+                Stage is set! Our high-intensity Prelims Test Series is about to begin. Be the first to reserve
+                your seat and practise like it’s the real exam day.
+              </p>
+              <div className="mt-5 space-y-3">
+                <button
+                  onClick={handlePrelimsRegister}
+                  className="w-full rounded-full bg-gradient-to-r from-secondary to-orange-500 px-6 py-3 text-sm font-semibold text-white shadow-lg transition-transform duration-300 hover:scale-[1.03] hover:from-secondary/90 hover:to-orange-400"
+                >
+                  Register & Reveal the Tests →
+                </button>
+                <button
+                  onClick={handlePrelimsClose}
+                  className="w-full rounded-full border border-secondary/30 px-6 py-2 text-sm font-medium text-secondary/70 transition-colors hover:border-secondary/60 hover:text-secondary"
+                >
+                  Maybe Later
+                </button>
+              </div>
+            </div>
+
+            <div className="pointer-events-none absolute -right-6 -top-8 h-24 w-24 rounded-full bg-white/40 blur-2xl" />
+            <div className="pointer-events-none absolute -bottom-10 -left-4 h-28 w-28 rounded-full bg-white/30 blur-3xl" />
+          </div>
+        </div>
+      )}
+
       {/* Rocket Animation Styles */}
       <style jsx global>{`
         .rocket-scroll {
@@ -622,6 +707,38 @@ export default function Home() {
           100% {
             transform: translateY(0) rotate(0deg);
           }
+        }
+
+        .curtain-popup {
+          position: relative;
+        }
+
+        .curtain-panel {
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          width: 55%;
+          transition: transform 0.9s cubic-bezier(0.77, 0, 0.175, 1);
+          box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.25);
+          z-index: 15;
+        }
+
+        .curtain-panel.left {
+          left: 0;
+          transform: translateX(0);
+        }
+
+        .curtain-panel.right {
+          right: 0;
+          transform: translateX(0);
+        }
+
+        .curtain-open .curtain-panel.left {
+          transform: translateX(-110%);
+        }
+
+        .curtain-open .curtain-panel.right {
+          transform: translateX(110%);
         }
       `}</style>
     </div>

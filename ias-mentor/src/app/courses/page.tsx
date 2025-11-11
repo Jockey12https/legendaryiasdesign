@@ -101,13 +101,13 @@ const latestCourses = [
 // All programs from second code set
 const allPrograms = [
   {
-    id: 'sociology-mentorship',
-    title: 'Sociology Mentorship',
-    description: 'Score high in Sociology! A great answer isn\'t just about facts—it\'s about depth, clarity & structure. This program fine-tunes your Sociology writing skills with expert reviews & model answers!',
-    duration: '4 months',
-    fees: '₹10,000',
-    image: 'https://ext.same-assets.com/1137026266/2875867135.jpeg',
-    category: 'optional'
+    id: 'prelims-test-series',
+    title: 'Prelims Test Series',
+    description: 'Practice. Improve. Conquer. UPSC Prelims isn\'t about luck—it\'s about strategy, precision & confidence. Our weekly full-length & sectional tests, detailed test discussions, and real-exam simulations make you battle-ready!',
+    duration: '6 months',
+    fees: '₹7,000',
+    image: 'https://images.unsplash.com/photo-1519452575417-564c1401ecc0?q=80&w=1200&auto=format&fit=crop', // exam sheet/OMR vibe
+    category: 'prelims'
   },
   {
     id: 'mains-combat',
@@ -115,7 +115,7 @@ const allPrograms = [
     description: 'Write like a topper! Mains is not about knowing, it\'s about expressing! This program transforms your writing, strengthens your articulation, and builds your confidence with structured answer writing workshops, Mains test series, value addition modules, and expert feedback!',
     duration: '8 months',
     fees: '₹55,000',
-    image: 'https://ext.same-assets.com/1137026266/853365983.jpeg',
+    image: 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?q=80&w=1200&auto=format&fit=crop', // writing/answer sheets
     category: 'mains'
   },
   {
@@ -124,7 +124,7 @@ const allPrograms = [
     description: 'Your personal UPSC guide for 1 year! UPSC is a lonely journey - but not with a mentor by your side! Get weekly one-on-one mentorship sessions, personal study plans, performance tracking, and targeted improvement strategies to stay ahead in the race!',
     duration: '12 months',
     fees: '₹20,000',
-    image: 'https://ext.same-assets.com/1137026266/1195490810.jpeg',
+    image: 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?q=80&w=1200&auto=format&fit=crop', // mentor-student discussion
     category: 'mentorship'
   },
   {
@@ -133,7 +133,7 @@ const allPrograms = [
     description: 'Master key UPSC modules! Short, high-impact modules to master UPSC\'s toughest sections! Targeted training, expert guidance & crisp study materials to simplify complex topics!',
     duration: '3 months',
     fees: 'Nil',
-    image: 'https://ext.same-assets.com/1137026266/2875867135.jpeg',
+    image: 'https://images.unsplash.com/photo-1513258496099-48168024aec0?q=80&w=1200&auto=format&fit=crop', // books/modules
     category: 'modules'
   },
   {
@@ -142,25 +142,25 @@ const allPrograms = [
     description: 'Make your optional your scoring weapon! Your optional can be your strength—if trained right! Learn from expert faculty, get structured notes, concept clarity & personalized answer reviews, and maximize your optional score!',
     duration: '6 months',
     fees: '₹45,000',
-    image: 'https://ext.same-assets.com/1137026266/1169935981.jpeg',
+    image: 'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?q=80&w=1200&auto=format&fit=crop', // library/subjects
     category: 'optional'
-  },
-  {
-    id: 'prelims-test-series',
-    title: 'Prelims Test Series',
-    description: 'Practice. Improve. Conquer. UPSC Prelims isn\'t about luck—it\'s about strategy, precision & confidence. Our weekly full-length & sectional tests, detailed test discussions, and real-exam simulations make you battle-ready!',
+  },{
+    id: 'sociology-mentorship',
+    title: 'Sociology Mentorship',
+    description: 'Score high in Sociology! A great answer isn\'t just about facts—it\'s about depth, clarity & structure. This program fine-tunes your Sociology writing skills with expert reviews & model answers!',
     duration: '4 months',
-    fees: '₹7,000',
-    image: 'https://ext.same-assets.com/1137026266/853365983.jpeg',
-    category: 'prelims'
-  },
+    fees: '₹10,000',
+    image: 'https://images.unsplash.com/photo-1553877522-43269d4ea984?q=80&w=1200&auto=format&fit=crop', // teamwork/discussion
+    category: 'optional'
+  }
+  ,
   {
     id: 'mains-test-series',
     title: 'Mains Test Series',
     description: 'Write like a topper! Your answers should not just be right, they should be brilliant! With weekly GS & Essay tests, expert evaluation, and topper-model answers, refine your structure, clarity, and argument-building skills!',
     duration: '7 months',
     fees: '₹12,000',
-    image: 'https://ext.same-assets.com/1137026266/1195490810.jpeg',
+    image: 'https://images.unsplash.com/photo-1517520287167-4bbf64a00d66?q=80&w=1200&auto=format&fit=crop', // pen and paper exam
     category: 'mains'
   },
   {
@@ -169,7 +169,7 @@ const allPrograms = [
     description: 'Write your way to success! A well-structured answer is the difference between average and excellence! Learn step-by-step answer writing, develop analytical skills & get expert feedback!',
     duration: '3 months',
     fees: '₹15,000',
-    image: 'https://ext.same-assets.com/1137026266/2875867135.jpeg',
+    image: 'https://images.unsplash.com/photo-1495446815901-a7297e633e8d?q=80&w=1200&auto=format&fit=crop', // focused writing/notes
     category: 'mains'
   },
 ];
@@ -182,7 +182,7 @@ const studyMaterials = [
     description: 'Comprehensive study material covering all topics for UPSC Prelims.',
     format: 'PDF + Hard Copy',
     fees: '₹5,000',
-    image: 'https://ext.same-assets.com/1137026266/2875867135.jpeg',
+    image: 'https://images.unsplash.com/photo-1584697964194-9c7906b7985a?q=80&w=1200&auto-format&fit=crop', // prelims materials/notes
     category: 'prelims',
     previewUrl: 'https://example.com/prelims-preview.pdf',
     purchaseUrl: 'https://example.com/prelims-download.pdf'
@@ -193,7 +193,7 @@ const studyMaterials = [
     description: 'Model answers and writing techniques for UPSC Mains papers.',
     format: 'PDF + Hard Copy',
     fees: '₹6,000',
-    image: 'https://ext.same-assets.com/1137026266/1169935981.jpeg',
+    image: 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?q=80&w=1200&auto=format&fit=crop', // writing practice
     category: 'mains',
     previewUrl: 'https://example.com/mains-preview.pdf',
     purchaseUrl: 'https://example.com/mains-download.pdf'
@@ -204,7 +204,7 @@ const studyMaterials = [
     description: 'Monthly and yearly compilation of current affairs relevant for UPSC.',
     format: 'PDF',
     fees: '₹2,500',
-    image: 'https://ext.same-assets.com/1137026266/853365983.jpeg',
+    image: 'https://images.unsplash.com/photo-1495020689067-958852a7765e?q=80&w=1200&auto=format&fit=crop', // newspapers
     category: 'current',
     previewUrl: 'https://example.com/current-affairs-preview.pdf',
     purchaseUrl: 'https://example.com/current-affairs-download.pdf'
@@ -215,7 +215,7 @@ const studyMaterials = [
     description: 'Specialized study materials for various optional subjects.',
     format: 'PDF + Hard Copy',
     fees: '₹7,000',
-    image: 'https://ext.same-assets.com/1137026266/1195490810.jpeg',
+    image: 'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?q=80&w=1200&auto=format&fit=crop', // shelves/books
     category: 'optional',
     previewUrl: 'https://example.com/optional-preview.pdf',
     purchaseUrl: 'https://example.com/optional-download.pdf'
@@ -319,6 +319,32 @@ export default function UnifiedCoursesPage() {
   // Combine static and dynamic data (with fallback to empty arrays)
   const allLatestCourses = [...latestCourses, ...(dynamicLatestCourses || [])];
   const allStudyMaterials = [...studyMaterials, ...(dynamicStudyMaterials || [])];
+
+  // No mapping: explicit course/material images are defined per item below
+
+  useEffect(() => {
+    const handleAllProgramsHash = () => {
+      if (typeof window === 'undefined') {
+        return;
+      }
+
+      if (window.location.hash === '#all-programs') {
+        setActiveTab('all-programs');
+
+        window.requestAnimationFrame(() => {
+          const target = document.getElementById('all-programs-section');
+          if (target) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        });
+      }
+    };
+
+    handleAllProgramsHash();
+    window.addEventListener('hashchange', handleAllProgramsHash);
+
+    return () => window.removeEventListener('hashchange', handleAllProgramsHash);
+  }, []);
 
   // Filter functions
   const filteredLatestCourses = latestProgramCategory === 'all'
@@ -642,7 +668,7 @@ export default function UnifiedCoursesPage() {
             </TabsContent>
 
             {/* All Programs Tab */}
-            <TabsContent value="all-programs" className="space-y-6">
+            <TabsContent value="all-programs" className="space-y-6" id="all-programs-section">
               <div className="flex justify-end mb-6">
                 <Select value={allProgramCategory} onValueChange={setAllProgramCategory}>
                   <SelectTrigger className="w-[200px]">
@@ -726,11 +752,11 @@ export default function UnifiedCoursesPage() {
                   <Card key={material.id} className="overflow-hidden flex flex-col h-full">
                                           <div className="relative h-48 w-full bg-gray-200 flex items-center justify-center">
                         <img
-                          src={material.image || 'https://ext.same-assets.com/1137026266/2875867135.jpeg'}
+                          src={material.image}
                           alt={material.title}
                           className="w-full h-full object-cover"
                           onError={(e) => {
-                            e.currentTarget.src = 'https://ext.same-assets.com/1137026266/2875867135.jpeg';
+                            e.currentTarget.src = 'https://images.unsplash.com/photo-1513258496099-48168024aec0?q=80&w=1200&auto=format&fit=crop';
                           }}
                         />
                       </div>

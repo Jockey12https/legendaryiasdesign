@@ -30,7 +30,7 @@ const courses: CourseProps[] = [
     id: 'csat',
     title: 'CSAT',
     description: 'Comprehensive CSAT preparation covering Quantitative Aptitude, Logical Reasoning, Reading Comprehension, and Decision-Making with structured learning from basics to advanced levels.',
-    image: 'https://ext.same-assets.com/1137026266/2875867135.jpeg',
+    image: 'https://images.unsplash.com/photo-1557200136-9e4ae3a8d86c?q=80&w=1200&auto=format&fit=crop', // aptitude/math workbook
     price: 8000,
     status: 'Available',
     duration: '5 months',
@@ -40,7 +40,7 @@ const courses: CourseProps[] = [
     id: 'essay-mentorship',
     title: 'Essay Mentorship',
     description: 'Complete essay writing mentorship with strategy orientation, step-by-step training on topic selection and structuring, and personalized one-to-one guidance.',
-    image: 'https://ext.same-assets.com/1137026266/1169935981.jpeg',
+    image: 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?q=80&w=1200&auto=format&fit=crop', // writing/pen & paper
     price: 7000,
     status: 'Available',
     duration: '4 months',
@@ -50,7 +50,7 @@ const courses: CourseProps[] = [
     id: 'ethics',
     title: 'Ethics',
     description: 'Comprehensive Ethics preparation with regular classes, case study workshops, sectional tests, and personalized mentorship for high-value answers.',
-    image: 'https://ext.same-assets.com/1137026266/853365983.jpeg',
+    image: 'https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?q=80&w=1200&auto=format&fit=crop', // justice/ethics symbolism
     price: 9000,
     status: 'Available',
     duration: '5 months',
@@ -60,7 +60,7 @@ const courses: CourseProps[] = [
     id: 'sociology-optional',
     title: 'Sociology Optional',
     description: 'Complete Sociology optional preparation covering both Paper I and Paper II with exam-focused approach, answer writing practice, and personalized mentorship.',
-    image: 'https://ext.same-assets.com/1137026266/1195490810.jpeg',
+    image: 'https://images.unsplash.com/photo-1553877522-43269d4ea984?q=80&w=1200&auto=format&fit=crop', // group discussion/teamwork
     price: 20000,
     status: 'Available',
     duration: '6 months',
@@ -92,7 +92,7 @@ const BookOnlinePage = () => {
         id: doc.id,
         title: doc.data().title,
         description: doc.data().description,
-        image: doc.data().image || 'https://ext.same-assets.com/1137026266/2875867135.jpeg',
+        image: doc.data().image || 'https://images.unsplash.com/photo-1513258496099-48168024aec0?q=80&w=1200&auto=format&fit=crop',
         price: parseInt(doc.data().fees?.replace(/[^\d]/g, '') || '0'),
         status: 'Available' as const,
         duration: doc.data().duration,
@@ -212,8 +212,8 @@ const BookOnlinePage = () => {
             {allBookOnlineCourses.map((course) => (
               <Card key={course.id} className="overflow-hidden flex flex-col h-full hover:shadow-lg transition-shadow">
                 <div className="relative h-48 w-full">
-                                     <Image
-                     src={course.image || 'https://ext.same-assets.com/1137026266/2875867135.jpeg'}
+                  <Image
+                     src={course.image || 'https://images.unsplash.com/photo-1513258496099-48168024aec0?q=80&w=1200&auto=format&fit=crop'}
                      alt={course.title}
                      fill
                      className="object-cover"
@@ -221,7 +221,7 @@ const BookOnlinePage = () => {
                      onError={(e) => {
                        // Fallback for Next.js Image component
                        const imgElement = e.currentTarget as HTMLImageElement;
-                       imgElement.src = 'https://ext.same-assets.com/1137026266/2875867135.jpeg';
+                       imgElement.src = 'https://images.unsplash.com/photo-1513258496099-48168024aec0?q=80&w=1200&auto=format&fit=crop';
                      }}
                    />
                   {course.status !== 'Available' && (
