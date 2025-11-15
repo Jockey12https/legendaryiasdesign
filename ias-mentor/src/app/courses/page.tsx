@@ -105,7 +105,7 @@ const allPrograms = [
     title: 'Prelims Test Series',
     description: 'Practice. Improve. Conquer. UPSC Prelims isn\'t about luck—it\'s about strategy, precision & confidence. Our weekly full-length & sectional tests, detailed test discussions, and real-exam simulations make you battle-ready!',
     duration: '6 months',
-    fees: '₹7,000',
+    fees: '₹7,500',
     image: 'https://images.unsplash.com/photo-1519452575417-564c1401ecc0?q=80&w=1200&auto=format&fit=crop', // exam sheet/OMR vibe
     category: 'prelims'
   },
