@@ -9,6 +9,9 @@ const nextConfig = {
       "images.unsplash.com",
       "ext.same-assets.com",
       "ugc.same-assets.com",
+      "ik.imagekit.io",
+      "img.youtube.com",
+      "opengraph.b-cdn.net",
     ],
     remotePatterns: [
       {
@@ -31,12 +34,30 @@ const nextConfig = {
         hostname: "ugc.same-assets.com",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "ik.imagekit.io",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "img.youtube.com",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "opengraph.b-cdn.net",
+        pathname: "/**",
+      },
     ],
     formats: ['image/webp', 'image/avif'],
   },
   compress: true,
   poweredByHeader: false,
   generateEtags: false,
+  turbopack: {
+    root: __dirname,
+  },
   experimental: {
     optimizeCss: true,
     optimizePackageImports: ['lucide-react', 'framer-motion'],
