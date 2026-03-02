@@ -31,7 +31,7 @@ export const metadata: Metadata = {
   description: "Legendary IAS Mentor is the #1 IAS Academy in Kerala and among the best UPSC coaching institutes in India. Expert faculty, proven success rate, comprehensive study material, and personalized guidance for UPSC Civil Services Exam preparation.",
   keywords: [
     "IAS Academy Kerala",
-    "Best IAS Academy India", 
+    "Best IAS Academy India",
     "UPSC Coaching Kerala",
     "Civil Services Coaching",
     "IAS Academy Ernakulam",
@@ -102,24 +102,24 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       {
-        url: 'https://ext.same-assets.com/2651817114/1248459215.png',
+        url: 'https://ik.imagekit.io/8vvkoi3dt/Legendary/legendary%20%20(2).jpg',
         sizes: '32x32',
-        type: 'image/png',
+        type: 'image/jpeg',
       },
       {
-        url: 'https://ext.same-assets.com/2651817114/1248459215.png',
+        url: 'https://ik.imagekit.io/8vvkoi3dt/Legendary/legendary%20%20(2).jpg',
         sizes: '16x16',
-        type: 'image/png',
+        type: 'image/jpeg',
       },
     ],
     apple: [
       {
-        url: 'https://ext.same-assets.com/2651817114/1248459215.png',
+        url: 'https://ik.imagekit.io/8vvkoi3dt/Legendary/legendary%20%20(2).jpg',
         sizes: '180x180',
-        type: 'image/png',
+        type: 'image/jpeg',
       },
     ],
-    shortcut: 'https://ext.same-assets.com/2651817114/1248459215.png',
+    shortcut: 'https://ik.imagekit.io/8vvkoi3dt/Legendary/legendary%20%20(2).jpg',
   },
 };
 
@@ -205,7 +205,7 @@ export default function RootLayout({
             <div className="flex flex-col min-h-screen overflow-x-hidden">
               <Header />
               <ClientOnly>
-                <AnnouncementBanner 
+                <AnnouncementBanner
                   announcements={mockAnnouncements}
                   isEnabled={false}
                 />
@@ -213,7 +213,7 @@ export default function RootLayout({
               <main className="flex-grow overflow-x-hidden">{children}</main>
               <Footer />
               <ClientOnly>
-                <LiveUpdatesWidget 
+                <LiveUpdatesWidget
                   updates={mockLiveUpdates}
                 />
               </ClientOnly>
