@@ -7,6 +7,27 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const youtubeVideos = [
   {
+    id: 10,
+    title: "UPSC Guidance - Video 1",
+    videoId: "IqOWXAC3H10",
+    thumbnail: "https://img.youtube.com/vi/IqOWXAC3H10/maxresdefault.jpg",
+    description: "Expert guidance and insights for UPSC aspirants"
+  },
+  {
+    id: 11,
+    title: "UPSC Guidance - Video 2",
+    videoId: "91FmHWZ811w",
+    thumbnail: "https://img.youtube.com/vi/91FmHWZ811w/maxresdefault.jpg",
+    description: "Comprehensive UPSC preparation strategies and tips"
+  },
+  {
+    id: 12,
+    title: "UPSC Guidance - Video 3",
+    videoId: "6QTexVT3HqU",
+    thumbnail: "https://img.youtube.com/vi/6QTexVT3HqU/maxresdefault.jpg",
+    description: "In-depth UPSC coaching and mentorship insights"
+  },
+  {
     id: 9,
     title: "Interview Preparation Tips - Expert Guidance",
     videoId: "bbjxqN4Uo9w",
@@ -75,9 +96,9 @@ export default function CommunitySection() {
   // Auto-slide functionality
   useEffect(() => {
     if (!isPlaying || isVideoPlaying) return;
-    
+
     const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) => 
+      setCurrentIndex((prevIndex) =>
         prevIndex === youtubeVideos.length - 1 ? 0 : prevIndex + 1
       );
     }, 5000);
@@ -92,7 +113,7 @@ export default function CommunitySection() {
   };
 
   const goToPrevious = () => {
-    setCurrentIndex((prevIndex) => 
+    setCurrentIndex((prevIndex) =>
       prevIndex === 0 ? youtubeVideos.length - 1 : prevIndex - 1
     );
     setIsVideoPlaying(false);
@@ -100,7 +121,7 @@ export default function CommunitySection() {
   };
 
   const goToNext = () => {
-    setCurrentIndex((prevIndex) => 
+    setCurrentIndex((prevIndex) =>
       prevIndex === youtubeVideos.length - 1 ? 0 : prevIndex + 1
     );
     setIsVideoPlaying(false);
@@ -135,7 +156,7 @@ export default function CommunitySection() {
 
   const handleTouchEnd = () => {
     if (!touchStart || !touchEnd) return;
-    
+
     const distance = touchStart - touchEnd;
     const isLeftSwipe = distance > 50;
     const isRightSwipe = distance < -50;
@@ -152,7 +173,7 @@ export default function CommunitySection() {
     const rect = e.currentTarget.getBoundingClientRect();
     const clickX = e.clientX - rect.left;
     const width = rect.width;
-    
+
     // If click is in left half, go to previous; right half, go to next
     if (clickX < width / 2) {
       goToPrevious();
@@ -173,14 +194,14 @@ export default function CommunitySection() {
 
         <div className="relative mx-auto max-w-4xl bg-white rounded-lg overflow-hidden shadow-xl">
           {/* Main Slider */}
-          <div 
+          <div
             className="relative overflow-hidden cursor-pointer"
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
             onClick={handleClick}
           >
-            <div 
+            <div
               className="flex transition-transform duration-700 ease-in-out"
               style={{ transform: `translateX(-${currentIndex * 100}%)` }}
             >
@@ -194,7 +215,7 @@ export default function CommunitySection() {
                       className="object-cover"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-                    
+
                     {/* Play Button */}
                     <div className="absolute inset-0 flex items-center justify-center">
                       <button
@@ -250,11 +271,10 @@ export default function CommunitySection() {
                   e.stopPropagation();
                   goToSlide(index);
                 }}
-                className={`h-3 w-3 rounded-full transition-all duration-300 ${
-                  currentIndex === index 
-                    ? 'bg-white scale-125' 
+                className={`h-3 w-3 rounded-full transition-all duration-300 ${currentIndex === index
+                    ? 'bg-white scale-125'
                     : 'bg-white/50 hover:bg-white/75'
-                }`}
+                  }`}
               />
             ))}
           </div>
@@ -285,7 +305,7 @@ export default function CommunitySection() {
 
           {/* Progress Bar */}
           <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/30">
-            <div 
+            <div
               className="h-full bg-white transition-all duration-300"
               style={{ width: `${((currentIndex + 1) / youtubeVideos.length) * 100}%` }}
             />
