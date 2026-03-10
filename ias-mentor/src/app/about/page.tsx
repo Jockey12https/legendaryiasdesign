@@ -23,7 +23,7 @@ const mentors = [
     id: 2,
     name: "Elsa Baby",
     position: "UPSC Mentor & Faculty",
-    image:"https://ik.imagekit.io/8vvkoi3dt/ELSA%20BABY%20UPSC%20Faculty.jpg?updatedAt=1758805693395"
+    image: "https://ik.imagekit.io/8vvkoi3dt/ELSA%20BABY%20UPSC%20Faculty.jpg?updatedAt=1758805693395"
   },
   {
     id: 4,
@@ -108,17 +108,17 @@ export default function AboutPage() {
 
   // Responsive slide calculation
   const [isMobile, setIsMobile] = useState(false);
-  
+
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
-    
+
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
-  
+
   const totalSlides = isMobile ? mentors.length : Math.ceil(mentors.length / 4);
   const maxSlide = totalSlides - 1;
 
@@ -142,7 +142,7 @@ export default function AboutPage() {
 
   const handleTouchEnd = () => {
     if (!touchStart || !touchEnd) return;
-    
+
     const distance = touchStart - touchEnd;
     const isLeftSwipe = distance > 50;
     const isRightSwipe = distance < -50;
@@ -158,12 +158,12 @@ export default function AboutPage() {
   // Click handlers for desktop navigation
   const handleCarouselClick = (e: React.MouseEvent) => {
     if (!carouselRef.current) return;
-    
+
     const rect = carouselRef.current.getBoundingClientRect();
     const clickX = e.clientX - rect.left;
     const carouselWidth = rect.width;
     const clickPosition = clickX / carouselWidth;
-    
+
     // Click on left half = previous slide, right half = next slide
     if (clickPosition < 0.5) {
       prevSlide();
@@ -195,7 +195,7 @@ export default function AboutPage() {
           </h1>
           <div className="max-w-3xl mx-auto">
             <p className="text-lg mb-8 text-center">
-            Legendary IAS mentor is an initiative of nationally reputed civil service faculties and mentors having high success rate in civil service examinations. Our team consists of Renowned Faculties, IAS Rank Holders, Subject Experts, Alumni from Premium Institutions like IITs and renowned faculties from Delhi and Calcutta providing wide exposure of experience. 
+              Legendary IAS mentor is an initiative of nationally reputed civil service faculties and mentors having high success rate in civil service examinations. Our team consists of Renowned Faculties, IAS Rank Holders, Subject Experts, Alumni from Premium Institutions like IITs and renowned faculties from Delhi and Calcutta providing wide exposure of experience.
             </p>
           </div>
         </div>
@@ -210,7 +210,7 @@ export default function AboutPage() {
                 Join Us
               </h2>
               <p className="text-secondary mb-8">
-              We believe that individual attention, strategic UPSC preparation, and structured study plans are the keys to cracking the IAS, IPS, and IFS exams. With proven methodologies, in-depth subject expertise, and continuous motivation, we ensure that every aspirant is equipped with the right tools to excel in UPSC Prelims, Mains, and Interview.
+                We believe that individual attention, strategic UPSC preparation, and structured study plans are the keys to cracking the IAS, IPS, and IFS exams. With proven methodologies, in-depth subject expertise, and continuous motivation, we ensure that every aspirant is equipped with the right tools to excel in UPSC Prelims, Mains, and Interview.
               </p>
               <Button
                 className="bg-black text-white hover:bg-gray-800"
@@ -221,7 +221,7 @@ export default function AboutPage() {
             </div>
             <div className="relative h-[400px] w-full">
               <Image
-                src="https://ext.same-assets.com/2003590844/4277505869.jpeg"
+                src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&h=600&fit=crop&q=80"
                 alt="Join Us"
                 fill
                 className="object-cover rounded-lg"
@@ -240,7 +240,7 @@ export default function AboutPage() {
 
           <div className="relative">
             {/* Carousel Container */}
-            <div 
+            <div
               ref={carouselRef}
               className="overflow-hidden cursor-pointer select-none"
               onTouchStart={handleTouchStart}
@@ -248,7 +248,7 @@ export default function AboutPage() {
               onTouchEnd={handleTouchEnd}
               onClick={handleCarouselClick}
             >
-              <div 
+              <div
                 className="flex transition-transform duration-700 ease-in-out"
                 style={{ transform: `translateX(-${currentSlide * 100}%)` }}
               >
@@ -262,17 +262,16 @@ export default function AboutPage() {
                             src={mentor.image}
                             alt={mentor.name}
                             fill
-                            className={`object-cover transition-transform duration-500 group-hover:scale-110 ${
-                              mentor.id === 1 
-                                ? 'object-top' 
-                                : mentor.id === 2 
+                            className={`object-cover transition-transform duration-500 group-hover:scale-110 ${mentor.id === 1
+                                ? 'object-top'
+                                : mentor.id === 2
                                   ? 'object-[center_20%]'
-                                  : mentor.id === 14 
+                                  : mentor.id === 14
                                     ? 'object-[center_0%]'
                                     : mentor.id === 12
                                       ? 'object-[center_100%]'
-                                    : ''
-                            }`}
+                                      : ''
+                              }`}
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                         </div>
@@ -288,25 +287,24 @@ export default function AboutPage() {
                     <div className="w-full flex-shrink-0">
                       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                         {mentors.slice(0, 4).map((mentor) => (
-                          <div 
-                            key={mentor.id} 
+                          <div
+                            key={mentor.id}
                             className="text-center group"
                           >
                             <div className="relative h-80 w-full mb-4 overflow-hidden rounded-lg shadow-lg">
-                            <Image
-                              src={mentor.image}
-                              alt={mentor.name}
-                              fill
-                              className={`object-cover transition-transform duration-500 group-hover:scale-110 ${
-                                mentor.id === 1 
-                                  ? 'object-top' 
-                                  : mentor.id === 2 
-                                    ? 'object-[center_25%]'
-                                    : mentor.id === 14 
-                                      ? 'object-[center_0%]'
-                                      : ''
-                              }`}
-                            />
+                              <Image
+                                src={mentor.image}
+                                alt={mentor.name}
+                                fill
+                                className={`object-cover transition-transform duration-500 group-hover:scale-110 ${mentor.id === 1
+                                    ? 'object-top'
+                                    : mentor.id === 2
+                                      ? 'object-[center_25%]'
+                                      : mentor.id === 14
+                                        ? 'object-[center_0%]'
+                                        : ''
+                                  }`}
+                              />
                               <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                             </div>
                             <h3 className="text-xl font-bold mb-1 text-gray-800">{mentor.name}</h3>
@@ -320,8 +318,8 @@ export default function AboutPage() {
                     <div className="w-full flex-shrink-0">
                       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                         {mentors.slice(4, 8).map((mentor) => (
-                          <div 
-                            key={mentor.id} 
+                          <div
+                            key={mentor.id}
                             className="text-center group"
                           >
                             <div className="relative h-80 w-full mb-4 overflow-hidden rounded-lg shadow-lg">
@@ -329,15 +327,14 @@ export default function AboutPage() {
                                 src={mentor.image}
                                 alt={mentor.name}
                                 fill
-                                className={`object-cover transition-transform duration-500 group-hover:scale-110 ${
-                                  mentor.id === 1 
-                                    ? 'object-top' 
-                                    : mentor.id === 2 
-                                      ? 'object-top' 
-                                      : mentor.id === 14 
+                                className={`object-cover transition-transform duration-500 group-hover:scale-110 ${mentor.id === 1
+                                    ? 'object-top'
+                                    : mentor.id === 2
+                                      ? 'object-top'
+                                      : mentor.id === 14
                                         ? 'object-[center_0%]'
                                         : ''
-                                }`}
+                                  }`}
                               />
                               <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                             </div>
@@ -352,8 +349,8 @@ export default function AboutPage() {
                     <div className="w-full flex-shrink-0">
                       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                         {mentors.slice(8, 12).map((mentor) => (
-                          <div 
-                            key={mentor.id} 
+                          <div
+                            key={mentor.id}
                             className="text-center group"
                           >
                             <div className="relative h-80 w-full mb-4 overflow-hidden rounded-lg shadow-lg">
@@ -361,15 +358,14 @@ export default function AboutPage() {
                                 src={mentor.image}
                                 alt={mentor.name}
                                 fill
-                                className={`object-cover transition-transform duration-500 group-hover:scale-110 ${
-                                  mentor.id === 1 
-                                    ? 'object-top' 
-                                    : mentor.id === 2 
-                                      ? 'object-top' 
-                                      : mentor.id === 14 
+                                className={`object-cover transition-transform duration-500 group-hover:scale-110 ${mentor.id === 1
+                                    ? 'object-top'
+                                    : mentor.id === 2
+                                      ? 'object-top'
+                                      : mentor.id === 14
                                         ? 'object-[center_0%]'
                                         : ''
-                                }`}
+                                  }`}
                               />
                               <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                             </div>
@@ -384,8 +380,8 @@ export default function AboutPage() {
                     <div className="w-full flex-shrink-0">
                       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                         {mentors.slice(12, 16).map((mentor) => (
-                          <div 
-                            key={mentor.id} 
+                          <div
+                            key={mentor.id}
                             className="text-center group"
                           >
                             <div className="relative h-80 w-full mb-4 overflow-hidden rounded-lg shadow-lg">
@@ -393,17 +389,16 @@ export default function AboutPage() {
                                 src={mentor.image}
                                 alt={mentor.name}
                                 fill
-                                className={`object-cover transition-transform duration-500 group-hover:scale-110 ${
-                                  mentor.id === 1 
-                                    ? 'object-top' 
-                                    : mentor.id === 2 
-                                      ? 'object-top' 
-                                      : mentor.id === 14 
+                                className={`object-cover transition-transform duration-500 group-hover:scale-110 ${mentor.id === 1
+                                    ? 'object-top'
+                                    : mentor.id === 2
+                                      ? 'object-top'
+                                      : mentor.id === 14
                                         ? 'object-[center_25%]'
                                         : mentor.id === 10
                                           ? 'object-[center_63%]'
                                           : ''
-                                }`}
+                                  }`}
                               />
                               <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                             </div>
@@ -430,11 +425,10 @@ export default function AboutPage() {
                 <button
                   key={index}
                   onClick={() => setCurrentSlide(index)}
-                  className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                    currentSlide === index 
-                      ? 'bg-primary scale-125' 
+                  className={`w-3 h-3 rounded-full transition-all duration-300 ${currentSlide === index
+                      ? 'bg-primary scale-125'
                       : 'bg-gray-300 hover:bg-gray-400'
-                  }`}
+                    }`}
                   aria-label={`Go to slide ${index + 1}`}
                 />
               ))}

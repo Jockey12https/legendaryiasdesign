@@ -15,7 +15,7 @@ export default function VisionSection() {
             <p className="text-gray-300 mb-6 text-lg leading-relaxed">
               <strong className="text-white">Legendary IAS Mentor</strong> was born from a visionary purpose—to bridge the gap between ambition and achievement through <strong className="text-white">unparalleled IAS mentorship</strong>. We believe that clearing the <strong className="text-white">Civil Services exam</strong> is not just about persistence; it's about the right guidance at the right time. Here, every <strong className="text-white">IAS aspirant</strong> is nurtured under the personal care of dedicated <strong className="text-white">UPSC mentors</strong> who understand their journey, their struggles, and their potential to become India's next generation of civil servants.
             </p>
-           
+
             <Button
               variant="outline"
               className="border-white text-black"
@@ -25,7 +25,7 @@ export default function VisionSection() {
           </div>
           <div className="relative h-[400px] w-full">
             <Image
-              src="https://ext.same-assets.com/2651817114/3574790180.jpeg"
+              src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=800&h=600&fit=crop&q=80"
               alt="Legendary IAS Mentor Vision - Civil Services Exam Preparation and UPSC Mentorship"
               fill
               className="object-cover rounded-lg"
