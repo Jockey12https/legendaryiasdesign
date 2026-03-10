@@ -8,6 +8,8 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
 import AuthModal from "@/components/auth/AuthModal";
 
+const ANUSHA_VIDEO_SRC = "https://ik.imagekit.io/8vvkoi3dt/Result/VID-20260307-WA0039.mp4?updatedAt=1773153453549";
+
 const studentTestimonials = [
   {
     id: 1,
@@ -66,6 +68,7 @@ const studentTestimonials = [
 export default function TestimonialsSection() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [videoModalOpen, setVideoModalOpen] = useState(false);
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
   const { user, loading } = useAuth();
@@ -74,7 +77,7 @@ export default function TestimonialsSection() {
   // Auto-slide for testimonials (every 5 seconds)
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) => 
+      setCurrentIndex((prevIndex) =>
         prevIndex === studentTestimonials.length - 1 ? 0 : prevIndex + 1
       );
     }, 5000);
@@ -98,18 +101,18 @@ export default function TestimonialsSection() {
 
   const handleTouchEnd = () => {
     if (!touchStart || !touchEnd) return;
-    
+
     const distance = touchStart - touchEnd;
     const isLeftSwipe = distance > 50;
     const isRightSwipe = distance < -50;
 
     if (isLeftSwipe) {
-      setCurrentIndex((prevIndex) => 
+      setCurrentIndex((prevIndex) =>
         prevIndex === studentTestimonials.length - 1 ? 0 : prevIndex + 1
       );
     }
     if (isRightSwipe) {
-      setCurrentIndex((prevIndex) => 
+      setCurrentIndex((prevIndex) =>
         prevIndex === 0 ? studentTestimonials.length - 1 : prevIndex - 1
       );
     }
@@ -121,14 +124,14 @@ export default function TestimonialsSection() {
     const clickX = e.clientX - rect.left;
     const carouselWidth = rect.width;
     const clickPosition = clickX / carouselWidth;
-    
+
     // Click on left half = previous slide, right half = next slide
     if (clickPosition < 0.5) {
-      setCurrentIndex((prevIndex) => 
+      setCurrentIndex((prevIndex) =>
         prevIndex === 0 ? studentTestimonials.length - 1 : prevIndex - 1
       );
     } else {
-      setCurrentIndex((prevIndex) => 
+      setCurrentIndex((prevIndex) =>
         prevIndex === studentTestimonials.length - 1 ? 0 : prevIndex + 1
       );
     }
@@ -156,15 +159,115 @@ export default function TestimonialsSection() {
           Hear from our students who cracked the UPSC examination with flying colors.
         </p>
 
-        {/* Testimonials Slider */}
-        <div 
+        {/* ── Featured Result: Anusha A S AIR 284 ── */}
+        <div className="mb-12 rounded-2xl overflow-hidden shadow-2xl"
+          style={{
+            background: "linear-gradient(135deg, #1a0a00 0%, #2d1500 50%, #1a0a00 100%)",
+            border: "1px solid rgba(212,175,55,0.35)",
+          }}
+        >
+          <div className="flex flex-col md:flex-row items-center gap-6 p-6 md:p-8">
+            {/* Photo */}
+            <div className="relative flex-shrink-0">
+              <div
+                className="absolute inset-[-3px] rounded-full"
+                style={{
+                  background: "conic-gradient(from 0deg, #FFD700, #FFA500, #FFE066, #FFD700)",
+                  animation: "spinRingT 4s linear infinite",
+                  borderRadius: "9999px",
+                }}
+              />
+              <div className="relative w-24 h-24 md:w-28 md:h-28 rounded-full overflow-hidden"
+                style={{ border: "3px solid #1a0a00" }}
+              >
+                <Image
+                  src="https://ik.imagekit.io/8vvkoi3dt/Result/Anusha.jpg"
+                  alt="Anusha A S — AIR 284"
+                  fill
+                  className="object-cover object-center"
+                />
+              </div>
+            </div>
+
+            {/* Text */}
+            <div className="flex-1 text-center md:text-left">
+              <div className="flex flex-wrap items-center gap-2 justify-center md:justify-start mb-2">
+                <span className="text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full"
+                  style={{ background: "rgba(212,175,55,0.15)", color: "#FFD700", border: "1px solid rgba(212,175,55,0.4)" }}
+                >
+                  🏆 IAS 2025 Final Result
+                </span>
+              </div>
+              <h3 className="text-white font-black text-xl md:text-2xl" style={{ fontFamily: "'Oswald', sans-serif" }}>
+                Anusha A S
+              </h3>
+              <p className="font-black text-3xl md:text-4xl my-1"
+                style={{
+                  background: "linear-gradient(135deg, #FFD700, #FFA500, #FFD700)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                  fontFamily: "'Oswald', sans-serif",
+                }}
+              >
+                AIR 284
+              </p>
+              <p className="text-sm md:text-base italic mt-2" style={{ color: "rgba(255,255,255,0.7)" }}>
+                &quot;This achievement is just the beginning. Legendary IAS Mentor gave me the guidance, confidence, and clarity to crack the Civil Services Examination.&quot;
+              </p>
+            </div>
+
+            {/* Watch Button */}
+            <div className="flex-shrink-0">
+              <button
+                onClick={() => setVideoModalOpen(true)}
+                className="group flex items-center gap-3 px-6 py-3 rounded-full font-bold text-sm transition-all duration-300 hover:scale-105"
+                style={{
+                  background: "linear-gradient(135deg, #FFD700, #FFA500)",
+                  color: "#1a1a1a",
+                  boxShadow: "0 4px 20px rgba(212,175,55,0.4)",
+                }}
+              >
+                <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+                  <path d="M8 5.14v14l11-7-11-7z" />
+                </svg>
+                Watch
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Result Video Modal */}
+        {videoModalOpen && (
+          <div className="fixed inset-0 bg-black/85 flex items-center justify-center z-50 p-4">
+            <div className="relative w-full max-w-4xl">
+              <button
+                onClick={() => setVideoModalOpen(false)}
+                className="absolute -top-12 right-0 text-white hover:text-gray-300 text-2xl font-bold z-10"
+              >
+                ✕
+              </button>
+              <div className="relative w-full" style={{ paddingBottom: "56.25%" }}>
+                <video
+                  key={ANUSHA_VIDEO_SRC}
+                  src={ANUSHA_VIDEO_SRC}
+                  autoPlay
+                  controls
+                  playsInline
+                  className="absolute top-0 left-0 w-full h-full rounded-xl"
+                />
+              </div>
+            </div>
+          </div>
+        )}
+        <div
           className="relative overflow-hidden cursor-pointer select-none"
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
           onClick={handleCarouselClick}
         >
-          <div 
+          <div
             className="flex transition-transform duration-500 ease-in-out"
             style={{ transform: `translateX(-${currentIndex * 100}%)` }}
           >
@@ -183,7 +286,7 @@ export default function TestimonialsSection() {
                         />
                       </div>
                     )}
-                    
+
                     <div className={`${testimonial.image ? 'flex-1' : 'w-full'}`}>
                       <div className={`flex items-center mb-4 ${testimonial.image ? '' : 'justify-center'}`}>
                         {[...Array(5)].map((_, i) => (
@@ -192,15 +295,15 @@ export default function TestimonialsSection() {
                           </svg>
                         ))}
                       </div>
-                      
+
                       <p className="text-gray-700 italic mb-6 text-lg leading-relaxed">"{testimonial.quote}"</p>
-                      
+
                       <div className={`flex ${testimonial.image ? 'flex-col sm:flex-row sm:items-center justify-between' : 'flex-col items-center'}`}>
                         <div>
                           <h4 className="text-xl font-bold text-secondary mb-1">{testimonial.name}</h4>
                           <p className="text-gray-600 mb-3">{testimonial.position}</p>
                         </div>
-                        
+
                         <div className={`${testimonial.image ? 'mt-3 sm:mt-0' : ''}`}>
                           <span className="inline-block bg-primary text-secondary px-4 py-2 rounded-full font-bold">
                             {testimonial.rank}
@@ -222,9 +325,8 @@ export default function TestimonialsSection() {
               key={`testimonial-dot-${index}`}
               variant="outline"
               size="sm"
-              className={`h-2 w-2 rounded-full p-0 border-secondary transition-colors duration-300 ${
-                currentIndex === index ? 'bg-secondary' : 'bg-transparent'
-              }`}
+              className={`h-2 w-2 rounded-full p-0 border-secondary transition-colors duration-300 ${currentIndex === index ? 'bg-secondary' : 'bg-transparent'
+                }`}
               onClick={() => goToSlide(index)}
             />
           ))}
@@ -248,6 +350,13 @@ export default function TestimonialsSection() {
         isOpen={isAuthModalOpen}
         onClose={() => setIsAuthModalOpen(false)}
       />
+
+      <style jsx global>{`
+        @keyframes spinRingT {
+          from { transform: rotate(0deg); }
+          to   { transform: rotate(360deg); }
+        }
+      `}</style>
     </section>
   );
 }

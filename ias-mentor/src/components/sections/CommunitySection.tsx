@@ -5,11 +5,43 @@ import Image from "next/image";
 import { useState, useEffect, SetStateAction } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
-const youtubeVideos = [
+const videos = [
+  {
+    id: 13,
+    title: "Anusha A S — AIR 284 | IAS 2025 Result",
+    videoId: "VX7vfhMVuqU",
+    videoSrc: "",
+    type: "youtube" as const,
+    thumbnail: "https://img.youtube.com/vi/VX7vfhMVuqU/hqdefault.jpg",
+    description: "Celebrating our student Anusha A S who achieved AIR 284 in IAS 2025 — Legendary IAS Mentor"
+  },
+  {
+    id: 14,
+    title: "Anusha A S — Journey to AIR 284 | Motivational",
+    videoId: "",
+    videoSrc: "https://ik.imagekit.io/8vvkoi3dt/Result/VID-20260307-WA0024.mp4?updatedAt=1773153410598",
+    type: "mp4" as const,
+    thumbnail: "https://ik.imagekit.io/8vvkoi3dt/Result/Anusha.jpg",
+    objectPosition: "50% 36%",
+    description: "A glimpse into the inspiring journey behind AIR 284 — Legendary IAS Mentor"
+  },
+  {
+    id: 15,
+    title: "The Road to Success — Strategic Intervention | Legendary IAS",
+    videoId: "",
+    videoSrc: "https://ik.imagekit.io/8vvkoi3dt/Result/VID-20260307-WA0038.mp4?updatedAt=1773153453536",
+    type: "mp4" as const,
+    thumbnail: "https://ik.imagekit.io/8vvkoi3dt/Result/Screenshot%202026-03-10%20204353.png",
+    objectPosition: "50% 10%",  // ← move up/down: lower % = higher in image, higher % = lower
+    objectScale: 0.95,  // ← zoom: 1 = normal, 1.5 = 50% zoomed in
+    description: "Strategic intervention and guidance for every UPSC aspirant — never give up on your dream"
+  },
   {
     id: 10,
     title: "UPSC Guidance - Video 1",
     videoId: "IqOWXAC3H10",
+    videoSrc: "",
+    type: "youtube" as const,
     thumbnail: "https://img.youtube.com/vi/IqOWXAC3H10/maxresdefault.jpg",
     description: "Expert guidance and insights for UPSC aspirants"
   },
@@ -17,6 +49,8 @@ const youtubeVideos = [
     id: 11,
     title: "UPSC Guidance - Video 2",
     videoId: "91FmHWZ811w",
+    videoSrc: "",
+    type: "youtube" as const,
     thumbnail: "https://img.youtube.com/vi/91FmHWZ811w/maxresdefault.jpg",
     description: "Comprehensive UPSC preparation strategies and tips"
   },
@@ -24,6 +58,8 @@ const youtubeVideos = [
     id: 12,
     title: "UPSC Guidance - Video 3",
     videoId: "6QTexVT3HqU",
+    videoSrc: "",
+    type: "youtube" as const,
     thumbnail: "https://img.youtube.com/vi/6QTexVT3HqU/maxresdefault.jpg",
     description: "In-depth UPSC coaching and mentorship insights"
   },
@@ -31,6 +67,8 @@ const youtubeVideos = [
     id: 9,
     title: "Interview Preparation Tips - Expert Guidance",
     videoId: "bbjxqN4Uo9w",
+    videoSrc: "",
+    type: "youtube" as const,
     thumbnail: "https://img.youtube.com/vi/bbjxqN4Uo9w/maxresdefault.jpg",
     description: "Expert tips for UPSC interview preparation and success"
   },
@@ -38,6 +76,8 @@ const youtubeVideos = [
     id: 1,
     title: "Paulson Sir - Expert Guidance",
     videoId: "aBaYt_uA2a0",
+    videoSrc: "",
+    type: "youtube" as const,
     thumbnail: "https://img.youtube.com/vi/aBaYt_uA2a0/maxresdefault.jpg",
     description: "Learn from Paulson Sir's expert guidance and teaching methodology"
   },
@@ -45,6 +85,8 @@ const youtubeVideos = [
     id: 2,
     title: "Paulson Sir - Advanced Strategies",
     videoId: "YETVg2K_rvk",
+    videoSrc: "",
+    type: "youtube" as const,
     thumbnail: "https://img.youtube.com/vi/YETVg2K_rvk/maxresdefault.jpg",
     description: "Advanced UPSC preparation strategies by Paulson Sir"
   },
@@ -52,6 +94,8 @@ const youtubeVideos = [
     id: 3,
     title: "Nitin Chakravarthy Sir - Success Insights",
     videoId: "egZ3vsu0CWw",
+    videoSrc: "",
+    type: "youtube" as const,
     thumbnail: "https://img.youtube.com/vi/egZ3vsu0CWw/maxresdefault.jpg",
     description: "Success insights and preparation tips from Nitin Chakravarthy Sir"
   },
@@ -59,28 +103,18 @@ const youtubeVideos = [
     id: 4,
     title: "Dr. Vineeth AIR 169 - Success Story",
     videoId: "b8c4p33fxZM",
+    videoSrc: "",
+    type: "youtube" as const,
     thumbnail: "https://img.youtube.com/vi/b8c4p33fxZM/hqdefault.jpg",
     description: "Inspiring success story of Dr. Vineeth who achieved AIR 169"
-  },
-  {
-    id: 5,
-    title: "MEERA IPS AIR 160 - Journey to Success",
-    videoId: "nBMigOLHePM",
-    thumbnail: "https://img.youtube.com/vi/nBMigOLHePM/sddefault.jpg",
-    description: "MEERA's incredible journey to becoming IPS with AIR 160"
-  },
-  {
-    id: 6,
-    title: "IAS Success Story - From Preparation to Selection",
-    videoId: "0M-NmVcpqyc",
-    thumbnail: "https://img.youtube.com/vi/0M-NmVcpqyc/maxresdefault.jpg",
-    description: "Watch how our student achieved their IAS dream through dedicated preparation"
   },
   {
     id: 8,
     title: "Current Affairs Analysis - Latest Updates",
     videoId: "6WxwvoW68Ec",
-    thumbnail: "https://img.youtube.com/vi/6WxwvoW68Ec/maxresdefault.jpg",
+    videoSrc: "",
+    type: "youtube" as const,
+    thumbnail: "https://img.youtube.com/vi/6WxwvoW68Ec/hqdefault.jpg",
     description: "Stay updated with the latest current affairs for UPSC"
   },
 ];
@@ -90,6 +124,8 @@ export default function CommunitySection() {
   const [isPlaying, setIsPlaying] = useState(true);
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const [currentVideoId, setCurrentVideoId] = useState<string | null>(null);
+  const [currentVideoSrc, setCurrentVideoSrc] = useState<string | null>(null);
+  const [currentVideoType, setCurrentVideoType] = useState<"youtube" | "mp4">("youtube");
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
 
@@ -99,7 +135,7 @@ export default function CommunitySection() {
 
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) =>
-        prevIndex === youtubeVideos.length - 1 ? 0 : prevIndex + 1
+        prevIndex === videos.length - 1 ? 0 : prevIndex + 1
       );
     }, 5000);
 
@@ -114,34 +150,39 @@ export default function CommunitySection() {
 
   const goToPrevious = () => {
     setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? youtubeVideos.length - 1 : prevIndex - 1
+      prevIndex === 0 ? videos.length - 1 : prevIndex - 1
     );
     setIsVideoPlaying(false);
     setCurrentVideoId(null);
+    setCurrentVideoSrc(null);
   };
 
   const goToNext = () => {
     setCurrentIndex((prevIndex) =>
-      prevIndex === youtubeVideos.length - 1 ? 0 : prevIndex + 1
+      prevIndex === videos.length - 1 ? 0 : prevIndex + 1
     );
     setIsVideoPlaying(false);
     setCurrentVideoId(null);
+    setCurrentVideoSrc(null);
   };
 
   const handlePlayPause = () => {
     setIsPlaying(!isPlaying);
   };
 
-  const handleVideoPlay = (videoId: string) => {
+  const handleVideoPlay = (videoId: string, videoSrc: string, type: "youtube" | "mp4") => {
     setCurrentVideoId(videoId);
+    setCurrentVideoSrc(videoSrc);
+    setCurrentVideoType(type);
     setIsVideoPlaying(true);
-    setIsPlaying(false); // Pause auto-slide when video is playing
+    setIsPlaying(false);
   };
 
   const handleVideoClose = () => {
     setIsVideoPlaying(false);
     setCurrentVideoId(null);
-    setIsPlaying(true); // Resume auto-slide when video is closed
+    setCurrentVideoSrc(null);
+    setIsPlaying(true);
   };
 
   // Touch handlers for mobile swipe
@@ -205,7 +246,7 @@ export default function CommunitySection() {
               className="flex transition-transform duration-700 ease-in-out"
               style={{ transform: `translateX(-${currentIndex * 100}%)` }}
             >
-              {youtubeVideos.map((video) => (
+              {videos.map((video) => (
                 <div key={video.id} className="w-full flex-shrink-0 relative">
                   <div className="relative h-[300px] md:h-[400px] w-full">
                     <Image
@@ -213,23 +254,28 @@ export default function CommunitySection() {
                       alt={video.title}
                       fill
                       className="object-cover"
+                      style={{
+                        objectPosition: (video as { objectPosition?: string }).objectPosition ?? "center",
+                        transform: `scale(${(video as { objectScale?: number }).objectScale ?? 1})`,
+                        transformOrigin: "center center",
+                      }}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
 
-                    {/* Play Button */}
-                    <div className="absolute inset-0 flex items-center justify-center">
+                    {/* Play Button — bottom-right so it never covers faces */}
+                    <div className="absolute bottom-20 right-5">
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
-                          handleVideoPlay(video.videoId);
+                          handleVideoPlay(video.videoId, video.videoSrc, video.type);
                         }}
-                        className="group p-6 bg-red-600 hover:bg-red-700 rounded-full transition-all duration-300 transform hover:scale-110"
+                        className="group p-4 bg-red-600 hover:bg-red-700 rounded-full transition-all duration-300 transform hover:scale-110 shadow-xl"
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           viewBox="0 0 24 24"
                           fill="white"
-                          className="w-12 h-12 group-hover:w-14 group-hover:h-14 transition-all duration-300"
+                          className="w-8 h-8 group-hover:w-10 group-hover:h-10 transition-all duration-300"
                         >
                           <path d="M8 5.14v14l11-7-11-7z" />
                         </svg>
@@ -264,7 +310,7 @@ export default function CommunitySection() {
 
           {/* Dots Navigation */}
           <div className="absolute bottom-4 left-0 right-0 flex justify-center space-x-2">
-            {youtubeVideos.map((_, index) => (
+            {videos.map((_, index) => (
               <button
                 key={`video-dot-${index}`}
                 onClick={(e) => {
@@ -272,8 +318,8 @@ export default function CommunitySection() {
                   goToSlide(index);
                 }}
                 className={`h-3 w-3 rounded-full transition-all duration-300 ${currentIndex === index
-                    ? 'bg-white scale-125'
-                    : 'bg-white/50 hover:bg-white/75'
+                  ? 'bg-white scale-125'
+                  : 'bg-white/50 hover:bg-white/75'
                   }`}
               />
             ))}
@@ -307,13 +353,13 @@ export default function CommunitySection() {
           <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/30">
             <div
               className="h-full bg-white transition-all duration-300"
-              style={{ width: `${((currentIndex + 1) / youtubeVideos.length) * 100}%` }}
+              style={{ width: `${((currentIndex + 1) / videos.length) * 100}%` }}
             />
           </div>
         </div>
 
-        {/* YouTube Video Modal */}
-        {isVideoPlaying && currentVideoId && (
+        {/* Video Modal — supports YouTube and MP4 */}
+        {isVideoPlaying && (currentVideoId || currentVideoSrc) && (
           <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
             <div className="relative w-full max-w-4xl">
               <button
@@ -323,14 +369,25 @@ export default function CommunitySection() {
                 ✕
               </button>
               <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
-                <iframe
-                  src={`https://www.youtube.com/embed/${currentVideoId}?autoplay=1`}
-                  title="YouTube video player"
-                  className="absolute top-0 left-0 w-full h-full"
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                />
+                {currentVideoType === "mp4" ? (
+                  <video
+                    key={currentVideoSrc ?? ""}
+                    src={currentVideoSrc ?? ""}
+                    autoPlay
+                    controls
+                    playsInline
+                    className="absolute top-0 left-0 w-full h-full rounded-lg"
+                  />
+                ) : (
+                  <iframe
+                    src={`https://www.youtube.com/embed/${currentVideoId}?autoplay=1`}
+                    title="YouTube video player"
+                    className="absolute top-0 left-0 w-full h-full"
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  />
+                )}
               </div>
             </div>
           </div>

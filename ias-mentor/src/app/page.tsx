@@ -14,6 +14,7 @@ import InteractiveCalendar from "@/components/InteractiveCalendar";
 import ClientOnly from "@/components/ClientOnly";
 import { useContentManagement } from "@/contexts/ContentManagementContext";
 import { ContentManagementService, NewsItem, Course, CalendarEvent } from "@/utils/contentManagementService";
+import ResultCelebrationModal from "@/components/ResultCelebrationModal";
 
 // Mock data - replace with actual data from your backend
 const mockNewsItems = [
@@ -320,19 +321,19 @@ export default function Home() {
   const handleRocketScroll = () => {
     setIsScrolling(true);
     setShowLaunchPopup(false);
-    
+
     // Add rocket animation class to body
     document.body.classList.add('rocket-scroll');
-    
+
     setTimeout(() => {
       const weekendSection = document.getElementById('upsc-weekend-section');
       if (weekendSection) {
-        weekendSection.scrollIntoView({ 
+        weekendSection.scrollIntoView({
           behavior: 'smooth',
           block: 'center'
         });
       }
-      
+
       // Remove rocket class after animation
       setTimeout(() => {
         document.body.classList.remove('rocket-scroll');
@@ -352,8 +353,13 @@ export default function Home() {
 
   return (
     <div className="overflow-x-hidden">
+      {/* AIR 284 Celebration Modal — one-time per session */}
+      <ClientOnly>
+        <ResultCelebrationModal />
+      </ClientOnly>
+
       <HeroSection />
-      
+
       {/* UPSC Weekend Batch Section */}
       <section id="upsc-weekend-section" className="relative py-16 bg-gradient-to-r from-yellow-400 via-yellow-500 to-orange-500 overflow-hidden">
         <div className="absolute inset-0">
@@ -361,7 +367,7 @@ export default function Home() {
           <div className="absolute bottom-10 right-10 w-40 h-40 bg-white/15 rounded-full blur-2xl"></div>
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-60 h-60 bg-white/10 rounded-full blur-3xl"></div>
         </div>
-        
+
         <div className="relative max-w-7xl mx-auto px-4 md:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
@@ -369,15 +375,15 @@ export default function Home() {
                 <span>🎓</span>
                 <span>NEW WEEKEND BATCH</span>
               </div>
-              
+
               <h2 className="text-4xl md:text-5xl font-bold mb-6 font-['Oswald'] text-secondary">
                 UPSC <span className="text-white">Weekend Batch</span>
               </h2>
-              
+
               <p className="text-xl mb-8 text-secondary leading-relaxed">
                 Designed for Degree Students and Working Professionals. Classes on Saturdays, Sundays & Public Holidays. 1-Year comprehensive program covering Prelims and Mains.
               </p>
-              
+
               <div className="flex flex-wrap items-center gap-4 mb-8">
                 <div className="flex items-center space-x-2">
                   <div className="w-2 h-2 bg-secondary rounded-full"></div>
@@ -392,13 +398,13 @@ export default function Home() {
                   <span className="text-sm text-secondary font-medium">Mains Answer Writing Practice</span>
                 </div>
               </div>
-              
+
               <div className="flex items-center space-x-6">
                 <div className="text-center">
                   <div className="text-3xl font-black text-secondary">New</div>
                   <div className="text-sm text-secondary/80">Admissions Open</div>
                 </div>
-                <button 
+                <button
                   onClick={() => router.push('/courses')}
                   className="bg-secondary text-white hover:bg-secondary/90 font-bold px-8 py-3 rounded-full shadow-xl transform hover:scale-105 transition-all duration-300"
                 >
@@ -406,11 +412,11 @@ export default function Home() {
                 </button>
               </div>
             </div>
-            
+
             <div className="relative">
               <div className="bg-white rounded-2xl p-8 shadow-xl border border-gray-200">
                 <h3 className="text-2xl font-bold mb-6 text-center text-secondary font-['Oswald']">Program Highlights</h3>
-                
+
                 <div className="space-y-4">
                   <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
                     <div className="w-8 h-8 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center">
@@ -418,21 +424,21 @@ export default function Home() {
                     </div>
                     <span className="text-secondary font-medium">Classes on Saturdays, Sundays & Public Holidays</span>
                   </div>
-                  
+
                   <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
                     <div className="w-8 h-8 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center">
                       <span className="text-white font-bold text-sm">2</span>
                     </div>
                     <span className="text-secondary font-medium">1-Year Comprehensive Program (Prelims + Mains)</span>
                   </div>
-                  
+
                   <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
                     <div className="w-8 h-8 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center">
                       <span className="text-white font-bold text-sm">3</span>
                     </div>
                     <span className="text-secondary font-medium">Mains Answer Writing Practice</span>
                   </div>
-                  
+
                   <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
                     <div className="w-8 h-8 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center">
                       <span className="text-white font-bold text-sm">4</span>
@@ -440,7 +446,7 @@ export default function Home() {
                     <span className="text-secondary font-medium">One-to-One Mentorship</span>
                   </div>
                 </div>
-                
+
                 <div className="mt-6 text-center">
                   <p className="text-secondary/80 text-sm mb-2">Perfect for Degree Students & Working Professionals</p>
                   <p className="text-secondary font-bold">Limited Seats Available!</p>
@@ -450,7 +456,7 @@ export default function Home() {
           </div>
         </div>
       </section>
-      
+
       {/* CUET Launch Section (kept as requested) */}
       <section id="cuet-section" className="relative py-16 bg-gradient-to-r from-orange-400 to-yellow-400 via-amber-400 overflow-hidden">
         <div className="absolute inset-0">
@@ -458,7 +464,7 @@ export default function Home() {
           <div className="absolute bottom-10 right-10 w-40 h-40 bg-white/15 rounded-full blur-2xl"></div>
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-60 h-60 bg-white/10 rounded-full blur-3xl"></div>
         </div>
-        
+
         <div className="relative max-w-7xl mx-auto px-4 md:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
@@ -466,16 +472,16 @@ export default function Home() {
                 <span>🎓</span>
                 <span>NEW COURSE LAUNCH</span>
               </div>
-              
+
               <h2 className="text-4xl md:text-5xl font-bold mb-6 font-['Oswald'] text-secondary">
                 CUET <span className="text-white">Preparation</span>
               </h2>
-              
+
               <p className="text-xl mb-8 text-secondary leading-relaxed">
-                The gateway to admissions in top Central Universities across India. 
+                The gateway to admissions in top Central Universities across India.
                 Join our comprehensive CUET preparation program designed by experts.
               </p>
-              
+
               <div className="flex flex-wrap items-center gap-4 mb-8">
                 <div className="flex items-center space-x-2">
                   <div className="w-2 h-2 bg-secondary rounded-full"></div>
@@ -490,13 +496,13 @@ export default function Home() {
                   <span className="text-sm text-secondary font-medium">Mock Tests & Analysis</span>
                 </div>
               </div>
-              
+
               <div className="flex items-center space-x-6">
                 <div className="text-center">
                   <div className="text-3xl font-black text-secondary">₹9,500</div>
                   <div className="text-sm text-secondary/80">Special Launch Price</div>
                 </div>
-                <button 
+                <button
                   onClick={() => router.push('/cuet')}
                   className="bg-secondary text-white hover:bg-secondary/90 font-bold px-8 py-3 rounded-full shadow-xl transform hover:scale-105 transition-all duration-300"
                 >
@@ -504,11 +510,11 @@ export default function Home() {
                 </button>
               </div>
             </div>
-            
+
             <div className="relative">
               <div className="bg-white rounded-2xl p-8 shadow-xl border border-gray-200">
                 <h3 className="text-2xl font-bold mb-6 text-center text-secondary font-['Oswald']">Program Highlights</h3>
-                
+
                 <div className="space-y-4">
                   <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
                     <div className="w-8 h-8 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center">
@@ -516,21 +522,21 @@ export default function Home() {
                     </div>
                     <span className="text-secondary font-medium">Language, Domain & General Test Coverage</span>
                   </div>
-                  
+
                   <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
                     <div className="w-8 h-8 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center">
                       <span className="text-white font-bold text-sm">2</span>
                     </div>
                     <span className="text-secondary font-medium">Offline and Online Classes</span>
                   </div>
-                  
+
                   <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
                     <div className="w-8 h-8 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center">
                       <span className="text-white font-bold text-sm">3</span>
                     </div>
                     <span className="text-secondary font-medium">Weekly All-India Mock Tests</span>
                   </div>
-                  
+
                   <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
                     <div className="w-8 h-8 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center">
                       <span className="text-white font-bold text-sm">4</span>
@@ -538,7 +544,7 @@ export default function Home() {
                     <span className="text-secondary font-medium">One-to-One Mentorship</span>
                   </div>
                 </div>
-                
+
                 <div className="mt-6 text-center">
                   <p className="text-secondary/80 text-sm mb-2">Perfect for Class 11 & 12 students</p>
                   <p className="text-secondary font-bold">Limited Seats Available!</p>
@@ -548,7 +554,7 @@ export default function Home() {
           </div>
         </div>
       </section>
-      
+
       {state.newsSectionEnabled && (
         <ClientOnly>
           <NewsUpdatesSection newsItems={firebaseNewsItems.length > 0 ? firebaseNewsItems : mockNewsItems} />
@@ -556,8 +562,8 @@ export default function Home() {
       )}
       {state.courseShowcaseEnabled && (
         <ClientOnly>
-          <CourseShowcaseCarousel 
-            courses={firebaseCourses.length > 0 ? firebaseCourses : mockCourses} 
+          <CourseShowcaseCarousel
+            courses={firebaseCourses.length > 0 ? firebaseCourses : mockCourses}
             onEnroll={(courseId) => {
               // Redirect to courses page
               router.push('/courses');
@@ -595,28 +601,27 @@ export default function Home() {
               <div className="w-20 h-20 mx-auto mb-4 bg-gradient-to-r from-yellow-300 to-red-200 rounded-full flex items-center justify-center shadow-lg">
                 <span className="text-4xl">🚀</span>
               </div>
-              
+
               <h3 className="text-2xl font-bold text-secondary mb-2 font-['Oswald']">
                 New Weekend Batch Launched!
               </h3>
-              
+
               <p className="text-gray-600 mb-6">
                 Exciting news! We've launched our new <span className="font-bold text-secondary">UPSC Weekend Batch</span> designed for Degree Students and Working Professionals.
               </p>
-              
+
               <div className="space-y-3">
                 <button
                   onClick={handleRocketScroll}
                   disabled={isScrolling}
-                  className={`w-full py-3 px-6 rounded-full font-bold text-white transition-all duration-300 transform ${
-                    isScrolling 
-                      ? 'bg-gray-400 cursor-not-allowed' 
+                  className={`w-full py-3 px-6 rounded-full font-bold text-white transition-all duration-300 transform ${isScrolling
+                      ? 'bg-gray-400 cursor-not-allowed'
                       : 'bg-gradient-to-r from-yellow-300 to-red-200 hover:from-yellow-400 hover:to-red-300 hover:scale-105 shadow-lg'
-                  }`}
+                    }`}
                 >
                   {isScrolling ? '🚀 Flying to Weekend Batch...' : '🚀 Explore Weekend Batch'}
                 </button>
-                
+
                 <button
                   onClick={() => setShowLaunchPopup(false)}
                   className="w-full py-2 px-6 rounded-full font-medium text-gray-600 hover:text-gray-800 transition-colors"
@@ -633,9 +638,8 @@ export default function Home() {
       {showPrelimsPopup && (
         <div className="fixed inset-x-4 md:inset-x-auto bottom-6 md:right-6 z-[60] flex justify-center md:justify-end">
           <div
-            className={`curtain-popup relative w-full max-w-sm overflow-hidden rounded-3xl border border-yellow-200/80 bg-gradient-to-br from-amber-50 via-yellow-100 to-orange-100 p-6 shadow-2xl transition-all duration-500 ${
-              isCurtainOpen ? 'curtain-open scale-100' : 'scale-95'
-            }`}
+            className={`curtain-popup relative w-full max-w-sm overflow-hidden rounded-3xl border border-yellow-200/80 bg-gradient-to-br from-amber-50 via-yellow-100 to-orange-100 p-6 shadow-2xl transition-all duration-500 ${isCurtainOpen ? 'curtain-open scale-100' : 'scale-95'
+              }`}
           >
             <div className="curtain-panel left bg-gradient-to-br from-amber-200 via-yellow-100 to-orange-200" />
             <div className="curtain-panel right bg-gradient-to-br from-orange-200 via-yellow-100 to-amber-200" />
@@ -649,9 +653,8 @@ export default function Home() {
             </button>
 
             <div
-              className={`relative z-10 transition-all duration-700 ${
-                isCurtainOpen ? 'translate-y-0 opacity-100' : 'translate-y-6 opacity-0'
-              }`}
+              className={`relative z-10 transition-all duration-700 ${isCurtainOpen ? 'translate-y-0 opacity-100' : 'translate-y-6 opacity-0'
+                }`}
             >
               <div className="mb-2 inline-flex items-center rounded-full bg-secondary/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.35em] text-secondary">
                 Prelims

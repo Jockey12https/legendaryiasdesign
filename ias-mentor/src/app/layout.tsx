@@ -12,6 +12,7 @@ import { ContentManagementProvider } from "@/contexts/ContentManagementContext";
 import SessionManager from "@/components/auth/SessionManager";
 import SEOStructuredData from "@/components/SEOStructuredData";
 import Script from "next/script";
+import ResultAnnouncementBanner from "@/components/ResultAnnouncementBanner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -203,6 +204,9 @@ export default function RootLayout({
         <AuthProvider>
           <ContentManagementProvider>
             <div className="flex flex-col min-h-screen overflow-x-hidden">
+              <ClientOnly>
+                <ResultAnnouncementBanner />
+              </ClientOnly>
               <Header />
               <ClientOnly>
                 <AnnouncementBanner
