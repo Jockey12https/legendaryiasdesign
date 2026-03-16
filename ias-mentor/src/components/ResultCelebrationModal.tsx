@@ -182,6 +182,17 @@ export default function ResultCelebrationModal() {
                 style={{ zIndex: 1 }}
             />
 
+            {/* Close Button (X) */}
+            <button
+                onClick={handleClose}
+                className="absolute top-4 right-4 md:top-8 md:right-8 p-3 text-white/60 hover:text-white transition-all duration-300 rounded-full hover:bg-white/10 z-50 group"
+                aria-label="Close"
+            >
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="transform group-hover:scale-110 transition-transform">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
 
 
             {/* Main content card */}
