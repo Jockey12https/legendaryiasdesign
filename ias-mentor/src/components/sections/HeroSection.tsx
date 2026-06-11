@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useAuth } from "@/contexts/AuthContext";
 import AuthModal from "@/components/auth/AuthModal";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { CheckCircle, Users, Award, BookOpen, Clock, Target } from "lucide-react";
 
@@ -14,8 +15,9 @@ export default function HeroSection() {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [animationComplete, setAnimationComplete] = useState(false);
 
-  // Hero background video
+  // Hero background video — poster in WebP for faster LCP
   const heroVideoUrl = "https://ik.imagekit.io/8vvkoi3dt/Legendary/legendary%20intro%20video%20%20(1).mp4";
+  const heroPosterUrl = "https://ik.imagekit.io/8vvkoi3dt/Legendary/legendary%20%20(2).jpg?tr=f-webp,q-80,w-1280";
   const brochureUrl = "https://drive.google.com/uc?export=view&id=1MTg44euRtIsuFiuzDlNy61uQckMT6-ia";
 
   useEffect(() => {
@@ -107,7 +109,8 @@ export default function HeroSection() {
           muted
           loop
           playsInline
-          preload="auto"
+          preload="metadata"
+          poster={heroPosterUrl}
         >
           <source src={heroVideoUrl} type="video/mp4" />
           Your browser does not support the video tag.
@@ -138,19 +141,25 @@ export default function HeroSection() {
               className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold mb-3 sm:mb-4 text-white"
               variants={itemVariants}
             >
-              #1 Best IAS Academy in Kerala
+              Best IAS Academy in Kerala
             </motion.h2>
             <motion.p
               className="text-sm sm:text-base md:text-lg mb-4 sm:mb-6 md:mb-8 max-w-xl"
               variants={itemVariants}
             >
-              Legendary IAS Mentor is the <strong>#1 IAS Academy in Kerala</strong> and among the <strong>Best UPSC coaching institutes in India</strong>. With expert faculty, proven success rates, and comprehensive study material, we help aspirants achieve their IAS dreams.
+              Welcome to Legendary IAS Mentor — the <strong>best IAS academy in Kerala</strong> for serious UPSC aspirants. Moreover, our expert faculty, proven track record, and structured study plans make us the top choice for Civil Services coaching across the state.
             </motion.p>
             <motion.p
               className="text-sm sm:text-base md:text-lg mb-4 sm:mb-6 md:mb-8 max-w-xl"
               variants={itemVariants}
             >
-              Join us with successful IAS aspirants who chose the <strong>best IAS academy in Trivandrum</strong> for their UPSC preparation journey.
+              As a leading <strong>IAS academy in Kerala</strong>, we guide students through every stage of preparation — from Prelims to Interview. In addition, our personalised mentorship and comprehensive study material help you stay focused and confident throughout your journey.
+            </motion.p>
+            <motion.p
+              className="text-sm sm:text-base md:text-lg mb-4 sm:mb-6 md:mb-8 max-w-xl"
+              variants={itemVariants}
+            >
+              Therefore, if you are looking for the <strong>best IAS academy in Kerala</strong>, <Link href="/courses" className="text-primary underline hover:text-primary/80">explore our UPSC courses</Link> or <Link href="/about" className="text-primary underline hover:text-primary/80">learn more about us</Link> to start your path toward becoming an IAS officer.
             </motion.p>
             <motion.div variants={itemVariants}>
               <div className="flex items-center gap-3">

@@ -13,8 +13,8 @@ export default function SEOStructuredData({ type = 'organization', data }: SEOSt
     "@type": "EducationalOrganization",
     "name": "Legendary IAS Mentor",
     "alternateName": "Best IAS Academy in Kerala",
-    "description": "Legendary IAS Mentor is the #1 IAS Academy in Kerala and among the best UPSC coaching institutes in India. We provide expert faculty, proven success rate, comprehensive study material, and personalized guidance for UPSC Civil Services Exam preparation.",
-    "url": "https://legendaryiasmentor.com",
+    "description": "Legendary IAS Mentor is the best IAS academy in Kerala for UPSC Civil Services preparation. As a trusted IAS academy in Kerala, we provide expert faculty, proven success rate, comprehensive study material, and personalized guidance for UPSC aspirants.",
+    "url": "https://www.legendaryiasmentor.com",
     "logo": "https://ext.same-assets.com/2651817114/1248459215.png",
     "image": "https://ext.same-assets.com/2651817114/1248459215.png",
     "telephone": "+91-8129313575",
@@ -145,7 +145,7 @@ export default function SEOStructuredData({ type = 'organization', data }: SEOSt
         "name": "Karnataka"
       }
     ],
-    "keywords": "IAS Academy Kerala, Best IAS Academy India, UPSC Coaching Kerala, Civil Services Coaching, IAS Academy Ernakulam, UPSC Preparation Kerala, Best UPSC Institute India, IAS Coaching Center, Civil Services Academy, UPSC Exam Preparation"
+    "keywords": "ias academy in kerala, best ias academy in kerala, IAS Academy Kerala, Best IAS Academy India, UPSC Coaching Kerala, Civil Services Coaching, IAS Academy Ernakulam, UPSC Preparation Kerala, Best UPSC Institute India, IAS Coaching Center, Civil Services Academy, UPSC Exam Preparation"
   };
 
   const faqData = {
@@ -157,7 +157,7 @@ export default function SEOStructuredData({ type = 'organization', data }: SEOSt
         "name": "Which is the best IAS academy in Kerala?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Legendary IAS Mentor is recognized as the #1 IAS Academy in Kerala, offering expert faculty, proven success rates, and comprehensive study material for UPSC preparation."
+          "text": "Legendary IAS Mentor is recognized as the best IAS academy in Kerala, offering expert faculty, proven success rates, and comprehensive study material for UPSC preparation."
         }
       },
       {

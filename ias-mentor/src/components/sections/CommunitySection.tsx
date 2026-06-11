@@ -21,7 +21,7 @@ const videos = [
     videoId: "",
     videoSrc: "https://ik.imagekit.io/8vvkoi3dt/Result/VID-20260307-WA0024.mp4?updatedAt=1773153410598",
     type: "mp4" as const,
-    thumbnail: "https://ik.imagekit.io/8vvkoi3dt/Result/Anusha.jpg",
+    thumbnail: "https://ik.imagekit.io/8vvkoi3dt/Result/Anusha.jpg?updatedAt=1773153408377&tr=f-webp,q-80,w-800",
     objectPosition: "50% 36%",
     description: "A glimpse into the inspiring journey behind AIR 284 — Legendary IAS Mentor"
   },
@@ -31,7 +31,7 @@ const videos = [
     videoId: "",
     videoSrc: "https://ik.imagekit.io/8vvkoi3dt/Result/VID-20260307-WA0038.mp4?updatedAt=1773153453536",
     type: "mp4" as const,
-    thumbnail: "https://ik.imagekit.io/8vvkoi3dt/Result/Screenshot%202026-03-10%20204353.png",
+    thumbnail: "https://ik.imagekit.io/8vvkoi3dt/Result/Screenshot%202026-03-10%20204353.png?tr=f-webp,q-80,w-800",
     objectPosition: "50% 10%",  // ← move up/down: lower % = higher in image, higher % = lower
     objectScale: 0.95,  // ← zoom: 1 = normal, 1.5 = 50% zoomed in
     description: "Strategic intervention and guidance for every UPSC aspirant — never give up on your dream"

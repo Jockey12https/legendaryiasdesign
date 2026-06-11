@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -41,7 +42,13 @@ export default function CoursesSection() {
   return (
     <section className="py-16 bg-white">
       <div className="max-w-7xl mx-auto px-4 md:px-8">
-        <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center font-['Oswald']">Our Courses</h2>
+        <h2 className="text-3xl md:text-4xl font-bold mb-6 text-center font-['Oswald']">Our Courses</h2>
+        <p className="text-center text-gray-600 mb-12 max-w-3xl mx-auto leading-relaxed">
+          At Legendary IAS Mentor, the <strong>best IAS academy in Kerala</strong>, we offer structured programs for every stage of your UPSC journey. Whether you need a foundation course or advanced Mains coaching, our expert faculty is ready to guide you. Visit our{" "}
+          <Link href="/courses" className="text-primary font-semibold hover:underline">UPSC courses page</Link>, read our{" "}
+          <Link href="/blog" className="text-primary font-semibold hover:underline">preparation blog</Link>, or check the{" "}
+          <Link href="/faq" className="text-primary font-semibold hover:underline">FAQ section</Link> to learn more about why we are a leading <strong>IAS academy in Kerala</strong>.
+        </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {courses.map((course) => (

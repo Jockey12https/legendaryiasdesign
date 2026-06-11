@@ -15,7 +15,7 @@ const studentTestimonials = [
     id: 1,
     name: "MEERA P R",
     position: "IPS Officer",
-    image: "https://ik.imagekit.io/8vvkoi3dt/meera%20new.png?updatedAt=1748788309140",
+    image: "https://ik.imagekit.io/8vvkoi3dt/meera%20new.png?updatedAt=1748788309140&tr=f-webp,q-80,w-192",
     quote: "From clueless to confident, Legendary IAS Mentor transformed my journey. With great mentors like Paulson sir and Nitin Sir, I cracked Prelims, mastered Mains, and aced my optional- proving success in three months is possible!",
     rank: "AIR 160"
   },
@@ -23,7 +23,7 @@ const studentTestimonials = [
     id: 2,
     name: "ROJA",
     position: "IFS Officer",
-    image: "https://ik.imagekit.io/8vvkoi3dt/roja%20ifs_testimonial.png?updatedAt=1748788815928",
+    image: "https://ik.imagekit.io/8vvkoi3dt/roja%20ifs_testimonial.png?updatedAt=1748788815928&tr=f-webp,q-80,w-192",
     quote: "Following my preliminary exam, IS basically went on the search for a mentor, someone with whom I can genuinely connect and who has the knowledge and patience to help me. I found the right one in Nitin sir. In his role as a mentor, he made time for me even at late hours by putting aside his own needs. He was a huge help to me, especially when it came to my mains answer writing.",
     rank: "AIR 108"
   },
@@ -31,7 +31,7 @@ const studentTestimonials = [
     id: 3,
     name: "Aparna M B",
     position: "IAS Officer",
-    image: "https://ik.imagekit.io/8vvkoi3dt/Aparna%20IAS%20AIR%2064.png?updatedAt=1748789061625",
+    image: "https://ik.imagekit.io/8vvkoi3dt/Aparna%20IAS%20AIR%2064.png?updatedAt=1748789061625&tr=f-webp,q-80,w=192",
     quote: "Nitin Chakravarthy Sir's mentorship pushed me to excel. His constructive feedback practical solutions, and unwavering commitment helped me improve daily.",
     rank: "AIR 64"
   },
@@ -155,8 +155,8 @@ export default function TestimonialsSection() {
         <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center text-secondary font-['Oswald']">
           Success Stories
         </h2>
-        <p className="text-xl text-center text-secondary mb-12 max-w-3xl mx-auto">
-          Hear from our students who cracked the UPSC examination with flying colors.
+        <p className="text-xl text-center text-secondary mb-12 max-w-3xl mx-auto leading-relaxed">
+          Hear from students who chose the <strong>best IAS academy in Kerala</strong> and achieved outstanding results in the UPSC examination. Moreover, their success stories reflect the quality of mentorship and coaching you can expect as part of our community.
         </p>
 
         {/* ── Featured Result: Anusha A S AIR 284 ── */}
@@ -181,9 +181,10 @@ export default function TestimonialsSection() {
                 style={{ border: "3px solid #1a0a00" }}
               >
                 <Image
-                  src="https://ik.imagekit.io/8vvkoi3dt/Result/Anusha.jpg"
+                  src="https://ik.imagekit.io/8vvkoi3dt/Result/Anusha.jpg?updatedAt=1773153408377&tr=f-webp,q-80,w-224"
                   alt="Anusha A S — AIR 284"
                   fill
+                  sizes="112px"
                   className="object-cover object-center"
                 />
               </div>

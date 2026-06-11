@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -82,9 +83,11 @@ export default function ContactSection() {
         </h2>
 
         <div className="max-w-3xl mx-auto">
-          <p className="text-center text-secondary mb-8">
-            Connect with Legendary IAS Mentor for expert guidance and support.
-            Embark on your IAS preparation journey with us.
+          <p className="text-center text-secondary mb-4 leading-relaxed">
+            Ready to begin your UPSC journey? As the <strong>best IAS academy in Kerala</strong>, we offer free counselling to help you choose the right program. Moreover, our team responds quickly to every enquiry.
+          </p>
+          <p className="text-center text-secondary mb-8 leading-relaxed">
+            Additionally, you can visit our <Link href="/courses" className="font-semibold underline hover:text-black">courses page</Link> or read our <Link href="/blog" className="font-semibold underline hover:text-black">UPSC preparation blog</Link> before reaching out. Therefore, whether you need classroom coaching or weekend batches, Legendary IAS Mentor — a trusted <strong>IAS academy in Kerala</strong> — is here to guide you every step of the way.
           </p>
 
           <div className="text-center mb-8">

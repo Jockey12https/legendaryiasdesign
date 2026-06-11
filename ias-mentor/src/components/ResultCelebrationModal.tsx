@@ -275,9 +275,10 @@ export default function ResultCelebrationModal() {
                             }}
                         >
                             <Image
-                                src="https://ik.imagekit.io/8vvkoi3dt/Result/Anusha.jpg"
+                                src="https://ik.imagekit.io/8vvkoi3dt/Result/Anusha.jpg?updatedAt=1773153408377&tr=f-webp,q-80,w-320"
                                 alt="Anusha A S — AIR 284"
                                 fill
+                                sizes="160px"
                                 className="object-cover object-center"
                                 priority
                             />

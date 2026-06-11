@@ -3,16 +3,9 @@ const nextConfig = {
   // Removed output: 'export' to enable API routes and middleware
   // distDir: 'out',
   images: {
+    // ImageKit already serves optimized WebP via URL transforms (?tr=f-webp)
+    // Avoid Next.js re-optimizing remote images (causes dev timeouts)
     unoptimized: true,
-    domains: [
-      "source.unsplash.com",
-      "images.unsplash.com",
-      "ext.same-assets.com",
-      "ugc.same-assets.com",
-      "ik.imagekit.io",
-      "img.youtube.com",
-      "opengraph.b-cdn.net",
-    ],
     remotePatterns: [
       {
         protocol: "https",

@@ -26,11 +26,13 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "Legendary IAS Mentor - Best IAS Academy in Kerala & India",
+    default: "Legendary IAS Mentor | Best IAS Academy in Kerala",
     template: "%s | Legendary IAS Mentor"
   },
-  description: "Legendary IAS Mentor is the #1 IAS Academy in Kerala and among the best UPSC coaching institutes in India. Expert faculty, proven success rate, comprehensive study material, and personalized guidance for UPSC Civil Services Exam preparation.",
+  description: "Legendary IAS Mentor is the best IAS academy in Kerala for UPSC Civil Services preparation. As a trusted IAS academy in Kerala, we offer expert faculty, proven results, and personalised mentorship to help you achieve your IAS dream.",
   keywords: [
+    "ias academy in kerala",
+    "best ias academy in kerala",
     "IAS Academy Kerala",
     "Best IAS Academy India",
     "UPSC Coaching Kerala",
@@ -68,22 +70,22 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_IN',
     url: 'https://www.legendaryiasmentor.com/',
-    title: 'Legendary IAS Mentor - Best IAS Academy in Kerala & India',
-    description: 'Legendary IAS Mentor is the #1 IAS Academy in Kerala and among the best UPSC coaching institutes in India. Expert faculty, proven success rate, comprehensive study material, and personalized guidance for UPSC Civil Services Exam preparation.',
+    title: 'Legendary IAS Mentor | Best IAS Academy in Kerala',
+    description: 'Legendary IAS Mentor is the best IAS academy in Kerala for UPSC Civil Services preparation. As a trusted IAS academy in Kerala, we offer expert faculty, proven results, and personalised mentorship to help you achieve your IAS dream.',
     siteName: 'Legendary IAS Mentor',
     images: [
       {
         url: 'https://opengraph.b-cdn.net/production/images/fd3a6304-0966-4902-ae3d-57b64f2523ac.jpg?token=U0Z5td14r7OSMANDaehi51sETPXfL5x4qY5hnynizVE&height=1200&width=1200&expires=33294819526',
         width: 1200,
         height: 1200,
-        alt: 'Legendary IAS Mentor - Best IAS Academy in Kerala',
+        alt: 'Best IAS Academy in Kerala - Legendary IAS Mentor',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Legendary IAS Mentor - Best IAS Academy in Kerala & India',
-    description: 'Legendary IAS Mentor is the #1 IAS Academy in Kerala and among the best UPSC coaching institutes in India. Expert faculty, proven success rate, comprehensive study material, and personalized guidance for UPSC Civil Services Exam preparation.',
+    title: 'Legendary IAS Mentor | Best IAS Academy in Kerala',
+    description: 'Legendary IAS Mentor is the best IAS academy in Kerala for UPSC Civil Services preparation. As a trusted IAS academy in Kerala, we offer expert faculty, proven results, and personalised mentorship to help you achieve your IAS dream.',
     images: ['https://opengraph.b-cdn.net/production/images/fd3a6304-0966-4902-ae3d-57b64f2523ac.jpg?token=U0Z5td14r7OSMANDaehi51sETPXfL5x4qY5hnynizVE&height=1200&width=1200&expires=33294819526'],
   },
   robots: {
@@ -103,24 +105,24 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       {
-        url: 'https://ik.imagekit.io/8vvkoi3dt/Legendary/legendary%20%20(2).jpg',
+        url: 'https://ik.imagekit.io/8vvkoi3dt/Legendary/legendary%20%20(2).jpg?tr=f-webp,q-80,w-32',
         sizes: '32x32',
-        type: 'image/jpeg',
+        type: 'image/webp',
       },
       {
-        url: 'https://ik.imagekit.io/8vvkoi3dt/Legendary/legendary%20%20(2).jpg',
+        url: 'https://ik.imagekit.io/8vvkoi3dt/Legendary/legendary%20%20(2).jpg?tr=f-webp,q-80,w-16',
         sizes: '16x16',
-        type: 'image/jpeg',
+        type: 'image/webp',
       },
     ],
     apple: [
       {
-        url: 'https://ik.imagekit.io/8vvkoi3dt/Legendary/legendary%20%20(2).jpg',
+        url: 'https://ik.imagekit.io/8vvkoi3dt/Legendary/legendary%20%20(2).jpg?tr=f-webp,q-80,w-180',
         sizes: '180x180',
-        type: 'image/jpeg',
+        type: 'image/webp',
       },
     ],
-    shortcut: 'https://ik.imagekit.io/8vvkoi3dt/Legendary/legendary%20%20(2).jpg',
+    shortcut: 'https://ik.imagekit.io/8vvkoi3dt/Legendary/legendary%20%20(2).jpg?tr=f-webp,q-80,w-32',
   },
 };
 
