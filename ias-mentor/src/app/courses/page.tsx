@@ -106,7 +106,7 @@ const allPrograms = [
     description: 'Practice. Improve. Conquer. UPSC Prelims isn\'t about luck—it\'s about strategy, precision & confidence. Our weekly full-length & sectional tests, detailed test discussions, and real-exam simulations make you battle-ready!',
     duration: '6 months',
     fees: '₹7,500',
-    image: 'https://images.unsplash.com/photo-1519452575417-564c1401ecc0?q=80&w=1200&auto=format&fit=crop', // exam sheet/OMR vibe
+    image: 'https://images.unsplash.com/photo-1519452575417-564c1401ecc0?w=1200&fm=webp&q=75&fit=crop', // exam sheet/OMR vibe
     category: 'prelims'
   },
   {
@@ -115,7 +115,7 @@ const allPrograms = [
     description: 'Write like a topper! Mains is not about knowing, it\'s about expressing! This program transforms your writing, strengthens your articulation, and builds your confidence with structured answer writing workshops, Mains test series, value addition modules, and expert feedback!',
     duration: '8 months',
     fees: '₹55,000',
-    image: 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?q=80&w=1200&auto=format&fit=crop', // writing/answer sheets
+    image: 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=1200&fm=webp&q=75&fit=crop', // writing/answer sheets
     category: 'mains'
   },
   {
@@ -124,7 +124,7 @@ const allPrograms = [
     description: 'Your personal UPSC guide for 1 year! UPSC is a lonely journey - but not with a mentor by your side! Get weekly one-on-one mentorship sessions, personal study plans, performance tracking, and targeted improvement strategies to stay ahead in the race!',
     duration: '12 months',
     fees: '₹20,000',
-    image: 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?q=80&w=1200&auto=format&fit=crop', // mentor-student discussion
+    image: 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=1200&fm=webp&q=75&fit=crop', // mentor-student discussion
     category: 'mentorship'
   },
   {
@@ -133,7 +133,7 @@ const allPrograms = [
     description: 'Master key UPSC modules! Short, high-impact modules to master UPSC\'s toughest sections! Targeted training, expert guidance & crisp study materials to simplify complex topics!',
     duration: '3 months',
     fees: 'Nil',
-    image: 'https://images.unsplash.com/photo-1513258496099-48168024aec0?q=80&w=1200&auto=format&fit=crop', // books/modules
+    image: 'https://images.unsplash.com/photo-1513258496099-48168024aec0?w=1200&fm=webp&q=75&fit=crop', // books/modules
     category: 'modules'
   },
   {
@@ -142,7 +142,7 @@ const allPrograms = [
     description: 'Make your optional your scoring weapon! Your optional can be your strength—if trained right! Learn from expert faculty, get structured notes, concept clarity & personalized answer reviews, and maximize your optional score!',
     duration: '6 months',
     fees: '₹45,000',
-    image: 'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?q=80&w=1200&auto=format&fit=crop', // library/subjects
+    image: 'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=1200&fm=webp&q=75&fit=crop', // library/subjects
     category: 'optional'
   },{
     id: 'sociology-mentorship',
@@ -150,7 +150,7 @@ const allPrograms = [
     description: 'Score high in Sociology! A great answer isn\'t just about facts—it\'s about depth, clarity & structure. This program fine-tunes your Sociology writing skills with expert reviews & model answers!',
     duration: '4 months',
     fees: '₹10,000',
-    image: 'https://images.unsplash.com/photo-1553877522-43269d4ea984?q=80&w=1200&auto=format&fit=crop', // teamwork/discussion
+    image: 'https://images.unsplash.com/photo-1553877522-43269d4ea984?w=1200&fm=webp&q=75&fit=crop', // teamwork/discussion
     category: 'optional'
   }
   ,
@@ -160,7 +160,7 @@ const allPrograms = [
     description: 'Write like a topper! Your answers should not just be right, they should be brilliant! With weekly GS & Essay tests, expert evaluation, and topper-model answers, refine your structure, clarity, and argument-building skills!',
     duration: '7 months',
     fees: '₹12,000',
-    image: 'https://images.unsplash.com/photo-1517520287167-4bbf64a00d66?q=80&w=1200&auto=format&fit=crop', // pen and paper exam
+    image: 'https://images.unsplash.com/photo-1517520287167-4bbf64a00d66?w=1200&fm=webp&q=75&fit=crop', // pen and paper exam
     category: 'mains'
   },
   {
@@ -169,7 +169,7 @@ const allPrograms = [
     description: 'Write your way to success! A well-structured answer is the difference between average and excellence! Learn step-by-step answer writing, develop analytical skills & get expert feedback!',
     duration: '3 months',
     fees: '₹15,000',
-    image: 'https://images.unsplash.com/photo-1495446815901-a7297e633e8d?q=80&w=1200&auto=format&fit=crop', // focused writing/notes
+    image: 'https://images.unsplash.com/photo-1495446815901-a7297e633e8d?w=1200&fm=webp&q=75&fit=crop', // focused writing/notes
     category: 'mains'
   },
 ];
@@ -182,7 +182,7 @@ const studyMaterials = [
     description: 'Comprehensive study material covering all topics for UPSC Prelims.',
     format: 'PDF + Hard Copy',
     fees: '₹5,000',
-    image: 'https://images.unsplash.com/photo-1584697964194-9c7906b7985a?q=80&w=1200&auto-format&fit=crop', // prelims materials/notes
+    image: 'https://images.unsplash.com/photo-1584697964194-9c7906b7985a?w=1200&fm=webp&q=75&fit=crop', // prelims materials/notes
     category: 'prelims',
     previewUrl: 'https://example.com/prelims-preview.pdf',
     purchaseUrl: 'https://example.com/prelims-download.pdf'
@@ -193,7 +193,7 @@ const studyMaterials = [
     description: 'Model answers and writing techniques for UPSC Mains papers.',
     format: 'PDF + Hard Copy',
     fees: '₹6,000',
-    image: 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?q=80&w=1200&auto=format&fit=crop', // writing practice
+    image: 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=1200&fm=webp&q=75&fit=crop', // writing practice
     category: 'mains',
     previewUrl: 'https://example.com/mains-preview.pdf',
     purchaseUrl: 'https://example.com/mains-download.pdf'
@@ -204,7 +204,7 @@ const studyMaterials = [
     description: 'Monthly and yearly compilation of current affairs relevant for UPSC.',
     format: 'PDF',
     fees: '₹2,500',
-    image: 'https://images.unsplash.com/photo-1495020689067-958852a7765e?q=80&w=1200&auto=format&fit=crop', // newspapers
+    image: 'https://images.unsplash.com/photo-1495020689067-958852a7765e?w=1200&fm=webp&q=75&fit=crop', // newspapers
     category: 'current',
     previewUrl: 'https://example.com/current-affairs-preview.pdf',
     purchaseUrl: 'https://example.com/current-affairs-download.pdf'
@@ -215,7 +215,7 @@ const studyMaterials = [
     description: 'Specialized study materials for various optional subjects.',
     format: 'PDF + Hard Copy',
     fees: '₹7,000',
-    image: 'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?q=80&w=1200&auto=format&fit=crop', // shelves/books
+    image: 'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=1200&fm=webp&q=75&fit=crop', // shelves/books
     category: 'optional',
     previewUrl: 'https://example.com/optional-preview.pdf',
     purchaseUrl: 'https://example.com/optional-download.pdf'
@@ -563,11 +563,13 @@ export default function UnifiedCoursesPage() {
       <section className="py-16 bg-black text-white">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
           <h1 className="text-4xl md:text-5xl font-bold mb-4 text-center font-['Oswald']">
-            Our Courses
+            Our UPSC Courses — Best IAS Coaching in Kerala
           </h1>
-          <p className="text-lg max-w-3xl mx-auto text-center mb-8">
-            Discover our comprehensive range of courses designed to help you excel in the civil services examinations.
-            Choose the program that best suits your preparation needs and goals.
+          <p className="text-lg max-w-3xl mx-auto text-center mb-4">
+            Legendary IAS Mentor provides the best IAS coaching in Kerala, with a wide range of programs for every stage of UPSC preparation. Furthermore, our expert faculty designs each course to match your specific preparation needs. Whether you are a fresher, a working professional, or a repeater, you will find the right program here.
+          </p>
+          <p className="text-base max-w-3xl mx-auto text-center text-gray-300 mb-8">
+            As a trusted center for the best IAS coaching in Kerala, we have helped thousands of aspirants excel in UPSC Prelims, Mains, and Interview. Moreover, our programs provide comprehensive civil services training for every level of preparation.
           </p>
           {!user && (
             <div className="text-center">
@@ -685,13 +687,14 @@ export default function UnifiedCoursesPage() {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {filteredAllPrograms.map((program) => (
+                {filteredAllPrograms.map((program, index) => (
                   <Card key={program.id} className="overflow-hidden flex flex-col h-full">
                     <div className="relative h-48 w-full bg-gray-200 flex items-center justify-center">
                       <img
                         src={program.image}
-                        alt={program.title}
+                        alt={index === 0 ? `Best IAS Coaching in Kerala - ${program.title}` : program.title}
                         className="w-full h-full object-cover"
+                        loading={index === 0 ? "eager" : "lazy"}
                       />
                     </div>
                     <CardHeader>
@@ -756,7 +759,7 @@ export default function UnifiedCoursesPage() {
                           alt={material.title}
                           className="w-full h-full object-cover"
                           onError={(e) => {
-                            e.currentTarget.src = 'https://images.unsplash.com/photo-1513258496099-48168024aec0?q=80&w=1200&auto=format&fit=crop';
+                            e.currentTarget.src = 'https://images.unsplash.com/photo-1513258496099-48168024aec0?w=1200&fm=webp&q=75&fit=crop';
                           }}
                         />
                       </div>

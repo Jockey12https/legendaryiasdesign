@@ -72,7 +72,7 @@ export default function CUETPage() {
     {
       icon: <Clock className="h-6 w-6" />,
       title: "Flexible Batches",
-      description: "Online and offline classes designed to suit school/college schedules"
+      description: "CUET coaching online and offline classes designed to suit your school or college schedule"
     },
     {
       icon: <Award className="h-6 w-6" />,
@@ -112,13 +112,13 @@ export default function CUETPage() {
               🎓 NEW COURSE LAUNCH
             </Badge>
             <h1 className="text-5xl md:text-7xl font-bold mb-6 font-['Oswald'] bg-gradient-to-r from-yellow-400 via-white to-blue-300 bg-clip-text text-transparent">
-              CUET PREPARATION
+              Best CUET Coaching Online & Offline
             </h1>
-            <p className="text-xl md:text-2xl mb-8 text-blue-100 max-w-4xl mx-auto leading-relaxed">
-              The Common University Entrance Test (CUET) is the gateway to admissions in top Central, State Universities across India.
+            <p className="text-xl md:text-2xl mb-6 text-blue-100 max-w-4xl mx-auto leading-relaxed">
+              The Common University Entrance Test (CUET) opens doors to top Central and State Universities across India. Therefore, the right CUET coaching online is key to securing your seat. At Legendary IAS Mentor, we guide you with expert faculty and proven strategies.
             </p>
             <p className="text-lg text-gray-300 max-w-3xl mx-auto mb-10">
-              With lakhs of students competing every year, a focused strategy and expert guidance are essential to secure admission in your dream college.
+              Lakhs of students compete in CUET every year. Consequently, only focused and well-prepared students make it to top universities. Furthermore, our structured CUET coaching online and offline programs give you the right edge to succeed.
             </p>
             
             {/* Price Highlight */}
@@ -172,9 +172,10 @@ export default function CUETPage() {
               <div className="relative group cursor-pointer rounded-xl md:rounded-2xl overflow-hidden shadow-2xl hover:shadow-3xl transition-all duration-500 transform hover:scale-[1.02] active:scale-[0.98] touch-manipulation">
                 <div className="relative aspect-video bg-black">
                   <Image
-                    src="https://ik.imagekit.io/8vvkoi3dt/PODCAST%20THUMBNAIL.png?updatedAt=1758560835184"
-                    alt="CUET Preparation Strategy Video"
+                    src="https://ik.imagekit.io/8vvkoi3dt/tr:f-webp,q-75/PODCAST%20THUMBNAIL.png?updatedAt=1758560835184"
+                    alt="Best CUET Coaching Online & Offline - Preparation Strategy at Legendary IAS Mentor"
                     fill
+                    priority
                     className="object-cover group-hover:scale-105 transition-transform duration-500"
                   />
                   
@@ -274,7 +275,7 @@ export default function CUETPage() {
               Why Choose <span className="text-blue-600">LEGENDARY IAS MENTOR</span> for CUET?
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              We bring our proven expertise in competitive exam preparation to help you excel in CUET
+              We bring proven expertise in competitive exam preparation. Therefore, you get the best guidance and support to excel in CUET.
             </p>
           </div>
 
