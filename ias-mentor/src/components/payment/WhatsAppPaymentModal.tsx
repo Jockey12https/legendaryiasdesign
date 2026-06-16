@@ -102,7 +102,7 @@ export default function WhatsAppPaymentModal({ isOpen, onClose, product, onPayme
       if (product.price === 0) {
         console.log('WhatsAppPaymentModal: Zero price course detected, skipping payment initialization');
         const contactId = `CONTACT_${Date.now()}`;
-        const adminNumber = '918547698407';
+        const adminNumber = '918129313575';
         const message = `Hi! I'm interested in the ${product.title} course.\n\nName: ${user?.displayName || user?.email}\nPhone: ${(user as any)?.phoneNumber || 'Not provided'}\n\nPlease provide fee details and enrollment information.\n\nThank you!`;
         const whatsappUrl = `https://wa.me/${adminNumber}?text=${encodeURIComponent(message)}`;
         
@@ -257,9 +257,10 @@ export default function WhatsAppPaymentModal({ isOpen, onClose, product, onPayme
     try {
       // Define numbers for Contact WhatsApp button (Primary + First manual)
       const numbers = [
-        '918921519949', // Primary number (Twilio-enabled)
-        '918848559575',  // First manual number
-        '918547698407'
+        '918921519949',
+        '918129313575', // Primary number (Twilio-enabled)
+        '918848559575'  // First manual number
+        
       ];
       
       const message = `Hi! I want to purchase ${product.title} for ${product.price === 0 ? 'Nil' : `₹${product.price}`}.\nName: ${user.displayName || user.email}\nPhone: ${(user as any).phoneNumber || 'Not provided'}\n\nPlease provide payment instructions.\nPayment ID: ${paymentData?.id}`;
@@ -313,7 +314,7 @@ export default function WhatsAppPaymentModal({ isOpen, onClose, product, onPayme
   };
 
   const informAdmin = () => {
-    const adminNumber = '918547698407'; // Second manual number
+    const adminNumber = '918129313575'; // Second manual number
     let message: string;
     
     if (product.price === 0) {
